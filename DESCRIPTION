@@ -7,7 +7,7 @@ Authors@R:
            role = c("cre"),
            email = "colinfraser@fb.com")
 Description: Query the Facebook Ads Library.
-License: Apache License (>= 2.0)
+License: Facebook Platform License
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -15,7 +15,10 @@ Imports:
     stringr,
     readr,
     magrittr,
-    jsonlite
+    jsonlite,
+    yaml,
+    tibble,
+    glue
 Suggests: 
     testthat (>= 2.1.0)
 RoxygenNote: 6.1.1

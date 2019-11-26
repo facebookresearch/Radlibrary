@@ -1,13 +1,20 @@
-ADLIB_CONFIG_FILE <- path.expand('~/.adlib_config.yaml')
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
+ADLIB_CONFIG_FILE <- path.expand("~/.adlib_config.yaml")
 GET_LT_TOKEN_URL <- "https://graph.facebook.com/v5.0/oauth/access_token"
 
 adlib_auth_config <- function(config_file = ADLIB_CONFIG_FILE) {
-  if(file.exists(config_file)) {
+  if (file.exists(config_file)) {
     cfg <- jsonlite::fromJSON()
   }
 }
 
 get_long_term_access_token <- function(app_secret, app_id, access_token) {
+  # docs: https://developers.facebook.com/docs/facebook-login/access-tokens/refreshing
   params <- list(
     grant_type = "fb_exchange_token",
     client_id = app_id,
@@ -19,10 +26,14 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
     stop(extract_error_message(response))
   }
 
-  long_term_key <- content(response)
-  expiry <- strftime(Sys.time() + as.numeric(long_term_key[['expires_in']]), format = '%Y-%m-%d')
-  long_term_key[["expiry"]] <- expiry
-  long_term_key
+  response_content <- content(response)
+  expiry <- strftime(Sys.time() + as.numeric(long_term_key[["expires_in"]]), format = "%Y-%m-%d")
+  long_term_token <- list(
+    token = response_content$access_token,
+    expiry = expiry
+  )
+  message(glue("Long-term token successfully obtained. Token expires {expiry}."))
+  long_term_token
 }
 
 read_adlib_config <- function(config = ADLIB_CONFIG_FILE) {
@@ -41,19 +52,48 @@ adlib_current_token <- function() {
   return(appconfig$token)
 }
 
-adlib_update_token <- function() {
+#' Obtain a long-term token.
+#'
+#' This function exchanges a short-term token for a long-term token.
+#' The long-term token will expire in about 60 days. The token is
+#' written to your .adlib_config.yml file.
+#'
+#' @return TRUE
+#' @export
+#'
+adlib_long_term_token <- function() {
   adlib_config <- read_adlib_config()
-  access_token <- readline("Paste short-term access token: ")
-  long_term_token <- get_long_term_access_token(app_secret = adlib_config$app_secret,
-                                                app_id = adlib_config$app_id,
-                                                access_token = access_token)
+  access_token <- readline("Paste short-term access token from https://developers.facebook.com/tools/explorer/: ")
+  long_term_token <- get_long_term_access_token(
+    app_secret = adlib_config$app_secret,
+    app_id = adlib_config$app_id,
+    access_token = access_token
+  )
   adlib_config$token <- long_term_token
   yaml::write_yaml(adlib_config, file = ADLIB_CONFIG_FILE)
 }
 
+#' Initialize the configuration file.
+#'
+#' This is where you tell adslibrary the details about your app
+#' so that it can fetch long-term access tokens for you. You'll need:
+#'
+#' - Your Application ID
+#' - Your App secret
+#'
+#' These are both located in your app's Basic Settings, which you can find
+#' by signing into developers.facebook.com.
+#'
+#' @return True
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' adlib_config_init()
+#' }
 adlib_config_init <- function() {
   if (file.exists(ADLIB_CONFIG_FILE)) {
-    message(str_glue("Ad Library config file exists. If you just want to update your long term token,\nrun adlib_update_token(). Overwrite config? (y/n)"))
+    message(glue("Ad Library config file exists. If you just want to update your long term token,\nrun adlib_update_token(). Overwrite config? (y/n)"))
     overwrite <- "a"
     while (!(overwrite %in% c("y", "n"))) {
       overwrite <- readline()
@@ -65,7 +105,8 @@ adlib_config_init <- function() {
   app_id <- readline("Paste your Application ID: ")
   app_secret <- readline("Paste your App secret: ")
   yaml::write_yaml(list(app_id = app_id, app_secret = app_secret, token = NULL),
-                   file = ADLIB_CONFIG_FILE)
-  message(str_glue("Ad Library config file written to {ADLIB_CONFIG_FILE}.\nRun adlib_update_token() to obtain a long-term access token."))
+    file = ADLIB_CONFIG_FILE
+  )
+  message(glue("Ad Library config file written to {ADLIB_CONFIG_FILE}.\nRun adlib_update_token() to obtain a long-term access token."))
   return(invisible(TRUE))
 }

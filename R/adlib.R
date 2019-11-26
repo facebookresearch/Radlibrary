@@ -1,3 +1,9 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 ADLIB_URL <- "https://graph.facebook.com/v5.0/ads_archive"
 DEFAULT_TOKEN_PATH <- path.expand("~/.fb_adlib_token")
 
@@ -11,7 +17,7 @@ DEFAULT_TOKEN_PATH <- path.expand("~/.fb_adlib_token")
 #'
 #' @return Returns TRUE
 #' @export
-#' @importFrom stringr str_glue
+#' @importFrom glue glue
 #'
 #' @examples
 #' \dontrun{
@@ -19,7 +25,7 @@ DEFAULT_TOKEN_PATH <- path.expand("~/.fb_adlib_token")
 #' }
 adlib_set_token <- function(save_as = DEFAULT_TOKEN_PATH) {
   if (file.exists(save_as)) {
-    message(str_glue("A token exists at {save_as}. Overwrite? (y/n)"))
+    message(glue("A token exists at {save_as}. Overwrite? (y/n)"))
     overwrite <- "a"
     while (!(overwrite %in% c("y", "n"))) {
       overwrite <- readline()
@@ -118,10 +124,6 @@ adlib_build_query <- function(ad_reached_countries,
     stop("Can only search 10 page IDs at a time.")
   }
 
-  # if (str_length(search_terms) > 100) {
-  #   stop("Search string cannot be longer than 100 characters.")
-  # }
-
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
   if (!is.null(search_page_ids)) search_page_ids <- format_array(search_page_ids)
@@ -146,8 +148,7 @@ adlib_build_query <- function(ad_reached_countries,
 #' @param items a vector of items to format
 #'
 #' @return a string
-#' @export
-#' @importFrom stringr str_glue
+#' @importFrom glue glue
 #'
 format_array <- function(items) {
   if (is.numeric(items)) {
@@ -157,7 +158,7 @@ format_array <- function(items) {
   }
   else {
     dtype <- class(items)
-    stop(str_glue("Don't know how to format array of class {dtype}"))
+    stop(glue("Don't know how to format array of class {dtype}"))
   }
   return(out)
 }
