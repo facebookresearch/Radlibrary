@@ -1,0 +1,21 @@
+Package: adslibrary
+Title: Facebook Ads Library
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Colin",
+           family = "Fraser",
+           role = c("cre"),
+           email = "colinfraser@fb.com")
+Description: Query the Facebook Ads Library.
+License: Apache License (>= 2.0)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    httr,
+    stringr,
+    readr,
+    magrittr,
+    jsonlite
+Suggests: 
+    testthat (>= 2.1.0)
+RoxygenNote: 6.1.1
