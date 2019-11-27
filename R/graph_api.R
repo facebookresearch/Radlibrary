@@ -31,22 +31,19 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
   )
 }
 
-#' Get results from Facebook ads library
+#' Get results from Facebook Ad library
 #'
 #' @param end_point the graph API endpoint to send a request to
 #' @param params a list of parameters build with adlib_build_params
 #' @param token an access token from Facebook
 #'
-#' @return the raw response from Facebook Ads library
+#' @return the raw response from Facebook Ad library
 #' @export
 #' @importFrom httr GET http_error
 #'
 graph_get <- function(end_point, params, token = token_current()[["token"]]) {
   params[["access_token"]] <- token
   response <- GET(graph_api_endpoint(end_point), query = params)
-  if (http_error(response)) {
-    stop(extract_error_message(response))
-  }
   response
 }
 
@@ -60,5 +57,5 @@ graph_get <- function(end_point, params, token = token_current()[["token"]]) {
 #' @importFrom jsonlite prettify
 #' @importFrom httr content
 extract_error_message <- function(response) {
-  prettify(content(response, "text"))
+  prettify(content(response, "text", encoding = 'UTF-8'), indent = 2)
 }

@@ -21,7 +21,7 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
     client_secret = app_secret,
     fb_exchange_token = access_token
   )
-  response <- graph_get("access_token", params)
+  response <- graph_get("access_token", params, access_token)
 
   response_content <- content(response)
   token <- response_content[["access_token"]]

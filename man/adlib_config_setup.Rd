@@ -10,23 +10,19 @@ adlib_config_setup()
 True
 }
 \description{
-This is where you tell adslibrary the details about your app
-so that it can fetch long-term access tokens for you. You'll need:
+This is where you tell adlibrary the details about your app
+so that it can fetch long-term access tokens for you. Long-term access
+tokens allow you to make queries without having to refresh the token
+every hour.
 }
 \details{
-- Your Application ID
-- Your App secret
-
+In order to run this, you'll need your Application ID and your App secret.
 These are both located in your app's Basic Settings, which you can find
 by signing into developers.facebook.com.
 
 This will save a file called .fb_adlib_config.yaml to your home directory
-containing your App ID, App secret, and eventually a token.
-}
-\examples{
-\dontrun{
-adlib_config_setup()
+containing your App ID, App secret, and eventually a long-term token.
 
-}
-
+Be careful with the token, as active tokens can be used to sign into your Facebook account.
+If you want to remove your token from storage, you can run config_clear_token().
 }

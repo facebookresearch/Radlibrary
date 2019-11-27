@@ -1,4 +1,4 @@
 library(testthat)
-library(adslibrary)
+library(adlibrary)
 
-test_check("adslibrary")
+test_check("adlibrary")

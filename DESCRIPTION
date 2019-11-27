@@ -1,5 +1,5 @@
-Package: adslibrary
-Title: Facebook Ads Library
+Package: adlibrary
+Title: Facebook Ad Library API Tool
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Colin",

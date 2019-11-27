@@ -8,7 +8,7 @@
 # About this file ---------------------------------------------------------
 
 # This file contains the main functions that will be called by users of the
-# adslibrary package.
+# adlibrary package.
 
 
 # Functions ---------------------------------------------------------------
@@ -72,8 +72,25 @@ adlib_build_query <- function(ad_reached_countries,
   ))
 }
 
+#' Query the Ad Library API
+#'
+#' @param params a list of parameters.
+#' @param token an access_token.
+#'
+#' @description The `params` argument should be a list that is built with adlib_build_query().
+#' The `token` argument can be a short-term token pasted from https://developers.facebook.com/tools/explorer/,
+#' or a long-term token stored in your config file.
+#'
+#' @return an http response
+#' @export
+#'
 adlib_get <- function(params, token = token_current()[["token"]]) {
-  graph_get("ads_archive", params, token)
+  response <- graph_get("ads_archive", params, token)
+  if (http_error(response)) {
+    error_message <- extract_error_message(response)
+    stop(error_message)
+  }
+  return(response)
 }
 
 

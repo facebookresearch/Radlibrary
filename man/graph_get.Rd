@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph_api.R
 \name{graph_get}
 \alias{graph_get}
-\title{Get results from Facebook ads library}
+\title{Get results from Facebook Ad library}
 \usage{
 graph_get(end_point, params, token = token_current()[["token"]])
 }
@@ -14,8 +14,8 @@ graph_get(end_point, params, token = token_current()[["token"]])
 \item{token}{an access token from Facebook}
 }
 \value{
-the raw response from Facebook Ads library
+the raw response from Facebook Ad library
 }
 \description{
-Get results from Facebook ads library
+Get results from Facebook Ad library
 }
