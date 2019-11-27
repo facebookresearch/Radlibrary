@@ -57,5 +57,5 @@ graph_get <- function(end_point, params, token = token_current()[["token"]]) {
 #' @importFrom jsonlite prettify
 #' @importFrom httr content
 extract_error_message <- function(response) {
-  prettify(content(response, "text", encoding = 'UTF-8'), indent = 2)
+  prettify(content(response, "text", encoding = "UTF-8"), indent = 2)
 }
