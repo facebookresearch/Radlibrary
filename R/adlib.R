@@ -4,84 +4,6 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-ADLIB_URL <- "https://graph.facebook.com/v5.0/ads_archive"
-DEFAULT_TOKEN_PATH <- path.expand("~/.fb_adlib_token")
-
-
-#' Set Token
-#'
-#' Sets the access token from Facebook. Go to https://developers.facebook.com/tools/explorer/
-#' to find your token, run adlib_set_token(), and paste your token at the prompt.
-#'
-#' @param save_as path to token file.
-#'
-#' @return Returns TRUE
-#' @export
-#' @importFrom glue glue
-#'
-#' @examples
-#' \dontrun{
-#' adlib_set_token()
-#' }
-adlib_set_token <- function(save_as = DEFAULT_TOKEN_PATH) {
-  if (file.exists(save_as)) {
-    message(glue("A token exists at {save_as}. Overwrite? (y/n)"))
-    overwrite <- "a"
-    while (!(overwrite %in% c("y", "n"))) {
-      overwrite <- readline()
-      if (overwrite == "n") {
-        return(invisible(FALSE))
-      }
-    }
-  }
-  token <- readline(prompt = "Paste token: ")
-  readr::write_file(token, save_as)
-}
-
-#' Read the token
-#'
-#' @param path_to_token path to the token file
-#'
-#' @return returns True
-#' @importFrom readr read_file
-#'
-adlib_read_token <- function(path_to_token = check_for) {
-  if (!file.exists(path_to_token)) {
-    stop("Token not set. Run adlib_set_token().")
-  }
-  readr::read_file(path_to_token)
-}
-
-
-#' Get results from Facebook ads library
-#'
-#' @param params a list of parameters build with adlib_build_params
-#' @param token an access token from Facebook
-#'
-#' @return the raw response from Facebook Ads library
-#' @export
-#' @importFrom httr GET http_error
-#'
-adlib_get <- function(params, token = adlib_read_token(DEFAULT_TOKEN_PATH)) {
-  params[["access_token"]] <- token
-  response <- GET(ADLIB_URL, query = params)
-  if (http_error(response)) {
-    stop(extract_error_message(response))
-  }
-  response
-}
-
-#' Extract an error message from a response to pass as an R error
-#'
-#' @param response a response from the Ad Library API
-#'
-#' @return a character vector of length 1 containing an error message
-#'
-#' @importFrom jsonlite prettify
-#' @importFrom httr content
-extract_error_message <- function(response) {
-  prettify(content(response, "text"))
-}
 
 #' Build an Ad Library Query
 #'
@@ -142,6 +64,10 @@ adlib_build_query <- function(ad_reached_countries,
   ))
 }
 
+adlib_get <- function(params, token = token_current()[['token']]) {
+  graph_get('ads_archive', params, token)
+}
+
 
 #' Format a vector as a json array
 #'
@@ -163,19 +89,16 @@ format_array <- function(items) {
   return(out)
 }
 
-#' Check whether a token has been set.
+
+#' Convert Ad Library response to tibble
 #'
-#' @param path path to check for token
+#' @param response a response form adlib_get
 #'
-#' @return TRUE if there is a token
+#' @return tibble
 #' @export
 #'
-#' @examples
-#' adlib_check_for_token
-adlib_check_for_token <- function(path = DEFAULT_TOKEN_PATH) {
-  return(file.exists(path))
-}
-
+#' @importFrom tibble as_tibble
+#' @importFrom purrr map
 adlib_data_frame <- function(response) {
   adlib_data <- content(response)[["data"]]
   return(map(adlib_data, as_tibble))

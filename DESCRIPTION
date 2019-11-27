@@ -18,7 +18,9 @@ Imports:
     jsonlite,
     yaml,
     tibble,
-    glue
+    glue,
+    fs,
+    purrr
 Suggests: 
     testthat (>= 2.1.0)
 RoxygenNote: 6.1.1
