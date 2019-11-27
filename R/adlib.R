@@ -64,8 +64,8 @@ adlib_build_query <- function(ad_reached_countries,
   ))
 }
 
-adlib_get <- function(params, token = token_current()[['token']]) {
-  graph_get('ads_archive', params, token)
+adlib_get <- function(params, token = token_current()[["token"]]) {
+  graph_get("ads_archive", params, token)
 }
 
 

@@ -31,7 +31,7 @@ config_read <- function() {
 }
 
 config_write <- function(app_id, app_secret, token = NULL) {
-  config_list = list(app_id = app_id, app_secret = app_secret, token = token)
+  config_list <- list(app_id = app_id, app_secret = app_secret, token = token)
   yaml::write_yaml(config_list, config_file_path())
   return(invisible(TRUE))
 }
@@ -47,7 +47,7 @@ config_write <- function(app_id, app_secret, token = NULL) {
 #'
 config_clear_token <- function() {
   cfg <- config_read()
-  config_write(app_id = cfg[['app_id']], app_secret = cfg[['app_secret']])
+  config_write(app_id = cfg[["app_id"]], app_secret = cfg[["app_secret"]])
 }
 
 
@@ -82,7 +82,6 @@ config_delete <- function() {
 #' @examples
 #' \dontrun{
 #' adlib_config_setup()
-#'
 #' }
 #'
 #' @importFrom utils menu
