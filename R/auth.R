@@ -4,11 +4,14 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-long_term_token_endpoint <- function(version = "v5.0") {
-  # docs: https://developers.facebook.com/docs/facebook-login/access-tokens/refreshing
-  glue::glue("https://graph.facebook.com/{version}/oauth/access_token")
-}
 
+# About this file --------------------------------------------------------
+
+# This file contains functions for dealing with fetching, storing, and retrieving
+# access tokens.
+
+
+# Functions ---------------------------------------------------------------
 
 get_long_term_access_token <- function(app_secret, app_id, access_token) {
   # docs: https://developers.facebook.com/docs/facebook-login/access-tokens/refreshing
@@ -33,17 +36,16 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
 
 
 token_current <- function(appconfig = config_read()) {
-  if (is.null(appconfig$token)) {
-    stop("No current token. Run adlib_update_token().")
+  if (token_exists(appconfig)) {
+    return(appconfig$token)
+  } else {
+    stop("No token saved. Run adlib_update_token to get a long-term token.")
   }
-  return(appconfig$token)
 }
 
-token_exists <- function() {
-  appconfig <- config_read()
+token_exists <- function(appconfig = config_read()) {
   !is.null(appconfig$token$token)
 }
-
 
 #' Obtain a long-term token.
 #'

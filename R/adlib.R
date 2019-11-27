@@ -5,6 +5,14 @@
 # LICENSE file in the root directory of this source tree.
 
 
+# About this file ---------------------------------------------------------
+
+# This file contains the main functions that will be called by users of the
+# adslibrary package.
+
+
+# Functions ---------------------------------------------------------------
+
 #' Build an Ad Library Query
 #'
 #' This will build a list that can be passed to adlib_get.

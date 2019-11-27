@@ -19,10 +19,11 @@
 #' "ads_archive", for querying the Ad Library, and "access_token", for requesting
 #' long-term access tokens.
 #' @param version the version of the API to use.
+#' @export
 #'
 #' @return the endpoint URL
 #'
-graph_endpoint <- function(api = c("ads_archive", "access_token"), version = "v5.0") {
+graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version = "v5.0") {
   api <- match.arg(api)
   switch(api,
     "ads_archive" = glue::glue("https://graph.facebook.com/{version}/ads_archive"),
@@ -42,7 +43,7 @@ graph_endpoint <- function(api = c("ads_archive", "access_token"), version = "v5
 #'
 graph_get <- function(end_point, params, token = token_current()[["token"]]) {
   params[["access_token"]] <- token
-  response <- GET(graph_endpoint(end_point), query = params)
+  response <- GET(graph_api_endpoint(end_point), query = params)
   if (http_error(response)) {
     stop(extract_error_message(response))
   }
