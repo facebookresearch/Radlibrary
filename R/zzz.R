@@ -15,7 +15,7 @@ Set one up by running adlib_config_setup()
 You'll need your Application ID and App Secret,
 which you can get from your Application's Basic Settings page.
 
-Get more information by running ?adlib_config.") # TODO: make this work
+Get more information by running ?adlib_config_setup.") # TODO: make this work
   } else if (!token_exists()) {
     packageStartupMessage("
 No access token set up. Visit https://developers.facebook.com/tools/explorer/ to
