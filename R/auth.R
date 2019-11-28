@@ -16,7 +16,7 @@
 
 graph_api_token <- function(token, expiry = NULL, retrieved = NULL) {
   token <- list(token = token, expiry = expiry, retrieved = retrieved)
-  class(token) <-c("graph_api_token", "list")
+  class(token) <- c("graph_api_token", "list")
   token
 }
 
@@ -25,7 +25,7 @@ token_from_response <- function(response) {
   if (is.null(cont[["access_token"]])) {
     stop("Response does not contain a token.")
   }
-  date <- response[['date']]
+  date <- response[["date"]]
   expiry <- as.POSIXct(date) + cont[["expires_in"]]
   graph_api_token(cont[["access_token"]], expiry, retrieved = date)
 }
@@ -49,7 +49,7 @@ token_to_json <- function(token) {
 
 token_from_json <- function(blob) {
   token <- jsonlite::fromJSON(blob)
-  graph_api_token(token = token[['token']], expiry = token[['expiry']], retrieved = token[['retrieved']])
+  graph_api_token(token = token[["token"]], expiry = token[["expiry"]], retrieved = token[["retrieved"]])
 }
 
 
@@ -78,11 +78,9 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
 #' @export
 #'
 adlib_set_longterm_token <- function() {
-
   app_id <- secret_get(APP_ID)
   app_secret <- secret_get(APP_SECRET)
   short_term_token <- getPass::getPass("Enter token from https://developers.facebook.com/tools/explorer/")
   token <- get_long_term_access_token(app_secret, app_id, short_term_token)
   token_set(token)
-
 }

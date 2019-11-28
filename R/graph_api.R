@@ -41,7 +41,7 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 #' @export
 #' @importFrom httr GET http_error
 #'
-graph_get <- function(end_point, params, token = token_get()[['token']]) {
+graph_get <- function(end_point, params, token = token_get()[["token"]]) {
   params[["access_token"]] <- token
   response <- GET(graph_api_endpoint(end_point), query = params)
   response

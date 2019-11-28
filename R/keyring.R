@@ -1,7 +1,7 @@
 SERVICE <- "facebook_adlibrary"
-TOKEN <- 'fb_adlib_token'
-APP_ID <- 'fb_adlib_app_id'
-APP_SECRET <- 'fb_adlib_app_secret'
+TOKEN <- "fb_adlib_token"
+APP_ID <- "fb_adlib_app_id"
+APP_SECRET <- "fb_adlib_app_secret"
 
 
 is_set_up <- function() {
@@ -9,12 +9,12 @@ is_set_up <- function() {
 }
 
 secret_set <- function(secret = c(TOKEN, APP_ID, APP_SECRET), value) {
-  secret = match.arg(secret)
+  secret <- match.arg(secret)
   keyring::key_set_with_value(service = SERVICE, username = secret, password = value)
 }
 
 secret_get <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
-  secret = match.arg(secret)
+  secret <- match.arg(secret)
   if (secret_exists(secret)) {
     return(keyring::key_get(service = SERVICE, username = secret))
   }
@@ -30,7 +30,7 @@ secrets_clear_all <- function() {
 }
 
 secret_delete <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
-  secret = match.arg(secret)
+  secret <- match.arg(secret)
   keyring::key_delete(service = SERVICE, username = secret)
 }
 
@@ -54,7 +54,7 @@ token_exists <- function() {
 
 secret_exists <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
   secret <- match.arg(secret)
-  secret %in% keyring::key_list(service = SERVICE)[['username']]
+  secret %in% keyring::key_list(service = SERVICE)[["username"]]
 }
 
 #' Set up application ID and app secret.
@@ -63,7 +63,6 @@ secret_exists <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
 #'
 #' @importFrom utils menu
 adlib_setup <- function() {
-
   get_id <- TRUE
   if (secret_exists(APP_ID)) {
     message("Application ID already set. Overwrite? (y/n)")
@@ -79,7 +78,7 @@ adlib_setup <- function() {
     message("App secret already set. Overwrite? (y/n)")
     get_secret <- menu(c("y", "n")) == 1
   }
-  if(get_secret) {
+  if (get_secret) {
     app_secret <- getPass::getPass("Enter your App secret")
     secret_set(APP_SECRET, app_secret)
   }
