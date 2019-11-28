@@ -1,6 +1,6 @@
 Package: adlibrary
 Title: Facebook Ad Library API Tool
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person(given = "Colin",
            family = "Fraser",
