@@ -4,7 +4,7 @@
 \alias{adlib_get}
 \title{Query the Ad Library API}
 \usage{
-adlib_get(params, token = token_current()[["token"]])
+adlib_get(params, token = token_get()[["token"]])
 }
 \arguments{
 \item{params}{a list of parameters.}
@@ -17,5 +17,5 @@ an http response
 \description{
 The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from https://developers.facebook.com/tools/explorer/,
-or a long-term token stored in your config file.
+or a long-term token stored in your password store.
 }

@@ -79,12 +79,12 @@ adlib_build_query <- function(ad_reached_countries,
 #'
 #' @description The `params` argument should be a list that is built with adlib_build_query().
 #' The `token` argument can be a short-term token pasted from https://developers.facebook.com/tools/explorer/,
-#' or a long-term token stored in your config file.
+#' or a long-term token stored in your password store.
 #'
 #' @return an http response
 #' @export
 #'
-adlib_get <- function(params, token = token_current()[["token"]]) {
+adlib_get <- function(params, token = token_get()[["token"]]) {
   response <- graph_get("ads_archive", params, token)
   if (http_error(response)) {
     error_message <- extract_error_message(response)

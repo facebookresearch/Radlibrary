@@ -11,7 +11,49 @@
 # access tokens.
 
 
-# Functions ---------------------------------------------------------------
+# Token Class ---------------------------------------------------------------
+
+
+graph_api_token <- function(token, expiry = NULL, retrieved = NULL) {
+  token <- list(token = token, expiry = expiry, retrieved = retrieved)
+  class(token) <-c("graph_api_token", "list")
+  token
+}
+
+token_from_response <- function(response) {
+  cont <- content(response, as = "parsed")
+  if (is.null(cont[["access_token"]])) {
+    stop("Response does not contain a token.")
+  }
+  date <- response[['date']]
+  expiry <- as.POSIXct(date) + cont[["expires_in"]]
+  graph_api_token(cont[["access_token"]], expiry, retrieved = date)
+}
+
+token_expiry <- function(token) {
+  return(token[["expiry"]])
+}
+
+format.graph_api_token <- function(token) {
+  expiry <- token_expiry(token)
+  glue::glue("Facebook Graph API token expiring {expiry}")
+}
+
+print.graph_api_token <- function(token) {
+  cat(format(token))
+}
+
+token_to_json <- function(token) {
+  jsonlite::toJSON(token, pretty = 2)
+}
+
+token_from_json <- function(blob) {
+  token <- jsonlite::fromJSON(blob)
+  graph_api_token(token = token[['token']], expiry = token[['expiry']], retrieved = token[['retrieved']])
+}
+
+
+# Get token from API ------------------------------------------------------
 
 get_long_term_access_token <- function(app_secret, app_id, access_token) {
   # docs: https://developers.facebook.com/docs/facebook-login/access-tokens/refreshing
@@ -22,50 +64,25 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
     fb_exchange_token = access_token
   )
   response <- graph_get("access_token", params, access_token)
-
-  response_content <- content(response)
-  token <- response_content[["access_token"]]
-  expiry <- strftime(Sys.time() + as.numeric(response_content[["expires_in"]]), format = "%Y-%m-%d")
-  long_term_token <- list(
-    token = token,
-    expiry = expiry
-  )
+  token <- token_from_response(response)
+  expiry <- token_expiry(token)
   print(glue("Long-term token successfully obtained. Token expires {expiry}."))
-  long_term_token
+  return(token)
 }
 
 
-token_current <- function(appconfig = config_read()) {
-  if (token_exists(appconfig)) {
-    return(appconfig$token)
-  } else {
-    stop("No token saved. Run adlib_update_token to get a long-term token.")
-  }
-}
-
-token_exists <- function(appconfig = config_read()) {
-  !is.null(appconfig$token$token)
-}
-
-#' Obtain a long-term token.
+#' Set long term token
 #'
-#' This function exchanges a short-term token for a long-term token.
-#' The long-term token will expire in about 60 days. The token is
-#' written to your .adlib_config.yml file.
-#'
-#' @return TRUE
+#' @description Once you've entered your Application ID and App secret, you can
+#' obtain a long-term token that will expire in about 60 days.
 #' @export
 #'
-adlib_update_token <- function() {
-  adlib_config <- config_read()
-  access_token <- stringr::str_trim(readline("Paste short-term access token from https://developers.facebook.com/tools/explorer/: "))
-  long_term_token <- get_long_term_access_token(
-    app_secret = adlib_config$app_secret,
-    app_id = adlib_config$app_id,
-    access_token = access_token
-  )
-  config_write(
-    app_id = adlib_config$app_id, app_secret = adlib_config$app_secret,
-    token = long_term_token
-  )
+adlib_set_longterm_token <- function() {
+
+  app_id <- secret_get(APP_ID)
+  app_secret <- secret_get(APP_SECRET)
+  short_term_token <- getPass::getPass("Enter token from https://developers.facebook.com/tools/explorer/")
+  token <- get_long_term_access_token(app_secret, app_id, short_term_token)
+  token_set(token)
+
 }
