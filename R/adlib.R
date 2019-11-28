@@ -34,8 +34,8 @@
 adlib_build_query <- function(ad_reached_countries,
                               ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
                               ad_type = c(
-                                "ALL", "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
-                                "UNCATEGORIZED_ADS"
+                                "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
+                                "UNCATEGORIZED_ADS", "ALL"
                               ),
                               bylines = NULL,
                               impression_condition = c(
@@ -124,7 +124,9 @@ format_array <- function(items) {
 #'
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map
+#' @importFrom dplyr bind_rows
 adlib_data_frame <- function(response) {
   adlib_data <- content(response)[["data"]]
-  return(map(adlib_data, as_tibble))
+  map(adlib_data, as_tibble) %>%
+    bind_rows()
 }
