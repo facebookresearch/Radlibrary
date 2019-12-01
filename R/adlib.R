@@ -54,6 +54,10 @@ adlib_build_query <- function(ad_reached_countries,
     stop("Can only search 10 page IDs at a time.")
   }
 
+  if (is.null(search_page_ids) & is.null(search_terms)) {
+    stop("At least one of search_page_ids or search_terms must be supplied.")
+  }
+
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
   if (!is.null(search_page_ids)) search_page_ids <- format_array(search_page_ids)
@@ -86,10 +90,6 @@ adlib_build_query <- function(ad_reached_countries,
 #'
 adlib_get <- function(params, token = token_get()[["token"]]) {
   response <- graph_get("ads_archive", params, token)
-  if (http_error(response)) {
-    error_message <- extract_error_message(response)
-    stop(error_message)
-  }
   return(response)
 }
 

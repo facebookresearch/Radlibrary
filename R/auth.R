@@ -66,7 +66,7 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
   response <- graph_get("access_token", params, access_token)
   token <- token_from_response(response)
   expiry <- token_expiry(token)
-  print(glue("Long-term token successfully obtained. Token expires {expiry}."))
+  message(glue("Long-term token successfully obtained. Token expires {expiry}."))
   return(token)
 }
 
@@ -78,9 +78,17 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
 #' @export
 #'
 adlib_set_longterm_token <- function() {
+  if (token_exists()) {
+    if (menu(title = "A token is already saved. Get a new one?", choices = c("y", "n")) == 2) {
+      return(invisible(FALSE))
+    }
+  }
   app_id <- secret_get(APP_ID)
   app_secret <- secret_get(APP_SECRET)
   short_term_token <- getPass::getPass("Enter token from https://developers.facebook.com/tools/explorer/")
+  if (length(short_term_token) == 0) {
+    stop("No short term token supplied.")
+  }
   token <- get_long_term_access_token(app_secret, app_id, short_term_token)
   token_set(token)
 }

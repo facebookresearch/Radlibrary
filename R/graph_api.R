@@ -39,11 +39,12 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 #'
 #' @return the raw response from Facebook Ad library
 #' @export
-#' @importFrom httr GET http_error
+#' @importFrom httr GET http_error stop_for_status
 #'
 graph_get <- function(end_point, params, token = token_get()[["token"]]) {
   params[["access_token"]] <- token
   response <- GET(graph_api_endpoint(end_point), query = params)
+  extract_error_message(response)
   response
 }
 
@@ -57,5 +58,9 @@ graph_get <- function(end_point, params, token = token_get()[["token"]]) {
 #' @importFrom jsonlite prettify
 #' @importFrom httr content
 extract_error_message <- function(response) {
-  prettify(content(response, "text", encoding = "UTF-8"), indent = 2)
+  if(http_error(response)) {
+    out <- paste0("HTTP Error:\n", prettify(content(response, "text", encoding = "UTF-8"), indent = 2))
+    stop(out)
+  }
+  invisible(response)
 }
