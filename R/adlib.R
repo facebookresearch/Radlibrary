@@ -27,6 +27,8 @@
 #' @param publisher_platform The platform on which the ads appeared. One or more of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".
 #' @param search_page_ids A vector of up to 10 page IDs to search.
 #' @param search_terms A search string.
+#' @param limit The maximum number of results to return
+#'
 #'
 #' @return A list of params
 #' @export
@@ -45,7 +47,27 @@ adlib_build_query <- function(ad_reached_countries,
                               ),
                               publisher_platform = "FACEBOOK",
                               search_page_ids = NULL,
-                              search_terms = NULL) {
+                              search_terms = NULL,
+                              limit = 5000,
+                              fields = c(
+                                "ad_creation_time",
+                                "ad_creative_body",
+                                "ad_creative_link_caption",
+                                "ad_creative_link_description",
+                                "ad_creative_link_title",
+                                "ad_delivery_start_time",
+                                "ad_delivery_stop_time",
+                                "ad_snapshot_url",
+                                "currency",
+                                "demographic_distribution",
+                                "funding_entity",
+                                "impressions",
+                                "page_id",
+                                "page_name",
+                                "publisher_platforms",
+                                "region_distribution",
+                                "spend"
+                              )) {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
   impression_condition <- match.arg(impression_condition)
@@ -62,6 +84,8 @@ adlib_build_query <- function(ad_reached_countries,
   if (!is.null(bylines)) bylines <- format_array(bylines)
   if (!is.null(search_page_ids)) search_page_ids <- format_array(search_page_ids)
   publisher_platform <- format_array(publisher_platform)
+  fields <- adlib_fields(fields)
+
 
 
   return(list(
@@ -72,8 +96,33 @@ adlib_build_query <- function(ad_reached_countries,
     impression_condition = impression_condition,
     publisher_platform = publisher_platform,
     search_page_ids = search_page_ids,
-    search_terms = search_terms
+    search_terms = search_terms,
+    fields = fields,
+    limit = limit
   ))
+}
+
+adlib_fields <- function(fields = c(
+  "ad_creation_time",
+  "ad_creative_body",
+  "ad_creative_link_caption",
+  "ad_creative_link_description",
+  "ad_creative_link_title",
+  "ad_delivery_start_time",
+  "ad_delivery_stop_time",
+  "ad_snapshot_url",
+  "currency",
+  "demographic_distribution",
+  "funding_entity",
+  "impressions",
+  "page_id",
+  "page_name",
+  "publisher_platforms",
+  "region_distribution",
+  "spend"
+)) {
+  fields <- match.arg(fields, several.ok = TRUE)
+  paste0(fields, collapse = ',')
 }
 
 #' Query the Ad Library API
