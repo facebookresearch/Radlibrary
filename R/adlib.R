@@ -103,26 +103,26 @@ adlib_build_query <- function(ad_reached_countries,
 }
 
 adlib_fields <- function(fields = c(
-  "ad_creation_time",
-  "ad_creative_body",
-  "ad_creative_link_caption",
-  "ad_creative_link_description",
-  "ad_creative_link_title",
-  "ad_delivery_start_time",
-  "ad_delivery_stop_time",
-  "ad_snapshot_url",
-  "currency",
-  "demographic_distribution",
-  "funding_entity",
-  "impressions",
-  "page_id",
-  "page_name",
-  "publisher_platforms",
-  "region_distribution",
-  "spend"
-)) {
+                           "ad_creation_time",
+                           "ad_creative_body",
+                           "ad_creative_link_caption",
+                           "ad_creative_link_description",
+                           "ad_creative_link_title",
+                           "ad_delivery_start_time",
+                           "ad_delivery_stop_time",
+                           "ad_snapshot_url",
+                           "currency",
+                           "demographic_distribution",
+                           "funding_entity",
+                           "impressions",
+                           "page_id",
+                           "page_name",
+                           "publisher_platforms",
+                           "region_distribution",
+                           "spend"
+                         )) {
   fields <- match.arg(fields, several.ok = TRUE)
-  paste0(fields, collapse = ',')
+  paste0(fields, collapse = ",")
 }
 
 #' Query the Ad Library API
