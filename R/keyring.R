@@ -65,8 +65,7 @@ secret_exists <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
 adlib_setup <- function() {
   get_id <- TRUE
   if (secret_exists(APP_ID)) {
-    message("Application ID already set. Overwrite? (y/n)")
-    get_id <- menu(c("y", "n")) == 1
+    get_id <- menu(c("y", "n"), title = "Application ID already set. Overwrite? (y/n)") == 1
   }
   if (get_id) {
     app_id <- getPass::getPass("Enter your Application ID")
@@ -75,8 +74,7 @@ adlib_setup <- function() {
 
   get_secret <- TRUE
   if (secret_exists(APP_SECRET)) {
-    message("App secret already set. Overwrite? (y/n)")
-    get_secret <- menu(c("y", "n")) == 1
+    get_secret <- menu(c("y", "n"), title = "App secret already set. Overwrite? (y/n)") == 1
   }
   if (get_secret) {
     app_secret <- getPass::getPass("Enter your App secret")
