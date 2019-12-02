@@ -31,6 +31,14 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
   )
 }
 
+response_has_more_pages <- function(response) {
+  !is.null(response_next_page(response))
+}
+
+response_next_page <- function(response) {
+  content(response)[['paging']][['next']]
+}
+
 #' Get results from Facebook Ad library
 #'
 #' @param service the graph API endpoint to send a request to
@@ -41,8 +49,14 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 #' @export
 #' @importFrom httr RETRY http_error stop_for_status
 #'
-graph_get <- function(service, params, token = token_get()[["token"]]) {
-  params[["access_token"]] <- token
+graph_get <- function(service, params, token = token_get()) {
+  if (is_graph_api_token(token)) {
+    params[["access_token"]] <- token_string(token)
+  } else if ((class(token) == 'character') & length(token) == 1) {
+    params[["access_token"]] <- token
+  } else {
+    stop("Parameter token must be a string or object of time 'graph_api_token'")
+  }
   response <- RETRY("GET", graph_api_endpoint(service), query = params, quiet = FALSE)
   extract_error_message(response)
   response

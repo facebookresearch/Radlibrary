@@ -4,7 +4,7 @@
 \alias{adlib_get}
 \title{Query the Ad Library API}
 \usage{
-adlib_get(params, token = token_get()[["token"]])
+adlib_get(params, token = token_get())
 }
 \arguments{
 \item{params}{a list of parameters.}

@@ -8,5 +8,6 @@ adlib_set_longterm_token()
 }
 \description{
 Once you've entered your Application ID and App secret, you can
-obtain a long-term token that will expire in about 60 days.
+obtain a long-term token that will expire in about 60 days. THis will be stored
+in your operating system's secrets manager.
 }

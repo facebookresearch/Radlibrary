@@ -4,7 +4,7 @@
 \alias{graph_get}
 \title{Get results from Facebook Ad library}
 \usage{
-graph_get(service, params, token = token_get()[["token"]])
+graph_get(service, params, token = token_get())
 }
 \arguments{
 \item{service}{the graph API endpoint to send a request to}

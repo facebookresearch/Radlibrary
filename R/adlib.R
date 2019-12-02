@@ -88,7 +88,6 @@ adlib_build_query <- function(ad_reached_countries,
   fields <- adlib_fields(fields)
 
 
-
   return(list(
     ad_active_status = ad_active_status,
     ad_reached_countries = ad_reached_countries,
@@ -138,7 +137,7 @@ adlib_fields <- function(fields = c(
 #' @return an http response
 #' @export
 #'
-adlib_get <- function(params, token = token_get()[["token"]]) {
+adlib_get <- function(params, token = token_get()) {
   response <- graph_get("ads_archive", params, token)
   return(response)
 }
