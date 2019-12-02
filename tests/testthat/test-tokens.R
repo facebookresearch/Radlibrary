@@ -10,5 +10,4 @@ test_that("is_graph_api_token works", {
   expect_true(is_graph_api_token(token))
   expect_true(is_graph_api_token(token2))
   expect_false(is_graph_api_token("fdasfdas"))
-}
-)
+})

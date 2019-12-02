@@ -48,7 +48,7 @@ token_expires <- function(token) {
 
 format.graph_api_token <- function(token) {
   if (!token_expires(token)) {
-    return ("Facebook Graph API token with no stored expiry time.")
+    return("Facebook Graph API token with no stored expiry time.")
   }
   expiry <- token_expiry(token)
   glue::glue("Facebook Graph API token expiring {expiry}")
@@ -59,7 +59,7 @@ print.graph_api_token <- function(token) {
 }
 
 token_to_json <- function(token) {
-  jsonlite::toJSON(token, pretty = 2, null = 'null', auto_unbox = TRUE)
+  jsonlite::toJSON(token, pretty = 2, null = "null", auto_unbox = TRUE)
 }
 
 token_from_json <- function(blob) {

@@ -36,7 +36,7 @@ response_has_more_pages <- function(response) {
 }
 
 response_next_page <- function(response) {
-  content(response)[['paging']][['next']]
+  content(response)[["paging"]][["next"]]
 }
 
 #' Get results from Facebook Ad library
@@ -52,7 +52,7 @@ response_next_page <- function(response) {
 graph_get <- function(service, params, token = token_get()) {
   if (is_graph_api_token(token)) {
     params[["access_token"]] <- token_string(token)
-  } else if ((class(token) == 'character') & length(token) == 1) {
+  } else if ((class(token) == "character") & length(token) == 1) {
     params[["access_token"]] <- token
   } else {
     stop("Parameter token must be a string or object of time 'graph_api_token'")
