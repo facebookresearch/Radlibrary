@@ -23,7 +23,9 @@ Imports:
     purrr,
     dplyr,
     keyring,
-    getPass
+    getPass,
+    lubridate,
+    rlang
 Suggests: 
     testthat (>= 2.1.0)
 RoxygenNote: 6.1.1

@@ -28,6 +28,7 @@
 #' @param search_page_ids A vector of up to 10 page IDs to search.
 #' @param search_terms A search string.
 #' @param limit The maximum number of results to return
+#' @param fields the fields to include in the response
 #'
 #'
 #' @return A list of params

@@ -33,19 +33,36 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 
 #' Get results from Facebook Ad library
 #'
-#' @param end_point the graph API endpoint to send a request to
+#' @param service the graph API endpoint to send a request to
 #' @param params a list of parameters build with adlib_build_params
 #' @param token an access token from Facebook
 #'
 #' @return the raw response from Facebook Ad library
 #' @export
-#' @importFrom httr GET http_error stop_for_status
+#' @importFrom httr RETRY http_error stop_for_status
 #'
-graph_get <- function(end_point, params, token = token_get()[["token"]]) {
+graph_get <- function(service, params, token = token_get()[["token"]]) {
   params[["access_token"]] <- token
-  response <- GET(graph_api_endpoint(end_point), query = params)
+  response <- RETRY("GET", graph_api_endpoint(service), query = params, quiet = FALSE)
   extract_error_message(response)
   response
+}
+
+# TODO: make this fail gracefully
+graph_get_with_pagination <- function(service, params, token = token_get()[["token"]],
+                                      max_gets = 1000, retries = 3) {
+  out <- vector("list", max_gets)
+  response <- graph_get(service, params, token)
+  cont <- content(response)
+  out[[1]] <- response
+  gets <- 1
+  while ((!is.null(cont[['paging']])) & (gets < max_gets)) {
+    query <- httr::parse_url(cont[['paging']][['next']])[['query']]
+    response <- graph_get(service, params = query, token)
+    gets <- gets + 1
+    out[[gets]] <- response
+  }
+  return(out[1:gets])
 }
 
 

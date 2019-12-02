@@ -4,10 +4,10 @@
 \alias{graph_get}
 \title{Get results from Facebook Ad library}
 \usage{
-graph_get(end_point, params, token = token_get()[["token"]])
+graph_get(service, params, token = token_get()[["token"]])
 }
 \arguments{
-\item{end_point}{the graph API endpoint to send a request to}
+\item{service}{the graph API endpoint to send a request to}
 
 \item{params}{a list of parameters build with adlib_build_params}
 

@@ -11,7 +11,13 @@ adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
   "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS",
   "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"),
   publisher_platform = "FACEBOOK", search_page_ids = NULL,
-  search_terms = NULL)
+  search_terms = NULL, limit = 5000, fields = c("ad_creation_time",
+  "ad_creative_body", "ad_creative_link_caption",
+  "ad_creative_link_description", "ad_creative_link_title",
+  "ad_delivery_start_time", "ad_delivery_stop_time", "ad_snapshot_url",
+  "currency", "demographic_distribution", "funding_entity", "impressions",
+  "page_id", "page_name", "publisher_platforms", "region_distribution",
+  "spend"))
 }
 \arguments{
 \item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered the ads in these countries.}
@@ -29,6 +35,10 @@ adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
 \item{search_page_ids}{A vector of up to 10 page IDs to search.}
 
 \item{search_terms}{A search string.}
+
+\item{limit}{The maximum number of results to return}
+
+\item{fields}{the fields to include in the response}
 }
 \value{
 A list of params
