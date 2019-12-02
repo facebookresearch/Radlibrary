@@ -74,7 +74,8 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
 #' Set long term token
 #'
 #' @description Once you've entered your Application ID and App secret, you can
-#' obtain a long-term token that will expire in about 60 days.
+#' obtain a long-term token that will expire in about 60 days. THis will be stored
+#' in your operating system's secrets manager.
 #' @export
 #'
 adlib_set_longterm_token <- function() {
