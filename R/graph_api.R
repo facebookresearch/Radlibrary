@@ -56,8 +56,8 @@ graph_get_with_pagination <- function(service, params, token = token_get()[["tok
   cont <- content(response)
   out[[1]] <- response
   gets <- 1
-  while ((!is.null(cont[['paging']])) & (gets < max_gets)) {
-    query <- httr::parse_url(cont[['paging']][['next']])[['query']]
+  while ((!is.null(cont[["paging"]])) & (gets < max_gets)) {
+    query <- httr::parse_url(cont[["paging"]][["next"]])[["query"]]
     response <- graph_get(service, params = query, token)
     gets <- gets + 1
     out[[gets]] <- response

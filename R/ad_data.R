@@ -12,18 +12,20 @@
 #' @return tibble with a single row
 #'
 ad_row <- function(row) {
-  columns <- c("ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-              "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-              "ad_delivery_stop_time", "currency", "funding_entity",
-              "page_id", "page_name", "spend", "ad_id", 'impressions', 'ad_snapshot_url')
+  columns <- c(
+    "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
+    "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
+    "ad_delivery_stop_time", "currency", "funding_entity",
+    "page_id", "page_name", "spend", "ad_id", "impressions", "ad_snapshot_url"
+  )
   for (field in columns) {
     if (is.null(row[[field]])) {
       row[[field]] <- NA
     }
   }
-  row[['spend']] <- spend_label(row[['spend']])
-  row[['ad_id']] <- ad_id_from_row(row)
-  row[['impressions']] = impression_label(row[['impressions']])
+  row[["spend"]] <- spend_label(row[["spend"]])
+  row[["ad_id"]] <- ad_id_from_row(row)
+  row[["impressions"]] <- impression_label(row[["impressions"]])
 
 
   as_tibble(row[columns])
@@ -34,7 +36,7 @@ impression_label <- function(impression_row) {
   if (is.na(impression_row[[1]])) {
     return(NA)
   }
-  return(paste0(impression_row$lower_bound, '-', impression_row$upper_bound))
+  return(paste0(impression_row$lower_bound, "-", impression_row$upper_bound))
 }
 
 spend_label <- function(spend_row) {
@@ -42,12 +44,12 @@ spend_label <- function(spend_row) {
   if (is.na(spend_row[[1]])) {
     return(NA)
   }
-  return(paste0(spend_row$lower_bound, '-', spend_row$upper_bound))
+  return(paste0(spend_row$lower_bound, "-", spend_row$upper_bound))
 }
 
 ad_id_from_row <- function(row) {
   # get ad id from URL
-  httr::parse_url(row[["ad_snapshot_url"]])[['query']][['id']]
+  httr::parse_url(row[["ad_snapshot_url"]])[["query"]][["id"]]
 }
 
 #' Create an ad_table from results
@@ -66,8 +68,10 @@ ad_table <- function(results, handle_dates = TRUE) {
 
   if (handle_dates) {
     res <- res %>%
-      dplyr::mutate_at(vars(.data$ad_creation_time, .data$ad_delivery_start_time,
-                            .data$ad_delivery_stop_time), list(lubridate::ymd_hms))
+      dplyr::mutate_at(vars(
+        .data$ad_creation_time, .data$ad_delivery_start_time,
+        .data$ad_delivery_stop_time
+      ), list(lubridate::ymd_hms))
   }
 
   res
@@ -83,7 +87,7 @@ ad_table <- function(results, handle_dates = TRUE) {
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 demographic_row <- function(result_row) {
-  demo_row <- result_row[['demographic_distribution']]
+  demo_row <- result_row[["demographic_distribution"]]
   id <- ad_id_from_row(result_row)
   demo_row %>%
     map_df(as_tibble) %>%
@@ -97,7 +101,7 @@ demographic_table <- function(results) {
 }
 
 region_row <- function(result_row) {
-  reg_row <- result_row[['region_distribution']]
+  reg_row <- result_row[["region_distribution"]]
   id <- ad_id_from_row(result_row)
   reg_row %>%
     map_df(as_tibble) %>%
@@ -118,17 +122,15 @@ region_table <- function(results) {
 #' @export
 #'
 #' @details The result of this is three tables that can be joined to each other on ad_id.
-#'1. The `ad_table` contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.
-#'2. The `demographic_table` contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.
-#'3 The `region_table` contains a breakdown of where each ad was viewed, with one row per `ad_id` and `region`.
+#' 1. The `ad_table` contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.
+#' 2. The `demographic_table` contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.
+#' 3 The `region_table` contains a breakdown of where each ad was viewed, with one row per `ad_id` and `region`.
 #'
 adlib_response_to_tables <- function(response) {
-  data <- content(response)[['data']]
+  data <- content(response)[["data"]]
   list(
     ad_table = ad_table(data),
     demographic_table = demographic_table(data),
     region_table = region_table(data)
   )
 }
-
-
