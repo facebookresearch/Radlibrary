@@ -95,6 +95,13 @@ demographic_row <- function(result_row) {
     mutate(percentage = as.numeric(.data$percentage))
 }
 
+#' Turn data from the data field in response content into a demographics table
+#'
+#' @param results the data field of a valid response
+#'
+#' @return a dataframe
+#' @export
+#'
 demographic_table <- function(results) {
   results %>%
     map_df(demographic_row)
@@ -109,6 +116,14 @@ region_row <- function(result_row) {
     mutate(percentage = as.numeric(.data$percentage))
 }
 
+#' Region Table
+#'
+#' @param results the data field of response content
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
 region_table <- function(results) {
   results %>%
     map_df(region_row)
