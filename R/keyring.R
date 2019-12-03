@@ -1,3 +1,10 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
+
 SERVICE <- "facebook_adlibrary"
 TOKEN <- "fb_adlib_token"
 APP_ID <- "fb_adlib_app_id"
