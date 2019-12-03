@@ -21,7 +21,13 @@ secret_get <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
   stop(glue::glue("Secret {secret} does not exist in keychain."))
 }
 
-secrets_clear_all <- function() {
+#' Clear saved settings
+#' @description
+#' This clears your saved token, app ID, and app secret.
+#'
+#' @export
+#'
+adlib_clear_setup <- function() {
   for (secret in c(TOKEN, APP_ID, APP_SECRET)) {
     if (secret_exists(secret)) {
       secret_delete(secret)
@@ -39,6 +45,11 @@ token_set <- function(token) {
   secret_set(TOKEN, token_string)
 }
 
+#' Retrieve a stored access token
+#'
+#' @return The stored access token
+#' @export
+#'
 token_get <- function() {
   if (token_exists()) {
     token_string <- secret_get(TOKEN)
@@ -68,7 +79,11 @@ adlib_setup <- function() {
     get_id <- menu(c("y", "n"), title = "Application ID already set. Overwrite? (y/n)") == 1
   }
   if (get_id) {
-    app_id <- getPass::getPass("Enter your Application ID")
+    message("Visit https://developers.facebook.com/ and navigate to your App's basic settings
+to find your Application ID and App Secret.
+These will be securely stored in your computer's credential store.")
+    readline("Press <Enter> ")
+    app_id <- getPass::getPass("Enter your Application ID", noblank = T, forcemask = F)
     secret_set(APP_ID, app_id)
   }
 
@@ -77,7 +92,7 @@ adlib_setup <- function() {
     get_secret <- menu(c("y", "n"), title = "App secret already set. Overwrite? (y/n)") == 1
   }
   if (get_secret) {
-    app_secret <- getPass::getPass("Enter your App secret")
+    app_secret <- getPass::getPass("Enter your App secret", noblank = T, forcemask = F)
     secret_set(APP_SECRET, app_secret)
   }
   message("Application ID and App secret set. Run adlib_set_longterm_token() to save a long term access token.")
