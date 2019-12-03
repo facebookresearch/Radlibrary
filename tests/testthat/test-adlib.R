@@ -33,8 +33,5 @@ test_that("fields works", {
   expect_equal(adlib_fields("demographic_data"), "ad_snapshot_url,demographic_distribution")
   expect_equal(adlib_fields(c("ad_creative_link_title", "ad_delivery_start_time")), "ad_creative_link_title,ad_delivery_start_time")
   expect_error(adlib_fields("dsafdas"))
-  expect_error(adlib_fields(c("demographic_data", "ad_data"))
-)}
-
-
-          )
+  expect_error(adlib_fields(c("demographic_data", "ad_data")))
+})

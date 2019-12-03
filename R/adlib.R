@@ -127,16 +127,18 @@ adlib_fields <- function(fields = c(
   fields <- match.arg(fields, several.ok = TRUE)
   if (length(fields) == 1) {
     if (fields[1] == "ad_data") {
-      fields <- c("ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-      "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-      "ad_delivery_stop_time", "currency", "funding_entity",
-      "page_id", "page_name", "spend", "impressions", "ad_snapshot_url")
+      fields <- c(
+        "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
+        "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
+        "ad_delivery_stop_time", "currency", "funding_entity",
+        "page_id", "page_name", "spend", "impressions", "ad_snapshot_url"
+      )
     } else if (fields[1] == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
     } else if (fields[1] == "region_data") {
       fields <- c("ad_snapshot_url", "region_distribution")
     }
-  } else if (("ad_data" %in% fields ) | ("demographic_data" %in% fields) | ("region_data" %in% fields)) {
+  } else if (("ad_data" %in% fields) | ("demographic_data" %in% fields) | ("region_data" %in% fields)) {
     stop("Fields should be exactly one of \"ad_data\", \"demographic_data\", \"region_data\", OR some combination of
 \"ad_creation_time\",
 \"ad_creative_body\",
