@@ -19,12 +19,21 @@
 #' Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 #' for full API documentation.
 #'
-#' @param ad_reached_countries Vector of ISO country codes. Facebook delivered the ads in these countries.
-#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or 'ALL'.
-#' @param ad_type The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS', 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only 'POLITICAL_AND_ISSUE_ADS' is supported.
-#' @param bylines Filter results for ads with a paid for by disclaimer byline, such as political ads that reference “immigration” paid for by “ACLU”.
-#' @param impression_condition When the ad most recently had impressions. One of "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"
-#' @param publisher_platform The platform on which the ads appeared. One or more of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".
+#' @param ad_reached_countries Vector of ISO country codes. Facebook delivered
+#' the ads in these countries.
+#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or
+#' 'ALL'.
+#' @param ad_type The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
+#' 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
+#' 'POLITICAL_AND_ISSUE_ADS' is supported.
+#' @param bylines Filter results for ads with a paid for by disclaimer byline,
+#' such as political ads that reference “immigration” paid for by “ACLU”.
+#' @param impression_condition When the ad most recently had impressions. One of
+#' "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+#' "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+#' "HAS_IMPRESSIONS_LAST_90_DAYS"
+#' @param publisher_platform The platform on which the ads appeared. One or more
+#'  of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".
 #' @param search_page_ids A vector of up to 10 page IDs to search.
 #' @param search_terms A search string.
 #' @param limit The maximum number of results to return
@@ -37,13 +46,15 @@
 adlib_build_query <- function(ad_reached_countries,
                               ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
                               ad_type = c(
-                                "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
-                                "UNCATEGORIZED_ADS", "ALL"
+                                "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
+                                "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
                               ),
                               bylines = NULL,
                               impression_condition = c(
-                                "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
-                                "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+                                "HAS_IMPRESSIONS_LIFETIME",
+                                "HAS_IMPRESSIONS_YESTERDAY",
+                                "HAS_IMPRESSIONS_LAST_7_DAYS",
+                                "HAS_IMPRESSIONS_LAST_30_DAYS",
                                 "HAS_IMPRESSIONS_LAST_90_DAYS"
                               ),
                               publisher_platform = "FACEBOOK",
@@ -83,7 +94,8 @@ adlib_build_query <- function(ad_reached_countries,
 
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
-  if (!is.null(search_page_ids)) search_page_ids <- format_array(search_page_ids)
+  if (!is.null(search_page_ids)) {
+    search_page_ids <- format_array(search_page_ids)}
   publisher_platform <- format_array(publisher_platform)
   fields <- adlib_fields(fields)
 
@@ -129,17 +141,21 @@ adlib_fields <- function(fields = c(
     if (fields[1] == "ad_data") {
       fields <- c(
         "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-        "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-        "ad_delivery_stop_time", "currency", "funding_entity",
-        "page_id", "page_name", "spend", "impressions", "ad_snapshot_url"
+        "ad_creative_link_description", "ad_creative_link_title",
+        "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
+        "funding_entity", "page_id", "page_name", "spend", "impressions",
+        "ad_snapshot_url"
       )
     } else if (fields[1] == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
     } else if (fields[1] == "region_data") {
       fields <- c("ad_snapshot_url", "region_distribution")
     }
-  } else if (("ad_data" %in% fields) | ("demographic_data" %in% fields) | ("region_data" %in% fields)) {
-    stop("Fields should be exactly one of \"ad_data\", \"demographic_data\", \"region_data\", OR some combination of
+  } else if (("ad_data" %in% fields) |
+             ("demographic_data" %in% fields) |
+             ("region_data" %in% fields)) {
+    stop("Fields should be exactly one of \"ad_data\", \"demographic_data\",
+\"region_data\", OR some combination of
 \"ad_creation_time\",
 \"ad_creative_body\",
 \"ad_creative_link_caption\",
@@ -166,8 +182,10 @@ adlib_fields <- function(fields = c(
 #' @param params a list of parameters.
 #' @param token an access_token.
 #'
-#' @description The `params` argument should be a list that is built with adlib_build_query().
-#' The `token` argument can be a short-term token pasted from https://developers.facebook.com/tools/explorer/,
+#' @description The `params` argument should be a list that is built with
+#' adlib_build_query().
+#' The `token` argument can be a short-term token pasted from
+#' https://developers.facebook.com/tools/explorer/,
 #' or a long-term token stored in your password store.
 #'
 #' @return an http response
@@ -194,7 +212,7 @@ format_array <- function(items) {
   }
   else {
     dtype <- class(items)
-    stop(glue("Don't know how to format array of class {dtype}"))
+    stop(glue("Don't know how to format array of class {dtype}", dtype = dtype))
   }
   return(out)
 }

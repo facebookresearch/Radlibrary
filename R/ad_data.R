@@ -14,9 +14,10 @@
 ad_row <- function(row) {
   columns <- c(
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-    "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-    "ad_delivery_stop_time", "currency", "funding_entity",
-    "page_id", "page_name", "spend", "ad_id", "impressions", "ad_snapshot_url"
+    "ad_creative_link_description", "ad_creative_link_title",
+    "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
+    "funding_entity", "page_id", "page_name", "spend", "ad_id", "impressions",
+    "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
@@ -136,10 +137,15 @@ region_table <- function(results) {
 #' @return A list of three tables.
 #' @export
 #'
-#' @details The result of this is three tables that can be joined to each other on ad_id.
-#' 1. The `ad_table` contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.
-#' 2. The `demographic_table` contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.
-#' 3 The `region_table` contains a breakdown of where each ad was viewed, with one row per `ad_id` and `region`.
+#' @details The result of this is three tables that can be joined to each other
+#' on ad_id.
+#' 1. The `ad_table` contains one row per ad from the response, contains data
+#' bout each ad such as when it started, who is paying for it, and how much they
+#' have spent, and how many impressions it has received.
+#' 2. The `demographic_table` contains a demographic breakdown of ad viewers,
+#' with one row per pair of (age bucket, gender), per ad.
+#' 3 The `region_table` contains a breakdown of where each ad was viewed, with
+#' one row per `ad_id` and `region`.
 #'
 adlib_response_to_tables <- function(response) {
   data <- content(response)[["data"]]
