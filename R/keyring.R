@@ -69,6 +69,19 @@ token_exists <- function() {
   secret_exists(TOKEN)
 }
 
+#' Delete your stored token
+#'
+#' @return TRUE (invisibly) if the token was deleted.
+#' @export
+token_delete <- function() {
+  if (token_exists()) {
+    secret_delete(TOKEN)
+    return(invisible(TRUE))
+  } else {
+    invisible(warning("No token was stored, so none was deleted!"))
+  }
+}
+
 
 secret_exists <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
   secret <- match.arg(secret)
