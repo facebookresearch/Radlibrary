@@ -15,11 +15,13 @@ adlib_data_response <- function(response) {
       list(
         date = response[["date"]],
         data = cont[["data"]],
-        has_next = !is.null(cont[["paging"]][['next']]),
-        next_page = cont[["paging"]][['next']],
+        has_next = !is.null(cont[["paging"]][["next"]]),
+        next_page = cont[["paging"]][["next"]],
         fields = strsplit(
           httr::parse_url(
-            response[['url']])[['query']][['fields']], ',')[[1]]
+            response[["url"]]
+          )[["query"]][["fields"]], ","
+        )[[1]]
       ),
       class = "adlib_data_response"
     ))
@@ -38,7 +40,7 @@ print.adlib_data_response <- function(response) {
 
 
 censor_url <- function(url) {
-  modify_url(url, query = list(access_token = access_token))
+  httr::modify_url(url, query = list(access_token = "{access_token}"))
 }
 
 
@@ -105,8 +107,6 @@ ad_id_from_row <- function(row) {
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
 ad_table <- function(results, handle_dates = TRUE) {
-
-
   res <- results$data %>%
     map(ad_row) %>%
     purrr::transpose() %>%
@@ -151,7 +151,11 @@ demographic_row <- function(result_row) {
 #' @export
 #'
 demographic_table <- function(results) {
-  results %>%
+  if (!("demographic_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(demographic_row)
 }
 
@@ -171,9 +175,12 @@ region_row <- function(result_row) {
 #' @return a dataframe
 #' @export
 #'
-#' @examples
 region_table <- function(results) {
-  results %>%
+  if (!("region_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(region_row)
 }
 

@@ -95,7 +95,8 @@ adlib_build_query <- function(ad_reached_countries,
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
   if (!is.null(search_page_ids)) {
-    search_page_ids <- format_array(search_page_ids)}
+    search_page_ids <- format_array(search_page_ids)
+  }
   publisher_platform <- format_array(publisher_platform)
   fields <- adlib_fields(fields)
 
@@ -152,8 +153,8 @@ adlib_fields <- function(fields = c(
       fields <- c("ad_snapshot_url", "region_distribution")
     }
   } else if (("ad_data" %in% fields) |
-             ("demographic_data" %in% fields) |
-             ("region_data" %in% fields)) {
+    ("demographic_data" %in% fields) |
+    ("region_data" %in% fields)) {
     stop("Fields should be exactly one of \"ad_data\", \"demographic_data\",
 \"region_data\", OR some combination of
 \"ad_creation_time\",

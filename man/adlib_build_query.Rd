@@ -20,17 +20,26 @@ adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
   "spend"))
 }
 \arguments{
-\item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered the ads in these countries.}
+\item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered
+the ads in these countries.}
 
-\item{ad_active_status}{Status of the ads. One of 'ACTIVE', 'INACTIVE', or 'ALL'.}
+\item{ad_active_status}{Status of the ads. One of 'ACTIVE', 'INACTIVE', or
+'ALL'.}
 
-\item{ad_type}{The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS', 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only 'POLITICAL_AND_ISSUE_ADS' is supported.}
+\item{ad_type}{The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
+'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
+'POLITICAL_AND_ISSUE_ADS' is supported.}
 
-\item{bylines}{Filter results for ads with a paid for by disclaimer byline, such as political ads that reference “immigration” paid for by “ACLU”.}
+\item{bylines}{Filter results for ads with a paid for by disclaimer byline,
+such as political ads that reference “immigration” paid for by “ACLU”.}
 
-\item{impression_condition}{When the ad most recently had impressions. One of "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"}
+\item{impression_condition}{When the ad most recently had impressions. One of
+"HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+"HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+"HAS_IMPRESSIONS_LAST_90_DAYS"}
 
-\item{publisher_platform}{The platform on which the ads appeared. One or more of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
+\item{publisher_platform}{The platform on which the ads appeared. One or more
+of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
 
 \item{search_page_ids}{A vector of up to 10 page IDs to search.}
 
