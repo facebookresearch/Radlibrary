@@ -38,12 +38,32 @@ print.adlib_data_response <- function(response) {
   cat(glue::glue("Data response object with {length(response)} entries."))
 }
 
+#' Convert a data response to tibble
+#'
+#' @param response an adlib_data_response object returned by adlib_get
+#' @param type the type of table to output. One of c("ad", "demographic",
+#' "region").
+#' @param ... additional arguments to pass to conversion function
+#'
+#' @return a tibble
+#' @export
+#'
+as_tibble.adlib_data_response <- function(response,
+                                          type = c("ad", "demographic", "region"), ...) {
+  type <- match.arg(type)
+
+  if (type == "ad") {
+    return(ad_table(response, ...))
+  } else if (type == "demographic") {
+    return(demographic_table(response))
+  } else if (type == "region") {
+    return(region_table(response))
+  }
+}
 
 censor_url <- function(url) {
   httr::modify_url(url, query = list(access_token = "{access_token}"))
 }
-
-
 
 # Table conversion functions ----------------------------------------------
 
