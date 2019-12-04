@@ -193,7 +193,7 @@ adlib_fields <- function(fields = c(
 #'
 adlib_get <- function(params, token = token_get()) {
   response <- graph_get("ads_archive", params, token)
-  return(response)
+  return(adlib_data_response(response))
 }
 
 
