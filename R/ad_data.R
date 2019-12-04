@@ -38,6 +38,14 @@ print.adlib_data_response <- function(response) {
   cat(glue::glue("Data response object with {length(response)} entries."))
 }
 
+as_tibble.adlib_data_response <- function(response,
+  type = c("ad", "demographic", "region"), ...) {
+  type <- match.arg(type)
+
+  if (type == 'ad') {
+    return(ad_table(response, ...))
+  }
+}
 
 censor_url <- function(url) {
   httr::modify_url(url, query = list(access_token = "{access_token}"))
