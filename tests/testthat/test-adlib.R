@@ -16,11 +16,6 @@ test_that("build_query returns a list as expected", {
     )
   )
 })
-test_that("adlib_get works with saved token", {
-  query <- adlib_build_query("US", search_terms = "Facebook", limit = 5)
-  response <- adlib_get(params = query, token = token_get())
-  expect_false(httr::http_error(response))
-})
 
 test_that("fields works", {
   expect_equal(adlib_fields("ad_data"), "ad_creation_time,ad_creative_body,ad_creative_link_caption,ad_creative_link_description,ad_creative_link_title,ad_delivery_start_time,ad_delivery_stop_time,currency,funding_entity,page_id,page_name,spend,impressions,ad_snapshot_url")

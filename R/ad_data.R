@@ -5,6 +5,50 @@
 # LICENSE file in the root directory of this source tree.
 
 
+# Data Response Object and methods ----------------------------------------
+
+adlib_data_response <- function(response) {
+  extract_error_message(response)
+  cont <- content(response, as = "parsed")
+  if ("data" %in% names(cont)) {
+    return(structure(
+      list(
+        date = response[["date"]],
+        data = cont[["data"]],
+        has_next = !is.null(cont[["paging"]][["next"]]),
+        next_page = cont[["paging"]][["next"]],
+        fields = strsplit(
+          httr::parse_url(
+            response[["url"]]
+          )[["query"]][["fields"]], ","
+        )[[1]]
+      ),
+      class = "adlib_data_response"
+    ))
+  } else {
+    stop("Not a valid data response.")
+  }
+}
+
+length.adlib_data_response <- function(resp) {
+  length(resp$data)
+}
+
+print.adlib_data_response <- function(response) {
+  cat(glue::glue("Data response object with {length(response)} entries."))
+}
+
+
+censor_url <- function(url) {
+  httr::modify_url(url, query = list(access_token = "{access_token}"))
+}
+
+
+
+# Table conversion functions ----------------------------------------------
+
+
+
 #' Create a single row in the ad table
 #'
 #' @param row a single row in the response
@@ -29,7 +73,7 @@ ad_row <- function(row) {
   row[["impressions"]] <- impression_label(row[["impressions"]])
 
 
-  as_tibble(row[columns])
+  row[columns]
 }
 
 impression_label <- function(impression_row) {
@@ -63,9 +107,12 @@ ad_id_from_row <- function(row) {
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
 ad_table <- function(results, handle_dates = TRUE) {
-  res <- results %>%
+  res <- results$data %>%
     map(ad_row) %>%
-    bind_rows()
+    purrr::transpose() %>%
+    map(unlist) %>%
+    as_tibble()
+
 
   if (handle_dates) {
     res <- res %>%
@@ -104,7 +151,11 @@ demographic_row <- function(result_row) {
 #' @export
 #'
 demographic_table <- function(results) {
-  results %>%
+  if (!("demographic_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(demographic_row)
 }
 
@@ -124,9 +175,12 @@ region_row <- function(result_row) {
 #' @return a dataframe
 #' @export
 #'
-#' @examples
 region_table <- function(results) {
-  results %>%
+  if (!("region_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(region_row)
 }
 

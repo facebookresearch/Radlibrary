@@ -31,13 +31,6 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
   )
 }
 
-response_has_more_pages <- function(response) {
-  !is.null(response_next_page(response))
-}
-
-response_next_page <- function(response) {
-  content(response)[["paging"]][["next"]]
-}
 
 #' Get results from Facebook Ad library
 #'
