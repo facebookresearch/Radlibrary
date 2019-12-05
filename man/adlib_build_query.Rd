@@ -11,13 +11,7 @@ adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
   "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS",
   "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"),
   publisher_platform = "FACEBOOK", search_page_ids = NULL,
-  search_terms = NULL, limit = 5000, fields = c("ad_creation_time",
-  "ad_creative_body", "ad_creative_link_caption",
-  "ad_creative_link_description", "ad_creative_link_title",
-  "ad_delivery_start_time", "ad_delivery_stop_time", "ad_snapshot_url",
-  "currency", "demographic_distribution", "funding_entity", "impressions",
-  "page_id", "page_name", "publisher_platforms", "region_distribution",
-  "spend"))
+  search_terms = NULL, limit = 5000, fields = "ad_data")
 }
 \arguments{
 \item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered
@@ -47,7 +41,7 @@ of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
 
 \item{limit}{The maximum number of results to return}
 
-\item{fields}{the fields to include in the response}
+\item{fields}{the fields to include in the response. See details for values.}
 }
 \value{
 A list of params
@@ -56,4 +50,30 @@ A list of params
 This will build a list that can be passed to adlib_get.
 Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 for full API documentation.
+}
+\details{
+Fields can be one of the following values.
+
+\itemize{
+  \item ad_data - Choose this to include all columns for an ad_table table
+  \item demographic_data - Choose this to include all columns for demographic_table
+  \item region_data - Choose this to include all columns for a region_table
+  \item ad_creation_time
+  \item ad_creative_body
+  \item ad_creative_link_caption
+  \item ad_creative_link_description
+  \item ad_creative_link_title
+  \item ad_delivery_start_time
+  \item ad_delivery_stop_time
+  \item ad_snapshot_url
+  \item currency
+  \item demographic_distribution
+  \item funding_entity
+  \item impressions
+  \item page_id
+  \item page_name
+  \item publisher_platforms
+  \item region_distribution
+  \item spend
+}
 }

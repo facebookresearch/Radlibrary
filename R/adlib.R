@@ -11,6 +11,32 @@
 # adlibrary package.
 
 
+# Constants ---------------------------------------------------------------
+
+FIELDS <- c(
+  "ad_data",
+  "demographic_data",
+  "region_data",
+  "ad_creation_time",
+  "ad_creative_body",
+  "ad_creative_link_caption",
+  "ad_creative_link_description",
+  "ad_creative_link_title",
+  "ad_delivery_start_time",
+  "ad_delivery_stop_time",
+  "ad_snapshot_url",
+  "currency",
+  "demographic_distribution",
+  "funding_entity",
+  "impressions",
+  "page_id",
+  "page_name",
+  "publisher_platforms",
+  "region_distribution",
+  "spend"
+)
+
+
 # Functions ---------------------------------------------------------------
 
 #' Build an Ad Library Query
@@ -37,11 +63,36 @@
 #' @param search_page_ids A vector of up to 10 page IDs to search.
 #' @param search_terms A search string.
 #' @param limit The maximum number of results to return
-#' @param fields the fields to include in the response
+#' @param fields the fields to include in the response. See details for values.
 #'
+#' @details Fields can be one of the following values.
+#'
+#' \itemize{
+#'   \item ad_data - Choose this to include all columns for an ad_table table
+#'   \item demographic_data - Choose this to include all columns for demographic_table
+#'   \item region_data - Choose this to include all columns for a region_table
+#'   \item ad_creation_time
+#'   \item ad_creative_body
+#'   \item ad_creative_link_caption
+#'   \item ad_creative_link_description
+#'   \item ad_creative_link_title
+#'   \item ad_delivery_start_time
+#'   \item ad_delivery_stop_time
+#'   \item ad_snapshot_url
+#'   \item currency
+#'   \item demographic_distribution
+#'   \item funding_entity
+#'   \item impressions
+#'   \item page_id
+#'   \item page_name
+#'   \item publisher_platforms
+#'   \item region_distribution
+#'   \item spend
+#' }
 #'
 #' @return A list of params
 #' @export
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 adlib_build_query <- function(ad_reached_countries,
                               ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
@@ -61,25 +112,7 @@ adlib_build_query <- function(ad_reached_countries,
                               search_page_ids = NULL,
                               search_terms = NULL,
                               limit = 5000,
-                              fields = c(
-                                "ad_creation_time",
-                                "ad_creative_body",
-                                "ad_creative_link_caption",
-                                "ad_creative_link_description",
-                                "ad_creative_link_title",
-                                "ad_delivery_start_time",
-                                "ad_delivery_stop_time",
-                                "ad_snapshot_url",
-                                "currency",
-                                "demographic_distribution",
-                                "funding_entity",
-                                "impressions",
-                                "page_id",
-                                "page_name",
-                                "publisher_platforms",
-                                "region_distribution",
-                                "spend"
-                              )) {
+                              fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
   impression_condition <- match.arg(impression_condition)
@@ -115,31 +148,10 @@ adlib_build_query <- function(ad_reached_countries,
   ))
 }
 
-adlib_fields <- function(fields = c(
-                           "ad_data",
-                           "demographic_data",
-                           "region_data",
-                           "ad_creation_time",
-                           "ad_creative_body",
-                           "ad_creative_link_caption",
-                           "ad_creative_link_description",
-                           "ad_creative_link_title",
-                           "ad_delivery_start_time",
-                           "ad_delivery_stop_time",
-                           "ad_snapshot_url",
-                           "currency",
-                           "demographic_distribution",
-                           "funding_entity",
-                           "impressions",
-                           "page_id",
-                           "page_name",
-                           "publisher_platforms",
-                           "region_distribution",
-                           "spend"
-                         )) {
+adlib_fields <- function(fields = FIELDS) {
   fields <- match.arg(fields, several.ok = TRUE)
   if (length(fields) == 1) {
-    if (fields[1] == "ad_data") {
+    if (fields == "ad_data") {
       fields <- c(
         "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
         "ad_creative_link_description", "ad_creative_link_title",
@@ -147,9 +159,9 @@ adlib_fields <- function(fields = c(
         "funding_entity", "page_id", "page_name", "spend", "impressions",
         "ad_snapshot_url"
       )
-    } else if (fields[1] == "demographic_data") {
+    } else if (fields == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
-    } else if (fields[1] == "region_data") {
+    } else if (fields == "region_data") {
       fields <- c("ad_snapshot_url", "region_distribution")
     }
   } else if (("ad_data" %in% fields) |
