@@ -18,10 +18,7 @@ adlib_data_response <- function(response) {
         has_next = !is.null(cont[["paging"]][["next"]]),
         next_page = cont[["paging"]][["next"]],
         fields = strsplit(
-          httr::parse_url(
-            response[["url"]]
-          )[["query"]][["fields"]], ","
-        )[[1]]
+          httr::parse_url(response[["url"]])[["query"]][["fields"]], ",")[[1]]
       ),
       class = "adlib_data_response"
     ))
@@ -29,6 +26,7 @@ adlib_data_response <- function(response) {
     stop("Not a valid data response.")
   }
 }
+
 
 length.adlib_data_response <- function(resp) {
   length(resp$data)
@@ -64,6 +62,36 @@ as_tibble.adlib_data_response <- function(response,
 censor_url <- function(url) {
   httr::modify_url(url, query = list(access_token = "{access_token}"))
 }
+
+
+# Paginated ad tables -----------------------------------------------------
+
+paginated_adlib_data_response <- function(responses) {
+  last_response <- responses[[length(responses)]]
+  structure(
+    list(
+    responses = responses,
+    has_next = last_response$has_next,
+    next_page = last_response$next_page
+    ),
+
+    class = "paginated_adlib_data_response"
+  )
+}
+
+length.paginated_adlib_data_response <- function(padr) {
+  sum(sapply(padr$responses, length))
+}
+
+print.paginated_adlib_data_response <- function(padr) {
+  cat(glue::glue("Paginated data response object with {length(padr)} entries."))
+}
+
+as_tibble.paginated_adlib_data_response <- function(
+  padr, type = c("ad", "demographic", "region"), ...) {
+  purrr::map_df(padr$responses, as_tibble, type = type, ...)
+}
+
 
 # Table conversion functions ----------------------------------------------
 

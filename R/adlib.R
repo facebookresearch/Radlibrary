@@ -197,6 +197,45 @@ adlib_get <- function(params, token = token_get()) {
   return(adlib_data_response(response))
 }
 
+#' Paginated query to the ad library API
+#'
+#' @param query an Ad Library query
+#' @param token an access_token
+#' @param max_gets The maximum number of calls to adlib_get that this will
+#' generate
+#'
+#' @return a paginated_adlib_data_response object. The response has the
+#' following attributes.
+#' \itemize{
+#'   \item responses - The list of individual responses
+#'   \item has_next - A boolean value indicating whether there are still
+#'   pages
+#'   \item next_page - The URL to call the next page of responses
+#' }
+#' @export
+#'
+adlib_get_paginated <- function(query, max_gets = 100, token = token_get()) {
+  out <- vector("list", max_gets)
+  get_next <- TRUE
+  gets <- 0
+  while (get_next) {
+    tryCatch({
+      response <- adlib_get(params = query, token = token)
+      gets <- gets + 1
+      out[[gets]] <- response
+      get_next <- response$has_next & (gets < max_gets)
+      query <- httr::parse_url(response$next_page)$query
+    },
+    error = function(e) {
+      warning("Most recent call produced an error. Returning last available results.")
+      warning(e)
+      get_next <<- FALSE
+    }
+    )
+  }
+  return(paginated_adlib_data_response(out[1:gets]))
+}
+
 
 #' Format a vector as a json array
 #'
