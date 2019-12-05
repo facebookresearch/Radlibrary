@@ -4,15 +4,15 @@
 \alias{adlib_get_paginated}
 \title{Paginated query to the ad library API}
 \usage{
-adlib_get_paginated(query, token = token_get(), max_gets = 1000)
+adlib_get_paginated(query, max_gets = 100, token = token_get())
 }
 \arguments{
 \item{query}{an Ad Library query}
 
-\item{token}{an access_token}
-
 \item{max_gets}{The maximum number of calls to adlib_get that this will
 generate}
+
+\item{token}{an access_token}
 }
 \value{
 a paginated_adlib_data_response object. The response has the
