@@ -56,18 +56,25 @@ graph_get <- function(service, params, token = token_get()) {
 }
 
 # TODO: make this fail gracefully
-graph_get_with_pagination <- function(service, params, token = token_get()[["token"]],
-                                      max_gets = 1000, retries = 3) {
+adlib_get_with_pagination <- function(query, token = token_get(),
+                                      max_gets = 1000) {
   out <- vector("list", max_gets)
-  response <- graph_get(service, params, token)
-  cont <- content(response)
-  out[[1]] <- response
-  gets <- 1
-  while ((!is.null(cont[["paging"]])) & (gets < max_gets)) {
-    query <- httr::parse_url(cont[["paging"]][["next"]])[["query"]]
-    response <- graph_get(service, params = query, token)
-    gets <- gets + 1
-    out[[gets]] <- response
+  get_next <- TRUE
+  gets <- 0
+  while (get_next) {
+    tryCatch({
+      response <- adlib_get(params = query, token = token)
+      gets <- gets + 1
+      out[[gets]] <- response
+      get_next <- response$has_next & (gets < max_gets)
+      params <- httr::parse_url
+    },
+      error = function(e) {
+        warning("Most recent call produced an error. Returning last available results.")
+        warning(e)
+        get_next <<- FALSE
+      }
+    )
   }
   return(out[1:gets])
 }
