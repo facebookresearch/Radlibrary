@@ -218,20 +218,30 @@ adlib_get_paginated <- function(query, max_gets = 100, token = token_get()) {
   out <- vector("list", max_gets)
   get_next <- TRUE
   gets <- 0
+  pb <- txtProgressBar(0, max_gets, 1, style = 3)
   while (get_next) {
-    tryCatch({
-      response <- adlib_get(params = query, token = token)
-      gets <- gets + 1
-      out[[gets]] <- response
-      get_next <- response$has_next & (gets < max_gets)
-      query <- httr::parse_url(response$next_page)$query
-    },
-    error = function(e) {
-      warning("Most recent call produced an error. Returning last available results.")
-      warning(e)
-      get_next <<- FALSE
-    }
+    tryCatch(
+      {
+        response <- adlib_get(params = query, token = token)
+        gets <- gets + 1
+        out[[gets]] <- response
+        get_next <- response$has_next & (gets < max_gets)
+        if (get_next) {
+          query <- httr::parse_url(response$next_page)$query
+          setTxtProgressBar(pb, gets)
+        }
+      },
+      error = function(e) {
+        warning("Most recent call produced an error. Returning last available results.")
+        warning(e)
+        get_next <<- FALSE
+      }
     )
+  }
+  setTxtProgressBar(pb, max_gets)
+  close(pb)
+  if (gets == 0) {
+    stop("No results returned")
   }
   return(paginated_adlib_data_response(out[1:gets]))
 }

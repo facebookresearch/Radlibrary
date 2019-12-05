@@ -18,7 +18,8 @@ adlib_data_response <- function(response) {
         has_next = !is.null(cont[["paging"]][["next"]]),
         next_page = cont[["paging"]][["next"]],
         fields = strsplit(
-          httr::parse_url(response[["url"]])[["query"]][["fields"]], ",")[[1]]
+          httr::parse_url(response[["url"]])[["query"]][["fields"]], ","
+        )[[1]]
       ),
       class = "adlib_data_response"
     ))
@@ -70,11 +71,10 @@ paginated_adlib_data_response <- function(responses) {
   last_response <- responses[[length(responses)]]
   structure(
     list(
-    responses = responses,
-    has_next = last_response$has_next,
-    next_page = last_response$next_page
+      responses = responses,
+      has_next = last_response$has_next,
+      next_page = last_response$next_page
     ),
-
     class = "paginated_adlib_data_response"
   )
 }
@@ -88,8 +88,9 @@ print.paginated_adlib_data_response <- function(padr) {
 }
 
 as_tibble.paginated_adlib_data_response <- function(
-  padr, type = c("ad", "demographic", "region"), ...) {
-  purrr::map_df(padr$responses, as_tibble, type = type, ...)
+                                                    padr, type = c("ad", "demographic", "region"), ...) {
+  resp <- purrr::discard(padr$responses, purrr::is_empty)
+  purrr::map_df(resp, as_tibble, type = type, ...)
 }
 
 
