@@ -48,35 +48,11 @@ graph_get <- function(service, params, token = token_get()) {
   } else if ((class(token) == "character") & length(token) == 1) {
     params[["access_token"]] <- token
   } else {
-    stop("Parameter token must be a string or object of time 'graph_api_token'")
+    stop("Parameter token must be a string or object of type 'graph_api_token'")
   }
   response <- RETRY("GET", graph_api_endpoint(service), query = params, quiet = FALSE)
   extract_error_message(response)
   response
-}
-
-# TODO: make this fail gracefully
-adlib_get_with_pagination <- function(query, token = token_get(),
-                                      max_gets = 1000) {
-  out <- vector("list", max_gets)
-  get_next <- TRUE
-  gets <- 0
-  while (get_next) {
-    tryCatch({
-      response <- adlib_get(params = query, token = token)
-      gets <- gets + 1
-      out[[gets]] <- response
-      get_next <- response$has_next & (gets < max_gets)
-      params <- httr::parse_url
-    },
-      error = function(e) {
-        warning("Most recent call produced an error. Returning last available results.")
-        warning(e)
-        get_next <<- FALSE
-      }
-    )
-  }
-  return(out[1:gets])
 }
 
 
