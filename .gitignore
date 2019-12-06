@@ -2,6 +2,5 @@
 .Rbuildignore
 .Rhistory
 adlib_config.yml
-example_response.rds
 token_response.rds
 .DS_Store
