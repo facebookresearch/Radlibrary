@@ -1,9 +1,9 @@
-# adlibrary
+# Radlibrary
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `adslibrary` package is for querying the Facebook Ad Library API.
+The `Radlibrary` package is for querying the Facebook Ad Library API.
 
 ## Installation
 
@@ -26,7 +26,7 @@ Once you've completed these steps, you can constuct a query like this.
 You can construct a query to the API using adlib_build_query()
 
 ``` r
-library(adslibrary)
+library(Raslibrary)
 ## get all ads that mention "mark" or "zuckerberg" that had impressions 
 yesterday in the US and are currently active
 query <- adlib_build_query(ad_reached_countries = 'US', 
@@ -88,8 +88,8 @@ By default, this will return up to 5000 rows containing all available ad data ma
 
 ## Contributing
 
-Please note that the 'adlibrary' project is released with a
+Please note that the 'Radlibrary' project is released with a
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
-See the [Contributing to `adlibrary`](contributing.md)
+See the [Contributing to `Radlibrary`](contributing.md)
 guide for more information on contributing.
