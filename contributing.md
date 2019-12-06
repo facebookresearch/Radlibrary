@@ -1,4 +1,4 @@
-# Contributing to `adlibrary`
+# Contributing to `Radlibrary`
 We want to make contributing to this project as easy and transparent as
 possible.
 
@@ -32,5 +32,5 @@ We use the tidyverse style guide. Use `usethis::use_tidyverse_style()` to
 ensure that your code conforms to the style.
 
 ## License
-By contributing to `adlibrary`, you agree that your contributions will be 
+By contributing to `Radlibrary`, you agree that your contributions will be 
 licensed under the LICENSE file in the root directory of this source tree.
