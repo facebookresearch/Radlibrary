@@ -6,10 +6,10 @@ Authors@R:
            family = "Fraser",
            role = c("cre"),
            email = "colinfraser@fb.com"),
-               person(given = "Kyle",
+      person(given = "Kyle",
            family = "Shank",
            role = c("aut"),
-           email = "kylescotshank@fb.com")
+           email = "kylescotshank@fb.com"))
 Description: Query the Facebook Ads Library.
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
