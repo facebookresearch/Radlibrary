@@ -18,5 +18,4 @@ test_that("adlib_get_paginated works", {
   resp <- adlib_get_paginated(q, token = token, max_gets = 2)
   resp_table <- tibble::as_tibble(resp)
   expect_true(tibble::is_tibble(resp_table))
-}
-)
+})
