@@ -8,7 +8,7 @@
 # About this file ---------------------------------------------------------
 
 # This file contains the main functions that will be called by users of the
-# adlibrary package.
+# Radlibrary package.
 
 
 # Constants ---------------------------------------------------------------
