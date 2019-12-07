@@ -29,12 +29,19 @@ adlib_data_response <- function(response) {
 }
 
 
+#' @export
 length.adlib_data_response <- function(resp) {
   length(resp$data)
 }
 
-print.adlib_data_response <- function(response) {
-  cat(glue::glue("Data response object with {length(response)} entries."))
+#' @export
+format.adlib_data_response <- function(resp) {
+  glue::glue("Data response object with {length(resp)} entries.")
+}
+
+#' @export
+print.adlib_data_response <- function(resp) {
+  cat(format(resp))
 }
 
 #' Convert a data response to tibble
@@ -79,14 +86,32 @@ paginated_adlib_data_response <- function(responses) {
   )
 }
 
-length.paginated_adlib_data_response <- function(padr) {
+#' Number of pages in a paginated response
+#'
+#'
+#' @export
+n_responses <- function(padr) {
+  length(padr$responses)
+}
+
+#' Number of records in a paginated response
+#'
+#' @export
+n_records <- function(padr) {
   sum(sapply(padr$responses, length))
 }
 
-print.paginated_adlib_data_response <- function(padr) {
-  cat(glue::glue("Paginated data response object with {length(padr)} entries."))
+#' @export
+format.paginated_adlib_data_response <- function(padr) {
+  glue::glue("Paginated data response object with {n_responses(padr)} pages and {n_records(padr)} records")
 }
 
+#' @export
+print.paginated_adlib_data_response <- function(padr) {
+  cat(format(padr))
+}
+
+#' @export
 as_tibble.paginated_adlib_data_response <- function(
                                                     padr, type = c("ad", "demographic", "region"), ...) {
   resp <- purrr::discard(padr$responses, purrr::is_empty)
