@@ -1,4 +1,4 @@
 library(testthat)
-library(adlibrary)
+library(Radlibrary)
 
-test_check("adlibrary")
+test_check("Radlibrary")
