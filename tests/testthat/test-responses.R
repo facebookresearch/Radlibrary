@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
 test_that("Parsing responses works correctly", {
   expect_equal(data_response$fields, c(
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",

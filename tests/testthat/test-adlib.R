@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
 test_that("build_query enforces argument requirements", {
   expect_error(adlib_build_query(ad_reached_countries = "US"), "At least one")
   expect_error(adlib_build_query(search_page_ids = 123), "missing")
