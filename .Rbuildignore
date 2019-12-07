@@ -4,3 +4,6 @@
 ^CODE_OF_CONDUCT\.md$
 ^contributing\.md$
 ^Icon[\r]$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
