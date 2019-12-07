@@ -86,6 +86,10 @@ By default, this will return up to 5000 rows containing all available ad data ma
 
 ```
 
+## License
+
+Radlibrary is licensed under the [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause). See [LICENSE](LICENSE).
+
 ## Contributing
 
 Please note that the 'Radlibrary' project is released with a
@@ -93,3 +97,4 @@ Please note that the 'Radlibrary' project is released with a
 By contributing to this project, you agree to abide by its terms.
 See the [Contributing to `Radlibrary`](contributing.md)
 guide for more information on contributing.
+
