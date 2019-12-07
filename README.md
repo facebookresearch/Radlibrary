@@ -1,6 +1,7 @@
 # Radlibrary
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.org/facebookresearch/Radlibrary.svg?branch=master)](https://travis-ci.org/facebookresearch/Radlibrary)
 <!-- badges: end -->
 
 The `Radlibrary` package is for querying the Facebook Ad Library API.
