@@ -1,5 +1,5 @@
-# token_response <- readRDS("tests/testthat/token_response.rds")
-# pasted_token <- readChar('shortterm_token.txt', 1e4)
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
 token <- graph_api_token("abcd")
 token2 <- structure(list(
   token = "efgh",
