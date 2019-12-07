@@ -1,13 +1,17 @@
-Package: adlibrary
+Package: Radlibrary
 Title: Facebook Ad Library API Tool
-Version: 0.0.0.9001
+Version: 0.1.0
 Authors@R: 
-    person(given = "Colin",
+    c(person(given = "Colin",
            family = "Fraser",
            role = c("cre"),
-           email = "colinfraser@fb.com")
+           email = "colinfraser@fb.com"),
+      person(given = "Kyle",
+           family = "Shank",
+           role = c("aut"),
+           email = "kylescotshank@fb.com"))
 Description: Query the Facebook Ads Library.
-License: Facebook Platform License
+License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 

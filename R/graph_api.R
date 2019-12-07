@@ -31,13 +31,6 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
   )
 }
 
-response_has_more_pages <- function(response) {
-  !is.null(response_next_page(response))
-}
-
-response_next_page <- function(response) {
-  content(response)[["paging"]][["next"]]
-}
 
 #' Get results from Facebook Ad library
 #'
@@ -55,28 +48,11 @@ graph_get <- function(service, params, token = token_get()) {
   } else if ((class(token) == "character") & length(token) == 1) {
     params[["access_token"]] <- token
   } else {
-    stop("Parameter token must be a string or object of time 'graph_api_token'")
+    stop("Parameter token must be a string or object of type 'graph_api_token'")
   }
   response <- RETRY("GET", graph_api_endpoint(service), query = params, quiet = FALSE)
   extract_error_message(response)
   response
-}
-
-# TODO: make this fail gracefully
-graph_get_with_pagination <- function(service, params, token = token_get()[["token"]],
-                                      max_gets = 1000, retries = 3) {
-  out <- vector("list", max_gets)
-  response <- graph_get(service, params, token)
-  cont <- content(response)
-  out[[1]] <- response
-  gets <- 1
-  while ((!is.null(cont[["paging"]])) & (gets < max_gets)) {
-    query <- httr::parse_url(cont[["paging"]][["next"]])[["query"]]
-    response <- graph_get(service, params = query, token)
-    gets <- gets + 1
-    out[[gets]] <- response
-  }
-  return(out[1:gets])
 }
 
 

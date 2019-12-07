@@ -5,6 +5,99 @@
 # LICENSE file in the root directory of this source tree.
 
 
+# Data Response Object and methods ----------------------------------------
+
+adlib_data_response <- function(response) {
+  extract_error_message(response)
+  cont <- content(response, as = "parsed")
+  if ("data" %in% names(cont)) {
+    return(structure(
+      list(
+        date = response[["date"]],
+        data = cont[["data"]],
+        has_next = !is.null(cont[["paging"]][["next"]]),
+        next_page = cont[["paging"]][["next"]],
+        fields = strsplit(
+          httr::parse_url(response[["url"]])[["query"]][["fields"]], ","
+        )[[1]]
+      ),
+      class = "adlib_data_response"
+    ))
+  } else {
+    stop("Not a valid data response.")
+  }
+}
+
+
+length.adlib_data_response <- function(resp) {
+  length(resp$data)
+}
+
+print.adlib_data_response <- function(response) {
+  cat(glue::glue("Data response object with {length(response)} entries."))
+}
+
+#' Convert a data response to tibble
+#'
+#' @param response an adlib_data_response object returned by adlib_get
+#' @param type the type of table to output. One of c("ad", "demographic",
+#' "region").
+#' @param ... additional arguments to pass to conversion function
+#'
+#' @return a tibble
+#' @export
+#'
+as_tibble.adlib_data_response <- function(response,
+                                          type = c("ad", "demographic", "region"), ...) {
+  type <- match.arg(type)
+
+  if (type == "ad") {
+    return(ad_table(response, ...))
+  } else if (type == "demographic") {
+    return(demographic_table(response))
+  } else if (type == "region") {
+    return(region_table(response))
+  }
+}
+
+censor_url <- function(url) {
+  httr::modify_url(url, query = list(access_token = "{access_token}"))
+}
+
+
+# Paginated ad tables -----------------------------------------------------
+
+paginated_adlib_data_response <- function(responses) {
+  last_response <- responses[[length(responses)]]
+  structure(
+    list(
+      responses = responses,
+      has_next = last_response$has_next,
+      next_page = last_response$next_page
+    ),
+    class = "paginated_adlib_data_response"
+  )
+}
+
+length.paginated_adlib_data_response <- function(padr) {
+  sum(sapply(padr$responses, length))
+}
+
+print.paginated_adlib_data_response <- function(padr) {
+  cat(glue::glue("Paginated data response object with {length(padr)} entries."))
+}
+
+as_tibble.paginated_adlib_data_response <- function(
+                                                    padr, type = c("ad", "demographic", "region"), ...) {
+  resp <- purrr::discard(padr$responses, purrr::is_empty)
+  purrr::map_df(resp, as_tibble, type = type, ...)
+}
+
+
+# Table conversion functions ----------------------------------------------
+
+
+
 #' Create a single row in the ad table
 #'
 #' @param row a single row in the response
@@ -14,9 +107,10 @@
 ad_row <- function(row) {
   columns <- c(
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-    "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-    "ad_delivery_stop_time", "currency", "funding_entity",
-    "page_id", "page_name", "spend", "ad_id", "impressions", "ad_snapshot_url"
+    "ad_creative_link_description", "ad_creative_link_title",
+    "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
+    "funding_entity", "page_id", "page_name", "spend", "ad_id", "impressions",
+    "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
@@ -28,7 +122,7 @@ ad_row <- function(row) {
   row[["impressions"]] <- impression_label(row[["impressions"]])
 
 
-  as_tibble(row[columns])
+  row[columns]
 }
 
 impression_label <- function(impression_row) {
@@ -62,9 +156,12 @@ ad_id_from_row <- function(row) {
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
 ad_table <- function(results, handle_dates = TRUE) {
-  res <- results %>%
+  res <- results$data %>%
     map(ad_row) %>%
-    bind_rows()
+    purrr::transpose() %>%
+    map(unlist) %>%
+    as_tibble()
+
 
   if (handle_dates) {
     res <- res %>%
@@ -103,7 +200,11 @@ demographic_row <- function(result_row) {
 #' @export
 #'
 demographic_table <- function(results) {
-  results %>%
+  if (!("demographic_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(demographic_row)
 }
 
@@ -123,9 +224,12 @@ region_row <- function(result_row) {
 #' @return a dataframe
 #' @export
 #'
-#' @examples
 region_table <- function(results) {
-  results %>%
+  if (!("region_distribution" %in% results$fields)) {
+    stop("\"region_distribution\" must be one of the fields returned in order to
+construct region table.")
+  }
+  results$data %>%
     map_df(region_row)
 }
 
@@ -136,10 +240,15 @@ region_table <- function(results) {
 #' @return A list of three tables.
 #' @export
 #'
-#' @details The result of this is three tables that can be joined to each other on ad_id.
-#' 1. The `ad_table` contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.
-#' 2. The `demographic_table` contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.
-#' 3 The `region_table` contains a breakdown of where each ad was viewed, with one row per `ad_id` and `region`.
+#' @details The result of this is three tables that can be joined to each other
+#' on ad_id.
+#' 1. The `ad_table` contains one row per ad from the response, contains data
+#' bout each ad such as when it started, who is paying for it, and how much they
+#' have spent, and how many impressions it has received.
+#' 2. The `demographic_table` contains a demographic breakdown of ad viewers,
+#' with one row per pair of (age bucket, gender), per ad.
+#' 3 The `region_table` contains a breakdown of where each ad was viewed, with
+#' one row per `ad_id` and `region`.
 #'
 adlib_response_to_tables <- function(response) {
   data <- content(response)[["data"]]

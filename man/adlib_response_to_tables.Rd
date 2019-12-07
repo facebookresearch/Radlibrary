@@ -16,8 +16,13 @@ A list of three tables.
 Parse a response to create three tables
 }
 \details{
-The result of this is three tables that can be joined to each other on ad_id.
-1. The `ad_table` contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.
-2. The `demographic_table` contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.
-3 The `region_table` contains a breakdown of where each ad was viewed, with one row per `ad_id` and `region`.
+The result of this is three tables that can be joined to each other
+on ad_id.
+1. The `ad_table` contains one row per ad from the response, contains data
+bout each ad such as when it started, who is paying for it, and how much they
+have spent, and how many impressions it has received.
+2. The `demographic_table` contains a demographic breakdown of ad viewers,
+with one row per pair of (age bucket, gender), per ad.
+3 The `region_table` contains a breakdown of where each ad was viewed, with
+one row per `ad_id` and `region`.
 }

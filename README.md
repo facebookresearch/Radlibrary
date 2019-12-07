@@ -1,9 +1,9 @@
-# adlibrary
+# Radlibrary
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `adslibrary` package is for querying the Facebook Ad Library API.
+The `Radlibrary` package is for querying the Facebook Ad Library API.
 
 ## Installation
 
@@ -15,8 +15,8 @@ devtools::install_github("path/to/repo")
 
 ## Setup
 
-There are a few steps you need to complete in order to use the Facebook Ad Library API. These
-steps are described [here](https://www.facebook.com/ads/library/api/?source=archive-landing-page).
+There are a few steps you need to complete in order to use the Facebook Ad 
+Library API. These steps are described [here](https://www.facebook.com/ads/library/api/?source=archive-landing-page).
 
 Once you've completed these steps, you can constuct a query like this.
 
@@ -26,9 +26,12 @@ Once you've completed these steps, you can constuct a query like this.
 You can construct a query to the API using adlib_build_query()
 
 ``` r
-library(adslibrary)
-## get all ads that mention "mark" or "zuckerberg" that had impressions yesterday in the US and are currently active
-query <- adlib_build_query(ad_reached_countries = 'US', ad_active_status = 'ACTIVE', impression_condition = 'HAS_IMPRESSIONS_YESTERDAY', search_terms = "mark zuckerberg")
+library(Raslibrary)
+## get all ads that mention "mark" or "zuckerberg" that had impressions 
+yesterday in the US and are currently active
+query <- adlib_build_query(ad_reached_countries = 'US', 
+ad_active_status = 'ACTIVE', impression_condition = 'HAS_IMPRESSIONS_YESTERDAY', 
+search_terms = "mark zuckerberg")
 ```
 
 To send your query to the API, use adlib_get. You'll need an access token.
@@ -82,3 +85,11 @@ By default, this will return up to 5000 rows containing all available ad data ma
 # 6   0.00978  New Mexico    392500995026671
 
 ```
+
+## Contributing
+
+Please note that the 'Radlibrary' project is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+See the [Contributing to `Radlibrary`](contributing.md)
+guide for more information on contributing.
