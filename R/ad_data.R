@@ -35,12 +35,12 @@ length.adlib_data_response <- function(x) {
 }
 
 #' @export
-format.adlib_data_response <- function(x) {
+format.adlib_data_response <- function(x, ...) {
   glue::glue("Data response object with {length(x)} entries.")
 }
 
 #' @export
-print.adlib_data_response <- function(x) {
+print.adlib_data_response <- function(x, ...) {
   cat(format(x))
 }
 
@@ -102,12 +102,12 @@ n_records <- function(x) {
 }
 
 #' @export
-format.paginated_adlib_data_response <- function(x) {
+format.paginated_adlib_data_response <- function(x, ...) {
   glue::glue("Paginated data response object with {n_responses(x)} pages and {n_records(x)} records")
 }
 
 #' @export
-print.paginated_adlib_data_response <- function(x) {
+print.paginated_adlib_data_response <- function(x, ...) {
   cat(format(x))
 }
 
