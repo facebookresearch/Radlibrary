@@ -4,7 +4,10 @@
 \alias{n_records}
 \title{Number of records in a paginated response}
 \usage{
-n_records(padr)
+n_records(x)
+}
+\arguments{
+\item{x}{a paginated data response}
 }
 \description{
 Number of records in a paginated response

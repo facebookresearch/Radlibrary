@@ -4,7 +4,10 @@
 \alias{n_responses}
 \title{Number of pages in a paginated response}
 \usage{
-n_responses(padr)
+n_responses(x)
+}
+\arguments{
+\item{x}{a paginated data response}
 }
 \description{
 Number of pages in a paginated response

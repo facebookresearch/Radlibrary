@@ -30,18 +30,18 @@ adlib_data_response <- function(response) {
 
 
 #' @export
-length.adlib_data_response <- function(resp) {
-  length(resp$data)
+length.adlib_data_response <- function(x) {
+  length(x$data)
 }
 
 #' @export
-format.adlib_data_response <- function(resp) {
-  glue::glue("Data response object with {length(resp)} entries.")
+format.adlib_data_response <- function(x) {
+  glue::glue("Data response object with {length(x)} entries.")
 }
 
 #' @export
-print.adlib_data_response <- function(resp) {
-  cat(format(resp))
+print.adlib_data_response <- function(x) {
+  cat(format(x))
 }
 
 #' Convert a data response to tibble
@@ -87,34 +87,34 @@ paginated_adlib_data_response <- function(responses) {
 }
 
 #' Number of pages in a paginated response
-#'
+#' @param x a paginated data response
 #'
 #' @export
-n_responses <- function(padr) {
-  length(padr$responses)
+n_responses <- function(x) {
+  length(x$responses)
 }
 
 #' Number of records in a paginated response
-#'
+#' @param x a paginated data response
 #' @export
-n_records <- function(padr) {
-  sum(sapply(padr$responses, length))
+n_records <- function(x) {
+  sum(sapply(x$responses, length))
 }
 
 #' @export
-format.paginated_adlib_data_response <- function(padr) {
-  glue::glue("Paginated data response object with {n_responses(padr)} pages and {n_records(padr)} records")
+format.paginated_adlib_data_response <- function(x) {
+  glue::glue("Paginated data response object with {n_responses(x)} pages and {n_records(x)} records")
 }
 
 #' @export
-print.paginated_adlib_data_response <- function(padr) {
-  cat(format(padr))
+print.paginated_adlib_data_response <- function(x) {
+  cat(format(x))
 }
 
 #' @export
 as_tibble.paginated_adlib_data_response <- function(
-                                                    padr, type = c("ad", "demographic", "region"), ...) {
-  resp <- purrr::discard(padr$responses, purrr::is_empty)
+                                                    x, type = c("ad", "demographic", "region"), ...) {
+  resp <- purrr::discard(x$responses, purrr::is_empty)
   purrr::map_df(resp, as_tibble, type = type, ...)
 }
 
