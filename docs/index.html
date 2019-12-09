@@ -66,74 +66,29 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#radlibrary" class="anchor"></a>Radlibrary</h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
-<p>The <code>Radlibrary</code> package is for querying the Facebook Ad Library API.</p>
+
+<p>The <code>Radlibrary</code> package is an R package to faciliate querying the <a href="https://www.facebook.com/ads/library/">Facebook Ads Library</a> through the <a href="https://www.facebook.com/ads/library/api/">Facebook Ad Library API</a>. If you’re looking for more details about the ads that make up the Ad Library and you’ve got some experience using <code>R</code>, you’re in the right place.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Use devtools to install with</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"path/to/repo"</span>)</a></code></pre></div>
+<p>To install directly from Github, use <code>devtools</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"path/to/repo"</span>)</code></pre></div>
 </div>
-<div id="setup" class="section level2">
+<div id="changelog" class="section level2">
 <h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
-<p>There are a few steps you need to complete in order to use the Facebook Ad Library API. These steps are described <a href="https://www.facebook.com/ads/library/api/?source=archive-landing-page">here</a>.</p>
-<p>Once you’ve completed these steps, you can constuct a query like this.</p>
+<a href="#changelog" class="anchor"></a>Changelog</h2>
+<div id="version-0-1-2019-12-13" class="section level3">
+<h3 class="hasAnchor">
+<a href="#version-0-1-2019-12-13" class="anchor"></a>Version 0.1 (2019.12.13)</h3>
+<ul>
+<li>Initial release</li>
+</ul>
 </div>
-<div id="examples" class="section level2">
+</div>
+<div id="license" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h2>
-<p>You can construct a query to the API using adlib_build_query()</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(Raslibrary)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## get all ads that mention "mark" or "zuckerberg" that had impressions </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">yesterday <span class="cf">in</span> the US and are currently active</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">query &lt;-<span class="st"> </span><span class="kw"><a href="reference/adlib_build_query.html">adlib_build_query</a></span>(<span class="dt">ad_reached_countries =</span> <span class="st">'US'</span>, </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="dt">ad_active_status =</span> <span class="st">'ACTIVE'</span>, <span class="dt">impression_condition =</span> <span class="st">'HAS_IMPRESSIONS_YESTERDAY'</span>, </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="dt">search_terms =</span> <span class="st">"mark zuckerberg"</span>)</a></code></pre></div>
-<p>To send your query to the API, use adlib_get. You’ll need an access token.</p>
-<pre><code>token &lt;- "PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"
-result &lt;- adlib_get(query, token = token)</code></pre>
-<p>By default, this will return up to 5000 rows containing all available ad data matching the query. The function <code>adlib_response_to_tables</code> can turn the API response into a list of tables.</p>
-<ol>
-<li>The <code>ad_table</code> contains one row per ad from the response, contains data bout each ad such as when it started, who is paying for it, and how much they have spent, and how many impressions it has received.</li>
-<li>The <code>demographic_table</code> contains a demographic breakdown of ad viewers, with one row per pair of (age bucket, gender), per ad.</li>
-<li>The <code>region_table</code> contains a breakdown of where each ad was viewed, with one row per <code>ad_id</code> and <code>region</code>.</li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="reference/adlib_response_to_tables.html">adlib_response_to_tables</a></span>(result) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">map</span>(head)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># $ad_table</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># # A tibble: 6 x 15</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#   ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… ad_creative_lin… ad_delivery_start_… ad_delivery_stop_t…</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#   &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;dttm&gt;              &lt;dttm&gt;             </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># 1 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># 2 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># 3 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># 4 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># 5 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co"># 6 2019-10-22 20:36:32 "Breaking news:… my.elizabethwar… It’s time to br… Mark Zuckerberg… 2019-10-22 20:36:32 NA                 </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co"># # … with 8 more variables: currency &lt;chr&gt;, funding_entity &lt;chr&gt;, page_id &lt;chr&gt;, page_name &lt;chr&gt;, spend &lt;chr&gt;, ad_id &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># #   impressions &lt;chr&gt;, ad_snapshot_url &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># </span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># $demographic_table</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co"># # A tibble: 6 x 4</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#   percentage age   gender  ad_id          </span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#        &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;          </span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co"># 1    0.0810  45-54 female  392500995026671</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co"># 2    0.0688  35-44 male    392500995026671</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co"># 3    0.00166 45-54 unknown 392500995026671</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co"># 4    0.00122 55-64 unknown 392500995026671</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># 5    0.00259 35-44 unknown 392500995026671</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co"># 6    0.00497 25-34 unknown 392500995026671</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># </span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co"># $region_table</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co"># # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#   percentage region        ad_id          </span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#        &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;          </span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co"># 1   0.000006 Unknown       392500995026671</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co"># 2   0.0337   Pennsylvania  392500995026671</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co"># 3   0.0139   Nevada        392500995026671</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co"># 4   0.00331  New Hampshire 392500995026671</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co"># 5   0.0205   New Jersey    392500995026671</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co"># 6   0.00978  New Mexico    392500995026671</span></a></code></pre></div>
+<a href="#license" class="anchor"></a>License</h2>
+<p>Radlibrary is licensed under the <a href="https://opensource.org/licenses/BSD-3-Clause">3-Clause BSD License</a>. See <a href="LICENSE" class="uri">LICENSE</a>.</p>
 </div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
@@ -167,7 +122,13 @@ result &lt;- adlib_get(query, token = token)</code></pre>
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/facebookresearch/Radlibrary"><img src="https://travis-ci.org/facebookresearch/Radlibrary.svg?branch=master" alt="Travis build status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

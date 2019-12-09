@@ -116,14 +116,21 @@ for full API documentation.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>adlib_build_query</span>(<span class='no'>ad_reached_countries</span>, <span class='kw'>ad_active_status</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ACTIVE"</span>,
-  <span class='st'>"INACTIVE"</span>, <span class='st'>"ALL"</span>), <span class='kw'>ad_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POLITICAL_AND_ISSUE_ADS"</span>,
-  <span class='st'>"HOUSING_ADS"</span>, <span class='st'>"NEWS_ADS"</span>, <span class='st'>"UNCATEGORIZED_ADS"</span>, <span class='st'>"ALL"</span>), <span class='kw'>bylines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>impression_condition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"HAS_IMPRESSIONS_LIFETIME"</span>,
-  <span class='st'>"HAS_IMPRESSIONS_YESTERDAY"</span>, <span class='st'>"HAS_IMPRESSIONS_LAST_7_DAYS"</span>,
-  <span class='st'>"HAS_IMPRESSIONS_LAST_30_DAYS"</span>, <span class='st'>"HAS_IMPRESSIONS_LAST_90_DAYS"</span>),
-  <span class='kw'>publisher_platform</span> <span class='kw'>=</span> <span class='st'>"FACEBOOK"</span>, <span class='kw'>search_page_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>search_terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"ad_data"</span>)</pre>
+    <pre class="usage"><span class='fu'>adlib_build_query</span>(
+  <span class='no'>ad_reached_countries</span>,
+  <span class='kw'>ad_active_status</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ACTIVE"</span>, <span class='st'>"INACTIVE"</span>, <span class='st'>"ALL"</span>),
+  <span class='kw'>ad_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POLITICAL_AND_ISSUE_ADS"</span>, <span class='st'>"HOUSING_ADS"</span>, <span class='st'>"NEWS_ADS"</span>, <span class='st'>"UNCATEGORIZED_ADS"</span>,
+    <span class='st'>"ALL"</span>),
+  <span class='kw'>bylines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>impression_condition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"HAS_IMPRESSIONS_LIFETIME"</span>, <span class='st'>"HAS_IMPRESSIONS_YESTERDAY"</span>,
+    <span class='st'>"HAS_IMPRESSIONS_LAST_7_DAYS"</span>, <span class='st'>"HAS_IMPRESSIONS_LAST_30_DAYS"</span>,
+    <span class='st'>"HAS_IMPRESSIONS_LAST_90_DAYS"</span>),
+  <span class='kw'>publisher_platform</span> <span class='kw'>=</span> <span class='st'>"FACEBOOK"</span>,
+  <span class='kw'>search_page_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>search_terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"ad_data"</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

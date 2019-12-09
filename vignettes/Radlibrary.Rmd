@@ -1,19 +1,17 @@
-
-
 ---
 title: "Getting started with `Radlibrary`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Usage and migration}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```
-{r, include = FALSE, echo = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>")
+    message = FALSE,
+    warning = FALSE
+)
 ```
 
 ## Introduction
@@ -66,9 +64,8 @@ There are two ways to do this: manually (**not recommended!**) or via the suppor
 
 To begin: 
 
-```
-{r, include = FALSE}
-library(Radlibrary)
+```{r, eval = FALSE} 
+library(R)
 adlib_setup()
 ```
 
@@ -91,19 +88,79 @@ Let's build our first query!
 
 To begin, let's use an easy example. Let's look for all active ads within the United States that served impressions in the past 90 days and are related to health care. 
 
-```{r, eval = false} 
+```{r, eval = FALSE} 
 query <- adlib_build_query(ad_reached_countries = 'US', 
 ad_active_status = 'ACTIVE', 
 impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS', 
 search_terms = "healthcare")
 ```
 
+There are numerous parameters to the `adlib_build_query` function (for more, see `?adlib_build_query`). In the above, we're passing four parameters: 
+
+*  `ad_reached_countries = 'US'`: this tells they query we only want to return ads shown in the United States. Note that the query submission will fail if you try and submit an ISO country code that you are not verified for. 
+*  `ad_active_status = 'ACTIVE'`: this tells they query we only want to return ads that are currently active. 
+*  `impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS'`: this tells they query we want to see any ad that has served impressions in the last 90 days. 
+*  `search_terms = "healthcare"`: this is the search string for the query. **Note**: You can only search for single keywords. For example, you can search “health care,” but the system will search for these words separately (i.e. “health” and “care”).
+
+
 ### Submit a query 
 
 Let's submit the query from the previous section for analysis. 
 
-```{r} 
-response <- adlib_get(query, token = token_get())
+```{r, eval = FALSE} 
+response <- adlib_get(query = query, token = token_get())
 ```
 
-The `adlib_get()` function will return an object type of "adlib_data_response" - the output of the API call. 
+The `adlib_get()` function will return an object type of `adlib_data_response`. This objective has numerous metadata attributes:
+
+* `date`: the timestamp of the query submission
+* `has_next`: A boolean value indicating whether there are still pages available after the current search returned (see section on pagination below) 
+* `next_page`: The URL to call the next page of responses
+* `fields`: the fields available in the query 
+* `data`: the data returned. 
+
+### Analyze the results
+
+We've provided a useful way to extract data from the `adlib_data_response` object via a modified `as_tibble` wrapper from `dplyr`. 
+
+```{r, eval = FALSE}
+results.tibble <- as_tibble.adlib_data_response(results)
+```
+
+This will transform the information stored in `data` and in `fields` from your `adlib_data_response` into a useful tibble for analysis. The example content below from the above: 
+
+```{r, eval = FALSE}
+> head(results.tibble)
+#  A tibble: 6 x 15
+#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… 
+#  <dttm>              <chr>            <chr>            <chr>           
+# 1 2019-12-09 02:24:23 I believe in He… NA               NA              
+# 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… 
+# 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… 
+# 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… 
+# 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … 
+# 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               
+# … with 11 more variables: ad_delivery_stop_time <dttm>, currency <chr> ... 
+``` 
+
+Perhaps we want to display this information visually? Let's use `ggplot2` and visualize the top 20 page names by number of ads created. 
+
+```{r, eval = FALSE}
+results.tibble %>%
+  group_by(page_name) %>%
+  select(page_name) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  top_n(n = 20) %>%
+  ggplot(aes(reorder(x = page_name, n), y = n)) + 
+  geom_bar(stat="identity") + 
+  xlab("Page Name") + 
+  ylab("Count of Ads") + 
+  theme_bw() + 
+  coord_flip()
+```
+
+```{r fig.align="left" , echo = FALSE}
+knitr::include_graphics("example.png")
+```
+
