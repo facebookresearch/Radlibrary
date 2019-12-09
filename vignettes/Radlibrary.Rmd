@@ -1,6 +1,8 @@
 ---
 title: "Getting started with `Radlibrary`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+  toc: true
 vignette: >
   %\VignetteIndexEntry{Usage and migration}
   %\VignetteEngine{knitr::rmarkdown}
@@ -35,9 +37,9 @@ There are three basic steps required to begin used the Facebook Ad Library API.
  
 ### Confirm your identity and location with Facebook
 
-Currently, accessing the Facebook Ads API utilizes the same verification process that is required to run ads about social issues, electioncs or politics. To complete this process, go to [the ID section of your Facebook settings](https://www.facebook.com/ID). To complete this process, you will need a form of national identification to confirm your identity. If you haven't already confirmed your ID, it typically takes 1-2 days to complete this step.
+Currently, accessing the Facebook Ads API utilizes the same verification process that is required to run ads about social issues, elections or politics. To complete this process, go to [the ID section of your Facebook settings](https://www.facebook.com/ID). To complete this process, you will need a form of national identification to confirm your identity. If you haven't already confirmed your ID, it typically takes 1-2 days to complete this step.
 
-**Note**: You'll need a form of ID that matches the country(ies) you are interested in analyzing via the API. 
+**Note**: Your identification will need to match your physical location for verification purposes. 
 
 ### Create a Facebook Developer account 
 
@@ -47,7 +49,9 @@ Visit [Facebook for Developers](https://developers.facebook.com/) and select Get
 
 Once you have an account, you'll need to create a new app. You'll need your `App ID` and `App Secret` in order to access the API. 
 
-**Note**: The `App ID` and `App Secret` tokens allow anyone in possession of them to potentially access your personal Facebook account. Take caution to protect this information! The `Radlibrary` package contains support for the `keyring` package to facilitate more secure analysis. **Do not post your `App ID` and `App Secret` to Github**. 
+**Note**: The `App ID` and `App Secret` are sensitive data linked to your app. Take care in keeping these values secret.The `Radlibrary` package contains support for the `keyring` package to facilitate more secure analysis - this is especially helpful if you choose to setup and store a long-term token for persistent access. 
+
+**Do not post your `App ID`, `App Secret`, or any personal tokens to Github! **. 
 
 ## Getting Started 
 
@@ -60,12 +64,12 @@ To get started using the `Radlibrary` package, you'll want to take the following
 
 ### Retrieve and store your App token. 
 
-There are two ways to do this: manually (**not recommended!**) or via the support for the `keychain` package within `Radlibrary`. The `keychain` package is a platform independent 'API' to access the operating system's credential store. It currently supports: 'Keychain' on 'macOS', Credential Store on 'Windows', the Secret Service 'API' on 'Linux'. **tl;dr** - this is the **preferred* method for analysis as it does not require you to place your API credentials into your code. We'll be focusing on the `keychain` method.
+There are two ways to do this: manually (**not recommended!**) or via the support for the `keychain` package within `Radlibrary`. The `keychain` package is a platform independent 'API' to access the operating system's credential store. It currently supports: 'Keychain' on 'macOS', Credential Store on 'Windows', the Secret Service 'API' on 'Linux'. This is the preferred method for analysis as it does not require you to place your API credentials into your code. We'll be focusing on using `keychain` to store long-term credentials for persistent use. 
 
 To begin: 
 
 ```{r, eval = FALSE} 
-library(R)
+library(Radlibrary)
 adlib_setup()
 ```
 
@@ -92,7 +96,8 @@ To begin, let's use an easy example. Let's look for all active ads within the Un
 query <- adlib_build_query(ad_reached_countries = 'US', 
 ad_active_status = 'ACTIVE', 
 impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS', 
-search_terms = "healthcare")
+search_terms = "healthcare",
+fields = "ad_data")
 ```
 
 There are numerous parameters to the `adlib_build_query` function (for more, see `?adlib_build_query`). In the above, we're passing four parameters: 
@@ -101,6 +106,7 @@ There are numerous parameters to the `adlib_build_query` function (for more, see
 *  `ad_active_status = 'ACTIVE'`: this tells they query we only want to return ads that are currently active. 
 *  `impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS'`: this tells they query we want to see any ad that has served impressions in the last 90 days. 
 *  `search_terms = "healthcare"`: this is the search string for the query. **Note**: You can only search for single keywords. For example, you can search “health care,” but the system will search for these words separately (i.e. “health” and “care”).
+*  `fields = "ad_data"`: this is the fields to include in the response. In this example, we're looking strictly at ad data. 
 
 
 ### Submit a query 
@@ -121,10 +127,10 @@ The `adlib_get()` function will return an object type of `adlib_data_response`. 
 
 ### Analyze the results
 
-We've provided a useful way to extract data from the `adlib_data_response` object via a modified `as_tibble` wrapper from `dplyr`. 
+You can extract data from the `adlib_data_response` object via `as_tibble` wrapper from `dplyr`. 
 
 ```{r, eval = FALSE}
-results.tibble <- as_tibble.adlib_data_response(results)
+results.tibble <- as_tibble(results, type = "ad")
 ```
 
 This will transform the information stored in `data` and in `fields` from your `adlib_data_response` into a useful tibble for analysis. The example content below from the above: 
@@ -163,4 +169,5 @@ results.tibble %>%
 ```{r fig.align="left" , echo = FALSE}
 knitr::include_graphics("example.png")
 ```
+
 

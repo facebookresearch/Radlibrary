@@ -11,7 +11,7 @@ The `Radlibrary` package is an R package to faciliate querying the [Facebook Ads
 To install directly from Github, use `devtools`: 
 
 ``` r
-devtools::install_github("path/to/repo")
+devtools::install_github("facebookresearch/Radlibrary")
 ```
 
 ## Changelog 
