@@ -141,37 +141,23 @@ ad_row <- function(row) {
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
     "ad_creative_link_description", "ad_creative_link_title",
     "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
-    "funding_entity", "page_id", "page_name", "spend", "ad_id", "impressions",
-    "ad_snapshot_url"
+    "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
+    "ad_id", "impressions_lower", "impressions_upper", "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
       row[[field]] <- NA
     }
   }
-  row[["spend"]] <- spend_label(row[["spend"]])
+  row[["spend_lower"]] <- as.numeric(row[["spend"]][[1]])
+  row[["spend_upper"]] <- as.numeric(row[["spend"]][[2]])
   row[["ad_id"]] <- ad_id_from_row(row)
-  row[["impressions"]] <- impression_label(row[["impressions"]])
-
+  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][[1]])
+  row[["impressions_upper"]] <- as.numeric(row[["impressions"]][[2]])
 
   row[columns]
 }
 
-impression_label <- function(impression_row) {
-  # turn the "impression" data into a single value
-  if (is.na(impression_row[[1]])) {
-    return(NA)
-  }
-  return(paste0(impression_row$lower_bound, "-", impression_row$upper_bound))
-}
-
-spend_label <- function(spend_row) {
-  # turn the spend data into a single value
-  if (is.na(spend_row[[1]])) {
-    return(NA)
-  }
-  return(paste0(spend_row$lower_bound, "-", spend_row$upper_bound))
-}
 
 ad_id_from_row <- function(row) {
   # get ad id from URL
@@ -280,30 +266,4 @@ construct region table.")
   }
   results$data %>%
     map_df(region_row)
-}
-
-#' Parse a response to create three tables
-#'
-#' @param response a response from adlib_get
-#'
-#' @return A list of three tables.
-#' @export
-#'
-#' @details The result of this is three tables that can be joined to each other
-#' on ad_id.
-#' 1. The `ad_table` contains one row per ad from the response, contains data
-#' bout each ad such as when it started, who is paying for it, and how much they
-#' have spent, and how many impressions it has received.
-#' 2. The `demographic_table` contains a demographic breakdown of ad viewers,
-#' with one row per pair of (age bucket, gender), per ad.
-#' 3 The `region_table` contains a breakdown of where each ad was viewed, with
-#' one row per `ad_id` and `region`.
-#'
-adlib_response_to_tables <- function(response) {
-  data <- content(response)[["data"]]
-  list(
-    ad_table = ad_table(data),
-    demographic_table = demographic_table(data),
-    region_table = region_table(data)
-  )
 }
