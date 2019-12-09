@@ -31,5 +31,9 @@ Imports:
     lubridate,
     rlang
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr, 
+    rmarkdown
 RoxygenNote: 7.0.2
+VignetteBuilder: knitr
+
