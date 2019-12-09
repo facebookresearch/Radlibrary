@@ -50,7 +50,11 @@ graph_get <- function(service, params, token = token_get()) {
   } else {
     stop("Parameter token must be a string or object of type 'graph_api_token'")
   }
-  response <- RETRY("GET", graph_api_endpoint(service), query = params, quiet = FALSE)
+  agent <- httr::user_agent("Radlibrary R Package")
+  response <- RETRY("GET", graph_api_endpoint(service), agent,
+    query = params,
+    quiet = FALSE, terminate_on = c(400, 500)
+  )
   extract_error_message(response)
   response
 }
@@ -70,4 +74,9 @@ extract_error_message <- function(response) {
     stop(out)
   }
   invisible(response)
+}
+
+add_token_to_env <- function() {
+  # only used for testing at the moment.
+  Sys.setenv("FB_GRAPH_API_TOKEN" = token_get()$token)
 }

@@ -11,7 +11,7 @@ adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
   "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS",
   "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"),
   publisher_platform = "FACEBOOK", search_page_ids = NULL,
-  search_terms = NULL, limit = 5000, fields = "ad_data")
+  search_terms = NULL, limit = 1000, fields = "ad_data")
 }
 \arguments{
 \item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered

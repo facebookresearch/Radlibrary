@@ -111,7 +111,7 @@ adlib_build_query <- function(ad_reached_countries,
                               publisher_platform = "FACEBOOK",
                               search_page_ids = NULL,
                               search_terms = NULL,
-                              limit = 5000,
+                              limit = 1000,
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
