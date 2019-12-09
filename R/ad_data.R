@@ -29,12 +29,19 @@ adlib_data_response <- function(response) {
 }
 
 
-length.adlib_data_response <- function(resp) {
-  length(resp$data)
+#' @export
+length.adlib_data_response <- function(x) {
+  length(x$data)
 }
 
-print.adlib_data_response <- function(response) {
-  cat(glue::glue("Data response object with {length(response)} entries."))
+#' @export
+format.adlib_data_response <- function(x, ...) {
+  glue::glue("Data response object with {length(x)} entries.")
+}
+
+#' @export
+print.adlib_data_response <- function(x, ...) {
+  cat(format(x))
 }
 
 #' Convert a data response to tibble
@@ -48,20 +55,27 @@ print.adlib_data_response <- function(response) {
 #' @export
 #'
 as_tibble.adlib_data_response <- function(response,
-                                          type = c("ad", "demographic", "region"), ...) {
+                                          type = c("ad", "demographic", "region"),
+                                          ...) {
   type <- match.arg(type)
+  out <- switch(type,
+    "ad" = ad_table(response, ...),
+    "demographic" = demographic_table(response),
+    "region" = region_table(response)
+  )
 
-  if (type == "ad") {
-    return(ad_table(response, ...))
-  } else if (type == "demographic") {
-    return(demographic_table(response))
-  } else if (type == "region") {
-    return(region_table(response))
-  }
+  out
 }
 
-censor_url <- function(url) {
-  httr::modify_url(url, query = list(access_token = "{access_token}"))
+censor_access_token <- function(x) {
+  stringr::str_replace(x,
+    pattern = "access_token=\\w+",
+    replacement = "access_token={access_token}"
+  )
+}
+
+detect_access_token <- function(x) {
+  any(stringr::str_detect(x, pattern = "access_token=\\w+"))
 }
 
 
@@ -79,17 +93,35 @@ paginated_adlib_data_response <- function(responses) {
   )
 }
 
-length.paginated_adlib_data_response <- function(padr) {
-  sum(sapply(padr$responses, length))
+#' Number of pages in a paginated response
+#' @param x a paginated data response
+#'
+#' @export
+n_responses <- function(x) {
+  length(x$responses)
 }
 
-print.paginated_adlib_data_response <- function(padr) {
-  cat(glue::glue("Paginated data response object with {length(padr)} entries."))
+#' Number of records in a paginated response
+#' @param x a paginated data response
+#' @export
+n_records <- function(x) {
+  sum(sapply(x$responses, length))
 }
 
+#' @export
+format.paginated_adlib_data_response <- function(x, ...) {
+  glue::glue("Paginated data response object with {n_responses(x)} pages and {n_records(x)} records")
+}
+
+#' @export
+print.paginated_adlib_data_response <- function(x, ...) {
+  cat(format(x))
+}
+
+#' @export
 as_tibble.paginated_adlib_data_response <- function(
-                                                    padr, type = c("ad", "demographic", "region"), ...) {
-  resp <- purrr::discard(padr$responses, purrr::is_empty)
+                                                    x, type = c("ad", "demographic", "region"), ...) {
+  resp <- purrr::discard(x$responses, purrr::is_empty)
   purrr::map_df(resp, as_tibble, type = type, ...)
 }
 
@@ -150,12 +182,13 @@ ad_id_from_row <- function(row) {
 #'
 #' @param results data from an ads_archive response
 #' @param handle_dates if true, convert dates columns to date
+#' @param censor_access_token if true, the ad_snapshot_url will be censored
 #'
 #' @return dataframe with one row per ad
 #' @export
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
-ad_table <- function(results, handle_dates = TRUE) {
+ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res <- results$data %>%
     map(ad_row) %>%
     purrr::transpose() %>%
@@ -169,6 +202,22 @@ ad_table <- function(results, handle_dates = TRUE) {
         .data$ad_creation_time, .data$ad_delivery_start_time,
         .data$ad_delivery_stop_time
       ), list(lubridate::ymd_hms))
+  }
+
+  # censor access tokens
+  if (is.null(censor_access_token)) {
+    censor <- TRUE
+  } else {
+    censor <- censor_access_token
+  }
+
+  any_raw_tokens <- any(detect_access_token(res$ad_snapshot_url))
+  if (is.null(censor_access_token) & any_raw_tokens) {
+    warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
+  }
+
+  if (("ad_snapshot_url" %in% names(res)) & censor) {
+    res$ad_snapshot_url <- censor_access_token(res$ad_snapshot_url)
   }
 
   res

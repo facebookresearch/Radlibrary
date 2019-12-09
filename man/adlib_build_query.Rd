@@ -16,7 +16,7 @@ adlib_build_query(
   publisher_platform = "FACEBOOK",
   search_page_ids = NULL,
   search_terms = NULL,
-  limit = 5000,
+  limit = 1000,
   fields = "ad_data"
 )
 }
