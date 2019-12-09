@@ -4,8 +4,7 @@
 \alias{as_tibble.adlib_data_response}
 \title{Convert a data response to tibble}
 \usage{
-\method{as_tibble}{adlib_data_response}(response, type = c("ad",
-  "demographic", "region"), ...)
+\method{as_tibble}{adlib_data_response}(response, type = c("ad", "demographic", "region"), ...)
 }
 \arguments{
 \item{response}{an adlib_data_response object returned by adlib_get}
