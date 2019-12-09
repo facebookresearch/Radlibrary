@@ -4,14 +4,21 @@
 \alias{adlib_build_query}
 \title{Build an Ad Library Query}
 \usage{
-adlib_build_query(ad_reached_countries, ad_active_status = c("ACTIVE",
-  "INACTIVE", "ALL"), ad_type = c("POLITICAL_AND_ISSUE_ADS",
-  "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"), bylines = NULL,
-  impression_condition = c("HAS_IMPRESSIONS_LIFETIME",
-  "HAS_IMPRESSIONS_YESTERDAY", "HAS_IMPRESSIONS_LAST_7_DAYS",
-  "HAS_IMPRESSIONS_LAST_30_DAYS", "HAS_IMPRESSIONS_LAST_90_DAYS"),
-  publisher_platform = "FACEBOOK", search_page_ids = NULL,
-  search_terms = NULL, limit = 1000, fields = "ad_data")
+adlib_build_query(
+  ad_reached_countries,
+  ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
+  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS",
+    "ALL"),
+  bylines = NULL,
+  impression_condition = c("HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+    "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+    "HAS_IMPRESSIONS_LAST_90_DAYS"),
+  publisher_platform = "FACEBOOK",
+  search_page_ids = NULL,
+  search_terms = NULL,
+  limit = 1000,
+  fields = "ad_data"
+)
 }
 \arguments{
 \item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered

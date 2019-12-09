@@ -4,8 +4,7 @@
 \alias{graph_api_endpoint}
 \title{API endpoints}
 \usage{
-graph_api_endpoint(api = c("ads_archive", "access_token"),
-  version = "v5.0")
+graph_api_endpoint(api = c("ads_archive", "access_token"), version = "v5.0")
 }
 \arguments{
 \item{api}{which API to return the end point for. Currently two endpoints are supported:
