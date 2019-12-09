@@ -11,12 +11,21 @@ test_that("graph_get works", {
 test_that("adlib_get works", {
   resp <- adlib_get(q, token = token)
   expect_s3_class(resp, "adlib_data_response")
-  resp_table <- tibble::as_tibble(resp)
+  resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
   expect_true(tibble::is_tibble(resp_table))
+})
+
+test_that("access token censoring in tibbles works", {
+  resp <- adlib_get(q, token = token)
+  resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
+  expect_true(any(detect_access_token(resp_table$ad_snapshot_url)))
+  resp_table <- tibble::as_tibble(resp, censor_access_token = TRUE)
+  expect_false(any(detect_access_token(resp_table$ad_snapshot_url)))
+  expect_warning(tibble::as_tibble(resp))
 })
 
 test_that("adlib_get_paginated works", {
   resp <- adlib_get_paginated(q, token = token, max_gets = 2)
-  resp_table <- tibble::as_tibble(resp)
+  resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
   expect_true(tibble::is_tibble(resp_table))
 })
