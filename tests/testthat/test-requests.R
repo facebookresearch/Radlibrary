@@ -5,6 +5,7 @@ test_that("graph_get works", {
   resp <- graph_get("ads_archive", q, token)
   expect_equal(httr::status_code(resp), 200)
   expect_true("data" %in% names(httr::content(resp)))
+  expect_equal(resp$request$options$useragent, "Radlibrary R Package")
 })
 
 test_that("adlib_get works", {
