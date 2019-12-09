@@ -158,6 +158,25 @@ ad_row <- function(row) {
   row[columns]
 }
 
+<<<<<<< HEAD
+=======
+impression_label <- function(impression_row) {
+  # turn the "impression" data into a single value
+  if (is.na(impression_row[[1]])) {
+    return(NA)
+  }
+  return(paste0(impression_row$lower_bound, "-", impression_row$upper_bound))
+}
+
+
+spend_label <- function(spend_row) {
+  # turn the spend data into a single value
+  if (is.na(spend_row[[1]])) {
+    return(NA)
+  }
+  return(paste0(spend_row$lower_bound, "-", spend_row$upper_bound))
+}
+>>>>>>> c0aa58b8ef88a84b893678170cc4286944019153
 
 ad_id_from_row <- function(row) {
   # get ad id from URL
