@@ -52,7 +52,11 @@ graph_get <- function(service, params, token = token_get()) {
   }
   agent <- httr::user_agent("Radlibrary R Package")
   response <- RETRY("GET", graph_api_endpoint(service), agent, query = params,
+<<<<<<< HEAD
                     quiet = FALSE, terminate_on = c(400, 500))
+=======
+                    quiet = FALSE)
+>>>>>>> 4ddf6bec39d8a341dbce9e49825e22116f4f4e8b
   extract_error_message(response)
   response
 }
