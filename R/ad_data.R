@@ -200,11 +200,12 @@ adlib_id_from_row <- function(row) {
 #' @export
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
+#' @importFrom purrr map
 ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res <- results$data %>%
-    map(ad_row) %>%
+    purrr::map(ad_row) %>%
     purrr::transpose() %>%
-    map(unlist) %>%
+    purrr::map(unlist) %>%
     as_tibble()
 
 
