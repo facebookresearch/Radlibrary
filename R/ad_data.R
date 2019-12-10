@@ -62,7 +62,8 @@ as_tibble.adlib_data_response <- function(x,
   type <- match.arg(type)
   out <- switch(type,
     "ad" = ad_table(x,
-                    censor_access_token = censor_access_token, ...),
+      censor_access_token = censor_access_token, ...
+    ),
     "demographic" = demographic_table(x),
     "region" = region_table(x)
   )
@@ -131,15 +132,17 @@ print.paginated_adlib_data_response <- function(x, ...) {
 #' @export
 #'
 as_tibble.paginated_adlib_data_response <- function(x,
-  type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
+                                                    type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
   type <- match.arg(type)
   if ((type == "ad") & is.null(censor_access_token)) {
     warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
     censor_access_token <- TRUE
   }
   resp <- purrr::discard(x$responses, purrr::is_empty)
-  purrr::map_df(resp, as_tibble, type = type,
-                censor_access_token = censor_access_token, ...)
+  purrr::map_df(resp, as_tibble,
+    type = type,
+    censor_access_token = censor_access_token, ...
+  )
 }
 
 
@@ -159,7 +162,7 @@ ad_row <- function(row) {
     "ad_creative_link_description", "ad_creative_link_title",
     "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
     "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
-    "ad_id", "impressions_lower", "impressions_upper", "ad_snapshot_url"
+    "adlib_id", "impressions_lower", "impressions_upper", "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
@@ -168,7 +171,7 @@ ad_row <- function(row) {
   }
   row[["spend_lower"]] <- as.numeric(row[["spend"]][["lower_bound"]])
   row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
-  row[["ad_id"]] <- ad_id_from_row(row)
+  row[["adlib_id"]] <- adlib_id_from_row(row)
   row[["impressions_lower"]] <- as.numeric(row[["impressions"]][["lower_bound"]])
   row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
   row[columns]
@@ -182,7 +185,7 @@ na_pad <- function(x) {
 }
 
 
-ad_id_from_row <- function(row) {
+adlib_id_from_row <- function(row) {
   # get ad id from URL
   httr::parse_url(row[["ad_snapshot_url"]])[["query"]][["id"]]
 }
@@ -243,10 +246,10 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
 #' @importFrom rlang .data
 demographic_row <- function(result_row) {
   demo_row <- result_row[["demographic_distribution"]]
-  id <- ad_id_from_row(result_row)
+  id <- adlib_id_from_row(result_row)
   demo_row %>%
     map_df(as_tibble) %>%
-    mutate(ad_id = id) %>%
+    mutate(adlib_id = id) %>%
     mutate(percentage = as.numeric(.data$percentage))
 }
 
@@ -268,10 +271,10 @@ construct region table.")
 
 region_row <- function(result_row) {
   reg_row <- result_row[["region_distribution"]]
-  id <- ad_id_from_row(result_row)
+  id <- adlib_id_from_row(result_row)
   reg_row %>%
     map_df(as_tibble) %>%
-    mutate(ad_id = id) %>%
+    mutate(adlib_id = id) %>%
     mutate(percentage = as.numeric(.data$percentage))
 }
 

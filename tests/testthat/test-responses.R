@@ -33,8 +33,7 @@ test_that("ad_row works when spend and impressions hit upper bound", {
   dr$impressions$upper_bound <- NULL
   row <- ad_row(dr)
   expect_equal(row$impressions_upper, as.numeric(NA))
-}
-)
+})
 
 test_that("Access token censoring", {
   expect_equal(
