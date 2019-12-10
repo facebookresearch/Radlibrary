@@ -284,20 +284,3 @@ format_array <- function(items) {
 #' @importFrom tibble as_tibble
 tibble::as_tibble
 
-
-
-#' Convert Ad Library response to tibble
-#'
-#' @param response a response form adlib_get
-#'
-#' @return tibble
-#' @export
-#'
-#' @importFrom tibble as_tibble
-#' @importFrom purrr map
-#' @importFrom dplyr bind_rows
-adlib_data_frame <- function(response) {
-  adlib_data <- content(response)[["data"]]
-  map(adlib_data, as_tibble) %>%
-    bind_rows()
-}
