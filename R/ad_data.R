@@ -46,24 +46,25 @@ print.adlib_data_response <- function(x, ...) {
 
 #' Convert a data response to tibble
 #'
-#' @param response an adlib_data_response object returned by adlib_get
+#' @param x an adlib_data_response object returned by adlib_get
 #' @param type the type of table to output. One of c("ad", "demographic",
 #' "region").
+#' @param censor_access_token should access tokens be censored?
 #' @param ... additional arguments to pass to conversion function
 #'
 #' @return a tibble
 #' @export
 #'
-as_tibble.adlib_data_response <- function(response,
+as_tibble.adlib_data_response <- function(x,
                                           type = c("ad", "demographic", "region"),
                                           censor_access_token = NULL,
                                           ...) {
   type <- match.arg(type)
   out <- switch(type,
-    "ad" = ad_table(response,
+    "ad" = ad_table(x,
                     censor_access_token = censor_access_token, ...),
-    "demographic" = demographic_table(response),
-    "region" = region_table(response)
+    "demographic" = demographic_table(x),
+    "region" = region_table(x)
   )
 
   out
@@ -120,7 +121,15 @@ print.paginated_adlib_data_response <- function(x, ...) {
   cat(format(x))
 }
 
+#' Convert a paginated response into a tibble
+#' @param x a paginated response returned by adlib_get_paginated
+#' @param type one of "ad", "demographic", "region".
+#' @param censor_access_token should access tokens be censored from output?
+#' @param ... other arguments to be passed on to as_tibble
+#'
+#'
 #' @export
+#'
 as_tibble.paginated_adlib_data_response <- function(x,
   type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
   type <- match.arg(type)
