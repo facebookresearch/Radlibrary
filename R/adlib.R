@@ -280,6 +280,12 @@ format_array <- function(items) {
 }
 
 
+#' @export
+#' @importFrom tibble as_tibble
+tibble::as_tibble
+
+
+
 #' Convert Ad Library response to tibble
 #'
 #' @param response a response form adlib_get

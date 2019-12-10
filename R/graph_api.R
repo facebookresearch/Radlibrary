@@ -76,7 +76,7 @@ extract_error_message <- function(response) {
   invisible(response)
 }
 
-add_token_to_env <- function() {
+token_add_to_env <- function() {
   # only used for testing at the moment.
   Sys.setenv("FB_GRAPH_API_TOKEN" = token_get()$token)
 }
