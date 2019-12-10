@@ -149,13 +149,19 @@ ad_row <- function(row) {
       row[[field]] <- NA
     }
   }
-  row[["spend_lower"]] <- as.numeric(row[["spend"]][[1]])
-  row[["spend_upper"]] <- as.numeric(row[["spend"]][[2]])
+  row[["spend_lower"]] <- as.numeric(row[["spend"]][["lower_bound"]])
+  row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
   row[["ad_id"]] <- ad_id_from_row(row)
-  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][[1]])
-  row[["impressions_upper"]] <- as.numeric(row[["impressions"]][[2]])
-
+  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][["lower_bound"]])
+  row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
   row[columns]
+}
+
+na_pad <- function(x) {
+  if (length(x) == 0) {
+    return(NA)
+  }
+  x
 }
 
 
