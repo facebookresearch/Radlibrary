@@ -26,7 +26,7 @@ This vignette serves two distinct, but related, purposes:
 * To  through getting started with the `Radlibrary` package to query, analyze, 
   and visualize data from the Facebook Ad Library API 
 
-## Getting Setup 
+## Getting Set Up 
 
 There are three basic steps required to begin used the Facebook Ad Library API. 
 
@@ -43,16 +43,17 @@ Currently, accessing the Facebook Ads API utilizes the same verification process
 
 ### Create a Facebook Developer account 
 
-Visit [Facebook for Developers](https://developers.facebook.com/) and select Get Started. As part of account creation, you'll need to agree to our Platform Policy.
+Visit [Facebook for Developers](https://developers.facebook.com/) and select Get Started to sign up for a developer account.
 
 ### Add a new App
 
-Once you have an account, you'll need to create a new app. You'll need your `App ID` and `App Secret` in order to generate a short-term token to access the API. 
+Once you have an account, you'll need to create a new app. Go to the [Explorer tool](https://developers.facebook.com/tools/explorer/) and click "Create App" under "My Apps".
 
 
-**Note**: Be careful in sharing code that contains credential data, especially access tokens. 
+**IMPORTANT NOTE ABOUT ACCESS TOKENS**
+Anyone who obtains your access token can use it to access your Facebook account until the token expires. Treat your access token as you would a password. Avoid putting it in source code, in your command history, and especially on GitHub or somewhere else online. 
 
-## Getting Started 
+## Getting Started with `Radlibrary`
 
 To get started using the `Radlibrary` package, you'll want to take the following steps: 
 
@@ -65,11 +66,18 @@ To get started using the `Radlibrary` package, you'll want to take the following
 
 You can find your access token on [Facebook for Developers](https://developers.facebook.com/tools/explorer/")
 
-Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you'd like to use `Radlibrary` functionality to generate a persistent token, see [Generating persistent tokens](#generating-persistent-tokens). If you do not need a long-term token, you can save your token to your environment. For example:
+Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you'd like to use `Radlibrary` functionality to generate a persistent token, see [Generating persistent tokens](#generating-persistent-tokens). If you do not need a long-term token, you can save your token to your environment. **Note:** the best way to store your access token interactively is to use `readline` and paste the token at the prompt.
 
 ```{r, eval = FALSE}
+## This will store your access token in your R history—not recommended!
 token <- "PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"
+
+## better:
+token <- readline()
+# now paste at the prompt
 ```
+
+This way, your access token won't be stored in your R history.
 
 ### Build a query 
 
@@ -112,7 +120,7 @@ The `adlib_get()` requires a query and a token. It will return an object type of
 
 ### Analyze the results
 
-You can extract data from the `adlib_data_response` object via `as_tibble` wrapper from `dplyr`. 
+You can convert your results into a `tibble` using `as_tibble`:
 
 ```{r, eval = FALSE}
 results.tibble <- as_tibble(results, type = "ad")
@@ -157,7 +165,7 @@ knitr::include_graphics("example.png")
 
 ## Generating Persistent Tokens 
 
-You may want to generate a persistent token that allows you to avoid having to refresh your token every hour. You can use the `App ID` and `App Secret` to generate a persistent token that works for 60 days. To facilitate this, we've included functionality from [`keyring` library](https://cran.r-project.org/web/packages/keyring/index.html)
+You may want to generate a persistent token that allows you to avoid having to refresh your token every hour. You can use the `App ID` and `App Secret` to generate a persistent token that works for 60 days. It is important to store this secret securely. To facilitate this, we've included functionality from [`keyring` library](https://cran.r-project.org/web/packages/keyring/index.html).
 
 To begin, run this command: 
 
@@ -176,10 +184,12 @@ Press <Enter>
 
 If you've already stored an Application ID at some point, you'll also receive a prompt as to whether or not you'd like to overwrite your previously stored information. 
 
-You'll then be asked via prompt to access and input your Application ID and your App Secret. Storing this will be sufficient for analysis. You can then run the `adlib_set_longterm_token()` command, follow the prompts, and store your persistent access token within your system's credential store. 
+You'll then be asked via prompt to access and input your Application ID and your App Secret. You can then run the `adlib_set_longterm_token()` command, follow the prompts, and store your persistent access token within your system's credential store. 
 
-If set your token in the above fashion, you'll be able to use the `token_get()` function within `adlib_get()` to retrieve your stored credential. For example: 
+If you have a long-term token stored, `Radlibrary` will find it automatically when you run `adlib_get`
 
 ```{r, eval = FALSE} 
-response <- adlib_get(query = query, token = token_get())
+response <- adlib_get(query = query)
 ```
+
+You can also retrieve your stored token at any time with `token_get()`.
