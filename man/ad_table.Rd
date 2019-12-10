@@ -4,12 +4,14 @@
 \alias{ad_table}
 \title{Create an ad_table from results}
 \usage{
-ad_table(results, handle_dates = TRUE)
+ad_table(results, handle_dates = TRUE, censor_access_token = NULL)
 }
 \arguments{
 \item{results}{data from an ads_archive response}
 
 \item{handle_dates}{if true, convert dates columns to date}
+
+\item{censor_access_token}{if true, the ad_snapshot_url will be censored}
 }
 \value{
 dataframe with one row per ad
