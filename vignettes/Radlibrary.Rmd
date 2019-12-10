@@ -43,7 +43,7 @@ Currently, accessing the Facebook Ads API utilizes the same verification process
 
 ### Create a Facebook Developer account 
 
-Visit [Facebook for Developers](https://developers.facebook.com/) and select Get Started to sign up for a developer account.
+Visit [Facebook for Developers](https://developers.facebook.com/) and select Get Started to sign up for a developer account. As part of account creation, you'll need to agree to our Platform Policy.
 
 ### Add a new App
 
