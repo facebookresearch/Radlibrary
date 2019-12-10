@@ -4,4 +4,6 @@ adlib_config.yml
 token_response.rds
 .DS_Store
 Icon\\r
-Icon[]
+Icon[
+]
+inst/doc

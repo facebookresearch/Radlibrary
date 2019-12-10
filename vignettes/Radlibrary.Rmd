@@ -1,0 +1,185 @@
+---
+title: "Getting started with `Radlibrary`"
+output:
+  rmarkdown::html_vignette:
+  toc: true
+vignette: >
+  %\VignetteIndexEntry{Usage and migration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    message = FALSE,
+    warning = FALSE
+)
+```
+
+## Introduction
+
+This vignette serves two distinct, but related, purposes:
+
+* To document the steps required to get started with the Facebook 
+  Ad Library API. 
+  
+* To  through getting started with the `Radlibrary` package to query, analyze, 
+  and visualize data from the Facebook Ad Library API 
+
+## Getting Setup 
+
+There are three basic steps required to begin used the Facebook Ad Library API. 
+
+1. Confirm your identity and location
+2. Create a Facebook Developer account
+3. Add a new app
+ 
+ 
+### Confirm your identity and location with Facebook
+
+Currently, accessing the Facebook Ads API utilizes the same verification process that is required to run ads about social issues, elections or politics. To complete this process, go to [the ID section of your Facebook settings](https://www.facebook.com/ID). To complete this process, you will need to submit a form of national identification to confirm your identity. If you haven't already confirmed your ID, it typically takes 1-2 days to complete this step. 
+
+**Note**: Your identification will need to match your physical location for verification purposes. 
+
+### Create a Facebook Developer account 
+
+Visit [Facebook for Developers](https://developers.facebook.com/) and select Get Started. As part of account creation, you'll need to agree to our Platform Policy.
+
+### Add a new App
+
+Once you have an account, you'll need to create a new app. You'll need your `App ID` and `App Secret` in order to generate a short-term token to access the API. 
+
+
+**Note**: Be careful in sharing code that contains credential data, especially access tokens. 
+
+## Getting Started 
+
+To get started using the `Radlibrary` package, you'll want to take the following steps: 
+
+1. Retrieve and store your access token 
+2. Build a query
+3. Submit the query 
+4. Analyze the results 
+
+### Retrieve and store your access token. 
+
+You can find your access token on [Facebook for Developers](https://developers.facebook.com/tools/explorer/")
+
+Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you'd like to use `Radlibrary` functionality to generate a persistent token, see [Generating persistent tokens](#generating-persistent-tokens). If you do not need a long-term token, you can save your token to your environment. For example:
+
+```{r, eval = FALSE}
+token <- "PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"
+```
+
+### Build a query 
+
+Let's build our first query!
+
+We'll start with a simple example. Let's look for all active ads within the United States that served impressions in the past 90 days and are related to health care. 
+
+```{r, eval = FALSE} 
+query <- adlib_build_query(ad_reached_countries = 'US', 
+ad_active_status = 'ACTIVE', 
+impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS', 
+search_terms = "healthcare",
+fields = "ad_data")
+```
+
+There are numerous parameters to the `adlib_build_query` function (for more, see `?adlib_build_query`). In the above, we're passing five parameters: 
+
+*  `ad_reached_countries = 'US'`: this tells they query we only want to return ads shown in the United States. Note that the query submission will fail if you try and submit an ISO country code that you are not verified for. 
+*  `ad_active_status = 'ACTIVE'`: this tells they query we only want to return ads that are currently active. 
+*  `impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS'`: this tells they query we want to see any ad that has served impressions in the last 90 days. 
+*  `search_terms = "healthcare"`: this is the search string for the query. **Note**: You can only search for single keywords. For example, you can search “health care,” but the system will search for these words separately (i.e. “health” and “care”).
+*  `fields = "ad_data"`: this is the fields to include in the response. In this example, we're looking strictly at ad data. We could also search for aggregated data related to regional delivery or demographics. 
+
+
+### Submit a query 
+
+Let's submit the query from the previous section for analysis. 
+
+```{r, eval = FALSE} 
+response <- adlib_get(query = query, token = token)
+```
+
+The `adlib_get()` requires a query and a token. It will return an object type of `adlib_data_response` which contains ad data for up to 1,000 rows matching the query parameters. This objective has numerous metadata attributes:
+
+* `date`: the time stamp of the query submission
+* `has_next`: A Boolean value indicating whether there are still pages available after the current search returned (see section on pagination below) 
+* `next_page`: The URL to call the next page of responses
+* `fields`: the fields available in the query 
+* `data`: the data returned. 
+
+### Analyze the results
+
+You can extract data from the `adlib_data_response` object via `as_tibble` wrapper from `dplyr`. 
+
+```{r, eval = FALSE}
+results.tibble <- as_tibble(results, type = "ad")
+```
+
+This will transform the information stored in `data` and in `fields` from your `adlib_data_response` into a tidy data frame (i.e., a tibble) for analysis. The example content below from the above: 
+
+```{r, eval = FALSE}
+> head(results.tibble)
+#  A tibble: 6 x 15
+#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… 
+#  <dttm>              <chr>            <chr>            <chr>           
+# 1 2019-12-09 02:24:23 I believe in He… NA               NA              
+# 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… 
+# 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… 
+# 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… 
+# 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … 
+# 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               
+# … with 11 more variables: ad_delivery_stop_time <dttm>, currency <chr> ... 
+``` 
+
+As an example - we can display this  data visually.  Let's use `ggplot2` and visualize the top 20 page names by number of ads created. 
+
+```{r, eval = FALSE}
+results.tibble %>%
+  group_by(page_name) %>%
+  select(page_name) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  top_n(n = 20) %>%
+  ggplot(aes(reorder(x = page_name, n), y = n)) + 
+  geom_bar(stat="identity") + 
+  xlab("Page Name") + 
+  ylab("Count of Ads") + 
+  theme_bw() + 
+  coord_flip()
+```
+
+```{r fig.align="left" , echo = FALSE}
+knitr::include_graphics("example.png")
+```
+
+## Generating Persistent Tokens 
+
+You may want to generate a persistent token that allows you to avoid having to refresh your token every hour. You can use the `App ID` and `App Secret` to generate a persistent token that works for 60 days. To facilitate this, we've included functionality from [`keyring` library](https://cran.r-project.org/web/packages/keyring/index.html)
+
+To begin, run this command: 
+
+```{r, eval = FALSE} 
+adlib_setup()
+```
+
+This will generate the following prompt: 
+
+```
+Visit https://developers.facebook.com/ and navigate to your App's basic settings
+to find your Application ID and App Secret.
+These will be securely stored in your computer's credential store.
+Press <Enter>
+```
+
+If you've already stored an Application ID at some point, you'll also receive a prompt as to whether or not you'd like to overwrite your previously stored information. 
+
+You'll then be asked via prompt to access and input your Application ID and your App Secret. Storing this will be sufficient for analysis. You can then run the `adlib_set_longterm_token()` command, follow the prompts, and store your persistent access token within your system's credential store. 
+
+If set your token in the above fashion, you'll be able to use the `token_get()` function within `adlib_get()` to retrieve your stored credential. For example: 
+
+```{r, eval = FALSE} 
+response <- adlib_get(query = query, token = token_get())
+```
