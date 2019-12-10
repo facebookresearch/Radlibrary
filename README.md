@@ -19,9 +19,7 @@ Please see the vignette or the [`pkgdown` site](https://facebookresearch.github.
 
 ## News
 
-For updates and change log information, see [NEWS](NEWS) 
-
-- Initial release
+For updates and change log information, see [NEWS](NEWS).
 
 ## License
 
