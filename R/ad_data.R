@@ -29,39 +29,57 @@ adlib_data_response <- function(response) {
 }
 
 
-length.adlib_data_response <- function(resp) {
-  length(resp$data)
+#' @export
+length.adlib_data_response <- function(x) {
+  length(x$data)
 }
 
-print.adlib_data_response <- function(response) {
-  cat(glue::glue("Data response object with {length(response)} entries."))
+#' @export
+format.adlib_data_response <- function(x, ...) {
+  glue::glue("Data response object with {length(x)} entries.")
+}
+
+#' @export
+print.adlib_data_response <- function(x, ...) {
+  cat(format(x))
 }
 
 #' Convert a data response to tibble
 #'
-#' @param response an adlib_data_response object returned by adlib_get
+#' @param x an adlib_data_response object returned by adlib_get
 #' @param type the type of table to output. One of c("ad", "demographic",
 #' "region").
+#' @param censor_access_token should access tokens be censored?
 #' @param ... additional arguments to pass to conversion function
 #'
 #' @return a tibble
 #' @export
 #'
-as_tibble.adlib_data_response <- function(response,
-                                          type = c("ad", "demographic", "region"), ...) {
+as_tibble.adlib_data_response <- function(x,
+                                          type = c("ad", "demographic", "region"),
+                                          censor_access_token = NULL,
+                                          ...) {
   type <- match.arg(type)
+  out <- switch(type,
+    "ad" = ad_table(x,
+      censor_access_token = censor_access_token, ...
+    ),
+    "demographic" = demographic_table(x),
+    "region" = region_table(x)
+  )
 
-  if (type == "ad") {
-    return(ad_table(response, ...))
-  } else if (type == "demographic") {
-    return(demographic_table(response))
-  } else if (type == "region") {
-    return(region_table(response))
-  }
+  out
 }
 
-censor_url <- function(url) {
-  httr::modify_url(url, query = list(access_token = "{access_token}"))
+censor_access_token <- function(x) {
+  stringr::str_replace(x,
+    pattern = "access_token=\\w+",
+    replacement = "access_token={access_token}"
+  )
+}
+
+detect_access_token <- function(x) {
+  any(stringr::str_detect(x, pattern = "access_token=\\w+"))
 }
 
 
@@ -79,18 +97,52 @@ paginated_adlib_data_response <- function(responses) {
   )
 }
 
-length.paginated_adlib_data_response <- function(padr) {
-  sum(sapply(padr$responses, length))
+#' Number of pages in a paginated response
+#' @param x a paginated data response
+#'
+#' @export
+n_responses <- function(x) {
+  length(x$responses)
 }
 
-print.paginated_adlib_data_response <- function(padr) {
-  cat(glue::glue("Paginated data response object with {length(padr)} entries."))
+#' Number of records in a paginated response
+#' @param x a paginated data response
+#' @export
+n_records <- function(x) {
+  sum(sapply(x$responses, length))
 }
 
-as_tibble.paginated_adlib_data_response <- function(
-                                                    padr, type = c("ad", "demographic", "region"), ...) {
-  resp <- purrr::discard(padr$responses, purrr::is_empty)
-  purrr::map_df(resp, as_tibble, type = type, ...)
+#' @export
+format.paginated_adlib_data_response <- function(x, ...) {
+  glue::glue("Paginated data response object with {n_responses(x)} pages and {n_records(x)} records")
+}
+
+#' @export
+print.paginated_adlib_data_response <- function(x, ...) {
+  cat(format(x))
+}
+
+#' Convert a paginated response into a tibble
+#' @param x a paginated response returned by adlib_get_paginated
+#' @param type one of "ad", "demographic", "region".
+#' @param censor_access_token should access tokens be censored from output?
+#' @param ... other arguments to be passed on to as_tibble
+#'
+#'
+#' @export
+#'
+as_tibble.paginated_adlib_data_response <- function(x,
+                                                    type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
+  type <- match.arg(type)
+  if ((type == "ad") & is.null(censor_access_token)) {
+    warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
+    censor_access_token <- TRUE
+  }
+  resp <- purrr::discard(x$responses, purrr::is_empty)
+  purrr::map_df(resp, as_tibble,
+    type = type,
+    censor_access_token = censor_access_token, ...
+  )
 }
 
 
@@ -109,39 +161,31 @@ ad_row <- function(row) {
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
     "ad_creative_link_description", "ad_creative_link_title",
     "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
-    "funding_entity", "page_id", "page_name", "spend", "ad_id", "impressions",
-    "ad_snapshot_url"
+    "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
+    "adlib_id", "impressions_lower", "impressions_upper", "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
       row[[field]] <- NA
     }
   }
-  row[["spend"]] <- spend_label(row[["spend"]])
-  row[["ad_id"]] <- ad_id_from_row(row)
-  row[["impressions"]] <- impression_label(row[["impressions"]])
-
-
+  row[["spend_lower"]] <- as.numeric(row[["spend"]][["lower_bound"]])
+  row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
+  row[["adlib_id"]] <- adlib_id_from_row(row)
+  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][["lower_bound"]])
+  row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
   row[columns]
 }
 
-impression_label <- function(impression_row) {
-  # turn the "impression" data into a single value
-  if (is.na(impression_row[[1]])) {
+na_pad <- function(x) {
+  if (length(x) == 0) {
     return(NA)
   }
-  return(paste0(impression_row$lower_bound, "-", impression_row$upper_bound))
+  x
 }
 
-spend_label <- function(spend_row) {
-  # turn the spend data into a single value
-  if (is.na(spend_row[[1]])) {
-    return(NA)
-  }
-  return(paste0(spend_row$lower_bound, "-", spend_row$upper_bound))
-}
 
-ad_id_from_row <- function(row) {
+adlib_id_from_row <- function(row) {
   # get ad id from URL
   httr::parse_url(row[["ad_snapshot_url"]])[["query"]][["id"]]
 }
@@ -150,16 +194,18 @@ ad_id_from_row <- function(row) {
 #'
 #' @param results data from an ads_archive response
 #' @param handle_dates if true, convert dates columns to date
+#' @param censor_access_token if true, the ad_snapshot_url will be censored
 #'
 #' @return dataframe with one row per ad
 #' @export
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
-ad_table <- function(results, handle_dates = TRUE) {
+#' @importFrom purrr map
+ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res <- results$data %>%
-    map(ad_row) %>%
+    purrr::map(ad_row) %>%
     purrr::transpose() %>%
-    map(unlist) %>%
+    purrr::map(unlist) %>%
     as_tibble()
 
 
@@ -169,6 +215,22 @@ ad_table <- function(results, handle_dates = TRUE) {
         .data$ad_creation_time, .data$ad_delivery_start_time,
         .data$ad_delivery_stop_time
       ), list(lubridate::ymd_hms))
+  }
+
+  # censor access tokens
+  if (is.null(censor_access_token)) {
+    censor <- TRUE
+  } else {
+    censor <- censor_access_token
+  }
+
+  any_raw_tokens <- any(detect_access_token(res$ad_snapshot_url))
+  if (is.null(censor_access_token) & any_raw_tokens) {
+    warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
+  }
+
+  if (("ad_snapshot_url" %in% names(res)) & censor) {
+    res$ad_snapshot_url <- censor_access_token(res$ad_snapshot_url)
   }
 
   res
@@ -185,10 +247,10 @@ ad_table <- function(results, handle_dates = TRUE) {
 #' @importFrom rlang .data
 demographic_row <- function(result_row) {
   demo_row <- result_row[["demographic_distribution"]]
-  id <- ad_id_from_row(result_row)
+  id <- adlib_id_from_row(result_row)
   demo_row %>%
     map_df(as_tibble) %>%
-    mutate(ad_id = id) %>%
+    mutate(adlib_id = id) %>%
     mutate(percentage = as.numeric(.data$percentage))
 }
 
@@ -210,10 +272,10 @@ construct region table.")
 
 region_row <- function(result_row) {
   reg_row <- result_row[["region_distribution"]]
-  id <- ad_id_from_row(result_row)
+  id <- adlib_id_from_row(result_row)
   reg_row %>%
     map_df(as_tibble) %>%
-    mutate(ad_id = id) %>%
+    mutate(adlib_id = id) %>%
     mutate(percentage = as.numeric(.data$percentage))
 }
 
@@ -231,30 +293,4 @@ construct region table.")
   }
   results$data %>%
     map_df(region_row)
-}
-
-#' Parse a response to create three tables
-#'
-#' @param response a response from adlib_get
-#'
-#' @return A list of three tables.
-#' @export
-#'
-#' @details The result of this is three tables that can be joined to each other
-#' on ad_id.
-#' 1. The `ad_table` contains one row per ad from the response, contains data
-#' bout each ad such as when it started, who is paying for it, and how much they
-#' have spent, and how many impressions it has received.
-#' 2. The `demographic_table` contains a demographic breakdown of ad viewers,
-#' with one row per pair of (age bucket, gender), per ad.
-#' 3 The `region_table` contains a breakdown of where each ad was viewed, with
-#' one row per `ad_id` and `region`.
-#'
-adlib_response_to_tables <- function(response) {
-  data <- content(response)[["data"]]
-  list(
-    ad_table = ad_table(data),
-    demographic_table = demographic_table(data),
-    region_table = region_table(data)
-  )
 }

@@ -4,14 +4,20 @@
 \alias{as_tibble.adlib_data_response}
 \title{Convert a data response to tibble}
 \usage{
-\method{as_tibble}{adlib_data_response}(response, type = c("ad",
-  "demographic", "region"), ...)
+\method{as_tibble}{adlib_data_response}(
+  x,
+  type = c("ad", "demographic", "region"),
+  censor_access_token = NULL,
+  ...
+)
 }
 \arguments{
-\item{response}{an adlib_data_response object returned by adlib_get}
+\item{x}{an adlib_data_response object returned by adlib_get}
 
 \item{type}{the type of table to output. One of c("ad", "demographic",
 "region").}
+
+\item{censor_access_token}{should access tokens be censored?}
 
 \item{...}{additional arguments to pass to conversion function}
 }

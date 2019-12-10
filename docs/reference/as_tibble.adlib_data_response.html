@@ -8,11 +8,13 @@
 
 <title>Convert a data response to tibble — as_tibble.adlib_data_response • Radlibrary</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Convert a data response to tibble — as_tibble.adlib_data_response" />
 
+<meta property="og:title" content="Convert a data response to tibble — as_tibble.adlib_data_response" />
 <meta property="og:description" content="Convert a data response to tibble" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Radlibrary</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -79,13 +82,15 @@
   </a>
 </li>
 <li>
+  <a href="../articles/Radlibrary.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -107,20 +112,22 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Convert a data response to tibble</p>
-    
     </div>
 
     <pre class="usage"><span class='co'># S3 method for adlib_data_response</span>
-<span class='fu'>as_tibble</span>(<span class='no'>response</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ad"</span>,
-  <span class='st'>"demographic"</span>, <span class='st'>"region"</span>), <span class='no'>...</span>)</pre>
-    
+<span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ad"</span>, <span class='st'>"demographic"</span>, <span class='st'>"region"</span>),
+  <span class='kw'>censor_access_token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>response</th>
+      <th>x</th>
       <td><p>an adlib_data_response object returned by adlib_get</p></td>
     </tr>
     <tr>
@@ -129,24 +136,26 @@
 "region").</p></td>
     </tr>
     <tr>
+      <th>censor_access_token</th>
+      <td><p>should access tokens be censored?</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional arguments to pass to conversion function</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a tibble</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

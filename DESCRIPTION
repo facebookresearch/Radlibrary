@@ -1,6 +1,6 @@
 Package: Radlibrary
 Title: Facebook Ad Library API Tool
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     c(person(given = "Colin",
            family = "Fraser",
@@ -31,5 +31,8 @@ Imports:
     lubridate,
     rlang
 Suggests: 
-    testthat (>= 2.1.0)
-RoxygenNote: 6.1.1
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr
