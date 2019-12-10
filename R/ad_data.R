@@ -46,22 +46,25 @@ print.adlib_data_response <- function(x, ...) {
 
 #' Convert a data response to tibble
 #'
-#' @param response an adlib_data_response object returned by adlib_get
+#' @param x an adlib_data_response object returned by adlib_get
 #' @param type the type of table to output. One of c("ad", "demographic",
 #' "region").
+#' @param censor_access_token should access tokens be censored?
 #' @param ... additional arguments to pass to conversion function
 #'
 #' @return a tibble
 #' @export
 #'
-as_tibble.adlib_data_response <- function(response,
+as_tibble.adlib_data_response <- function(x,
                                           type = c("ad", "demographic", "region"),
+                                          censor_access_token = NULL,
                                           ...) {
   type <- match.arg(type)
   out <- switch(type,
-    "ad" = ad_table(response, ...),
-    "demographic" = demographic_table(response),
-    "region" = region_table(response)
+    "ad" = ad_table(x,
+                    censor_access_token = censor_access_token, ...),
+    "demographic" = demographic_table(x),
+    "region" = region_table(x)
   )
 
   out
@@ -118,11 +121,25 @@ print.paginated_adlib_data_response <- function(x, ...) {
   cat(format(x))
 }
 
+#' Convert a paginated response into a tibble
+#' @param x a paginated response returned by adlib_get_paginated
+#' @param type one of "ad", "demographic", "region".
+#' @param censor_access_token should access tokens be censored from output?
+#' @param ... other arguments to be passed on to as_tibble
+#'
+#'
 #' @export
-as_tibble.paginated_adlib_data_response <- function(
-                                                    x, type = c("ad", "demographic", "region"), ...) {
+#'
+as_tibble.paginated_adlib_data_response <- function(x,
+  type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
+  type <- match.arg(type)
+  if ((type == "ad") & is.null(censor_access_token)) {
+    warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
+    censor_access_token <- TRUE
+  }
   resp <- purrr::discard(x$responses, purrr::is_empty)
-  purrr::map_df(resp, as_tibble, type = type, ...)
+  purrr::map_df(resp, as_tibble, type = type,
+                censor_access_token = censor_access_token, ...)
 }
 
 
@@ -149,13 +166,19 @@ ad_row <- function(row) {
       row[[field]] <- NA
     }
   }
-  row[["spend_lower"]] <- as.numeric(row[["spend"]][[1]])
-  row[["spend_upper"]] <- as.numeric(row[["spend"]][[2]])
+  row[["spend_lower"]] <- as.numeric(row[["spend"]][["lower_bound"]])
+  row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
   row[["ad_id"]] <- ad_id_from_row(row)
-  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][[1]])
-  row[["impressions_upper"]] <- as.numeric(row[["impressions"]][[2]])
-
+  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][["lower_bound"]])
+  row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
   row[columns]
+}
+
+na_pad <- function(x) {
+  if (length(x) == 0) {
+    return(NA)
+  }
+  x
 }
 
 

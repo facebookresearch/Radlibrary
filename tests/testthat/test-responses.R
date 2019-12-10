@@ -15,6 +15,27 @@ test_that("Converting to ad table works", {
   expect_equal(ad_table, example_adtable)
 })
 
+test_that("ad_row works when spend and impressions hit upper bound", {
+  # upper exists for both
+  dr <- data_response$data[[1]]
+  row <- ad_row(dr)
+  expect_equal(row$spend_lower, 0)
+  expect_equal(row$spend_upper, 99)
+  expect_equal(row$impressions_lower, 0)
+  expect_equal(row$impressions_upper, 999)
+
+  # upper gone for spend
+  dr$spend$upper_bound <- NULL
+  row <- ad_row(dr)
+  expect_equal(row$spend_upper, as.numeric(NA))
+
+  # upper gone for impressions
+  dr$impressions$upper_bound <- NULL
+  row <- ad_row(dr)
+  expect_equal(row$impressions_upper, as.numeric(NA))
+}
+)
+
 test_that("Access token censoring", {
   expect_equal(
     censor_access_token(c(
