@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Region Table — region_table • Radlibrary</title>
+<title>Convert a paginated response into a tibble — as_tibble.paginated_adlib_data_response • Radlibrary</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Region Table — region_table" />
-<meta property="og:description" content="Region Table" />
+<meta property="og:title" content="Convert a paginated response into a tibble — as_tibble.paginated_adlib_data_response" />
+<meta property="og:description" content="Convert a paginated response into a tibble" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,36 +106,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Region Table</h1>
+    <h1>Convert a paginated response into a tibble</h1>
     
-    <div class="hidden name"><code>region_table.Rd</code></div>
+    <div class="hidden name"><code>as_tibble.paginated_adlib_data_response.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Region Table</p>
+    <p>Convert a paginated response into a tibble</p>
     </div>
 
-    <pre class="usage"><span class='fu'>region_table</span>(<span class='no'>results</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for paginated_adlib_data_response</span>
+<span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ad"</span>, <span class='st'>"demographic"</span>, <span class='st'>"region"</span>),
+  <span class='kw'>censor_access_token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>results</th>
-      <td><p>the data field of response content</p></td>
+      <th>x</th>
+      <td><p>a paginated response returned by adlib_get_paginated</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>one of "ad", "demographic", "region".</p></td>
+    </tr>
+    <tr>
+      <th>censor_access_token</th>
+      <td><p>should access tokens be censored from output?</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other arguments to be passed on to as_tibble</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a dataframe</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>
