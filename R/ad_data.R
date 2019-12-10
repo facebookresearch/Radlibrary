@@ -56,10 +56,12 @@ print.adlib_data_response <- function(x, ...) {
 #'
 as_tibble.adlib_data_response <- function(response,
                                           type = c("ad", "demographic", "region"),
+                                          censor_access_token = NULL,
                                           ...) {
   type <- match.arg(type)
   out <- switch(type,
-    "ad" = ad_table(response, ...),
+    "ad" = ad_table(response,
+                    censor_access_token = censor_access_token, ...),
     "demographic" = demographic_table(response),
     "region" = region_table(response)
   )
@@ -119,10 +121,16 @@ print.paginated_adlib_data_response <- function(x, ...) {
 }
 
 #' @export
-as_tibble.paginated_adlib_data_response <- function(
-                                                    x, type = c("ad", "demographic", "region"), ...) {
+as_tibble.paginated_adlib_data_response <- function(x,
+  type = c("ad", "demographic", "region"), censor_access_token = NULL, ...) {
+  type <- match.arg(type)
+  if ((type == "ad") & is.null(censor_access_token)) {
+    warning("Automatically censoring ad_snapshot_url to remove access_id.\n  To disable this warning, explicitly specify a value for `censor_access_token`.")
+    censor_access_token <- TRUE
+  }
   resp <- purrr::discard(x$responses, purrr::is_empty)
-  purrr::map_df(resp, as_tibble, type = type, ...)
+  purrr::map_df(resp, as_tibble, type = type,
+                censor_access_token = censor_access_token, ...)
 }
 
 
