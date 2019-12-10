@@ -29,7 +29,7 @@ token_string <- function(token) {
 }
 
 token_from_response <- function(response) {
-  cont <- content(response, as = "parsed")
+  cont <- httr::content(response, as = "parsed")
   if (is.null(cont[["access_token"]])) {
     stop("Response does not contain a token.")
   }

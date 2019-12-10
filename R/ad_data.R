@@ -9,7 +9,7 @@
 
 adlib_data_response <- function(response) {
   extract_error_message(response)
-  cont <- content(response, as = "parsed")
+  cont <- httr::content(response, as = "parsed")
   if ("data" %in% names(cont)) {
     return(structure(
       list(
@@ -149,13 +149,6 @@ as_tibble.paginated_adlib_data_response <- function(x,
 # Table conversion functions ----------------------------------------------
 
 
-
-#' Create a single row in the ad table
-#'
-#' @param row a single row in the response
-#'
-#' @return tibble with a single row
-#'
 ad_row <- function(row) {
   columns <- c(
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
@@ -236,15 +229,6 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res
 }
 
-#' Result Row
-#'
-#' @param result_row demographic data for a single ad
-#'
-#' @return a dateframe with one row
-#'
-#' @importFrom purrr map_df
-#' @importFrom dplyr mutate
-#' @importFrom rlang .data
 demographic_row <- function(result_row) {
   demo_row <- result_row[["demographic_distribution"]]
   id <- adlib_id_from_row(result_row)

@@ -60,17 +60,9 @@ graph_get <- function(service, params, token = token_get()) {
 }
 
 
-#' Extract an error message from a response to pass as an R error
-#'
-#' @param response a response from the Ad Library API
-#'
-#' @return a character vector of length 1 containing an error message
-#'
-#' @importFrom jsonlite prettify
-#' @importFrom httr content
 extract_error_message <- function(response) {
-  if (http_error(response)) {
-    out <- paste0("HTTP Error:\n", prettify(content(response, "text", encoding = "UTF-8"), indent = 2))
+  if (httr::http_error(response)) {
+    out <- paste0("HTTP Error:\n", jsonlite::prettify(httr::content(response, "text", encoding = "UTF-8"), indent = 2))
     stop(out)
   }
   invisible(response)
