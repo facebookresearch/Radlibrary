@@ -1,0 +1,82 @@
+<!-- Copyright (c) Facebook, Inc. and its affiliates.
+All rights reserved. -->
+---
+title: "`Radlibrary` table types"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{table-types}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The Ad Library provides data ads such as when they ran, how much money was spent on them, where were they seen, and who saw them. This data is not always convenient to display all in a single table.
+`Radlibrary` provides an interface for converting the data provided by the API into a [tidily formatted](https://r4ds.had.co.nz/tidy-data.html) `tibble`. There are three types of tables that can `Radlibrary` can build. This vignette shows how to obtain the data for each type and construct the corresponding tables.
+
+# Ad Tables
+Ad tables are tables with a single row per ad, and columns representing attributes of each ad. The `Radlibrary` defaults are set to make the creation of ad tables easy.
+To obtain the data for an ad table, start by building a query and setting the `fields` to `ad_data`. Below we construct query to build an ad table for all ads that had impressions in the US yesterday and contain the search term "medicare".
+```{r}
+library(Radlibrary)
+token <- Sys.getenv("FB_GRAPH_API_TOKEN")  # setting a token as an environment variable is another way to store a token, but usually you'd use token_get() here to fetch the token from your keychain
+query <- adlib_build_query(
+  ad_reached_countries = "US",
+  search_terms = "medicare",
+  impression_condition = "HAS_IMPRESSIONS_YESTERDAY",
+  fields = "ad_data"
+)
+
+response <- adlib_get(query, token = token)
+response
+```
+
+The response object can be converted to a table with `as_tibble`. We will specify that we want an `ad_table` out of `as_tibble` (although we don't have to, because that's the default).
+
+```{r}
+ad_table <- as_tibble(response, type = 'ad', censor_access_token = TRUE)
+ad_table
+```
+The `adlib_id` column can act as a primary key for this table. It is a unique identifier for each ad within the context of the Ad Library. This will come in handy for joins with the other table types.
+
+# Demographic tables
+The demographic table provides estimates of the number of impressions that the ad receives by age and gender. There is one row per combination of age bucket, gender, and ad ID. To build this table for this same set of ads, we need to get the right dataset by changing the `fields` argument in the query.
+
+```{r}
+demo_query <- adlib_build_query(
+  ad_reached_countries = "US",
+  search_terms = "medicare",
+  impression_condition = "HAS_IMPRESSIONS_YESTERDAY",
+  fields = "demographic_data"
+)
+demo_response <- adlib_get(demo_query, token = token)
+demo_response
+as_tibble(demo_response, type = 'demographic')
+```
+
+The `adlib_id` column in this table will match the `adlib_id` from the ad table so that these can be joined if necessary.
+
+# Region Tables
+The region table is similar to the demographic table in that it contains a distribution over bucketed values. The data for this table can be retrieved by making a query with `"region_data"` as the fields.
+
+```{r}
+reg_query <- adlib_build_query(
+  ad_reached_countries = "US",
+  search_terms = "medicare",
+  impression_condition = "HAS_IMPRESSIONS_YESTERDAY",
+  fields = "region_data"
+)
+reg_response <- adlib_get(reg_query, token = token)
+reg_response
+as_tibble(reg_response, type = 'region')
+```
+
+There is one row per region where an ad was seen, per ad. Again this table contains the identifier column `adlib_id`, allowing this table to be joined with the others.
+
+# A note on how much data to ask for
+It is possible to ask for the data for all of these tables at the same time. The region table can be constructed as long as `region_distribution` is included as a field in the query, and the demographic table can be constructed as long as `demographic_distribution` is included as a field. However, specifying all fields at the same time results in very large responses that may time out or exceed the data transfer limit of the API. It is better to make smaller requests for fewer fields, which can be easily joined together later using the `adlib_id` column.
