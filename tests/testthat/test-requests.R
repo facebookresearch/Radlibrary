@@ -1,4 +1,7 @@
-# these tests require that a valid access_token is stored in .travis.yml.
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+# 
+# These tests require that a valid access_token is stored in .travis.yml.
 # access tokens eventually expire, so the build will break when that happens.
 # To fix, obtain a long-term access token and add it as an encrypted
 # environment variable called FB_GRAPH_API_TOKEN, following the instructions
