@@ -110,7 +110,9 @@ Let's submit the query from the previous section for analysis.
 response <- adlib_get(query = query, token = token)
 ```
 
-The `adlib_get()` requires a query and a token. It will return an object type of `adlib_data_response` which contains ad data for up to 1,000 rows matching the query parameters. This objective has numerous metadata attributes:
+The `adlib_get()` requires a query and a token. It will return an object type of `adlib_data_response` which contains ad data for up to 1,000 rows matching the query parameters. Do you need to retrieve more than 1,000 rows? If so, check out the [Pagination](#pagination) section. 
+
+This data object has numerous metadata attributes:
 
 * `date`: the time stamp of the query submission
 * `has_next`: A Boolean value indicating whether there are still pages available after the current search returned (see section on pagination below) 
@@ -193,3 +195,41 @@ response <- adlib_get(query = query)
 ```
 
 You can also retrieve your stored token at any time with `token_get()`.
+
+## Pagination 
+
+You may want to retrieve more data than is available in a single API call. The `Radlibary` package handles this with an easy pagination implementation. 
+
+For example: 
+
+```{r, eval = FALSE}
+query <- adlib_build_query(ad_reached_countries = 'US', 
+                           ad_active_status = 'ALL', 
+                           impression_condition = 'HAS_IMPRESSIONS_LIFETIME', 
+                           search_terms = "healthcare",
+                           fields = "ad_data") 
+  
+result <- adlib_get(query, token_get())
+df <- as_tibble(result)
+dim(df)
+# [1] 1000   17
+```
+
+versus
+
+```{r, eval = FALSE}
+query <- adlib_build_query(ad_reached_countries = 'US', 
+                           ad_active_status = 'ALL', 
+                           impression_condition = 'HAS_IMPRESSIONS_LIFETIME', 
+                           search_terms = "healthcare",
+                           fields = "ad_data") 
+result_paginated <- adlib_get_paginated(query, max_gets = 10, token_get())
+df_paginated <- as_tibble(result_paginated, type = "ad")
+dim(df_paginated)
+# [1] 10000    17
+``` 
+
+This will allow yo
+
+
+
