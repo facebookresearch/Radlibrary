@@ -7,5 +7,14 @@
 adlib_setup()
 }
 \description{
-Set up application ID and app secret.
+This lets you store your application ID and app secret securely
+in your system's credential store (using the keyring package).
+}
+\details{
+The application ID and app secret are used to obtain a long-term
+access token.
+}
+\seealso{
+\code{\link{adlib_set_longterm_token}} for obtaining a
+long-term access token.
 }

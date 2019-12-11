@@ -11,3 +11,6 @@ Once you've entered your Application ID and App secret, you can
 obtain a long-term token that will expire in about 60 days. This will be stored
 in your operating system's secrets manager.
 }
+\seealso{
+\code{\link{adlib_setup}} for storing your App ID and App Secret.
+}

@@ -90,7 +90,14 @@ secret_exists <- function(secret = c(TOKEN, APP_ID, APP_SECRET)) {
 
 #' Set up application ID and app secret.
 #'
+#' This lets you store your application ID and app secret securely
+#' in your system's credential store (using the keyring package).
+#'
+#' The application ID and app secret are used to obtain a long-term
+#' access token.
 #' @export
+#' @seealso \code{\link{adlib_set_longterm_token}} for obtaining a
+#' long-term access token.
 #'
 #' @importFrom utils menu
 adlib_setup <- function() {

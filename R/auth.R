@@ -93,6 +93,8 @@ get_long_term_access_token <- function(app_secret, app_id, access_token) {
 #' in your operating system's secrets manager.
 #' @export
 #'
+#' @seealso \code{\link{adlib_setup}} for storing your App ID and App Secret.
+#'
 adlib_set_longterm_token <- function() {
   if (token_exists()) {
     if (menu(title = "A token is already saved. Get a new one?", choices = c("y", "n")) == 2) {
