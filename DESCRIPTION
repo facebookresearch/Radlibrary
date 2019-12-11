@@ -1,0 +1,38 @@
+Package: Radlibrary
+Title: Facebook Ad Library API Tool
+Version: 0.2.3
+Authors@R: 
+    c(person(given = "Colin",
+           family = "Fraser",
+           role = c("cre"),
+           email = "colinfraser@fb.com"),
+      person(given = "Kyle",
+           family = "Shank",
+           role = c("aut"),
+           email = "kylescotshank@fb.com"))
+Description: Query the Facebook Ads Library.
+License: BSD_3_clause + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    httr,
+    stringr,
+    readr,
+    magrittr,
+    jsonlite,
+    yaml,
+    tibble,
+    glue,
+    fs,
+    purrr,
+    dplyr,
+    keyring,
+    getPass,
+    lubridate,
+    rlang
+Suggests: 
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr
