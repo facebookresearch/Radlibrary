@@ -256,13 +256,14 @@ construct region table.")
     purrr::map_df(demographic_row)
 }
 
+#' @importFrom rlang .data
 region_row <- function(result_row) {
   reg_row <- result_row[["region_distribution"]]
   id <- adlib_id_from_row(result_row)
   reg_row %>%
     purrr::map_df(as_tibble) %>%
     dplyr::mutate(adlib_id = id) %>%
-    dplyr::mutate(percentage = as.numeric(rlang::.data$percentage))
+    dplyr::mutate(percentage = as.numeric(.data$percentage))
 }
 
 #' Region Table
