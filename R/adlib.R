@@ -284,4 +284,3 @@ format_array <- function(items) {
 #' @export
 #' @importFrom tibble as_tibble
 tibble::as_tibble
-
