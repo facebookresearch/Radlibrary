@@ -1,3 +1,7 @@
+# Radlibrary 0.2.3
+* improve docs
+* pass rhub windows build check
+
 # Radlibrary 0.2.2
 * bug fixes
 * table types vignette
