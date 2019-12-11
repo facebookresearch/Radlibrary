@@ -1,4 +1,6 @@
 # Radlibrary 0.2.1
+* tests and bugfixes
+* improved documentation
 
 # Radlibrary 0.2.0
 * CI is set up and passes
