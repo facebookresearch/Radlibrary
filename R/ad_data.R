@@ -194,6 +194,7 @@ adlib_id_from_row <- function(row) {
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
 #' @importFrom purrr map
+#' @importFrom rlang .data
 ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res <- results$data %>%
     purrr::map(ad_row) %>%
@@ -229,13 +230,14 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res
 }
 
+#' @importFrom rlang .data
 demographic_row <- function(result_row) {
   demo_row <- result_row[["demographic_distribution"]]
   id <- adlib_id_from_row(result_row)
   demo_row %>%
-    map_df(as_tibble) %>%
-    mutate(adlib_id = id) %>%
-    mutate(percentage = as.numeric(.data$percentage))
+    purrr::map_df(as_tibble) %>%
+    dplyr::mutate(adlib_id = id) %>%
+    dplyr::mutate(percentage = as.numeric(.data$percentage))
 }
 
 #' Turn data from the data field in response content into a demographics table
@@ -251,16 +253,16 @@ demographic_table <- function(results) {
 construct region table.")
   }
   results$data %>%
-    map_df(demographic_row)
+    purrr::map_df(demographic_row)
 }
 
 region_row <- function(result_row) {
   reg_row <- result_row[["region_distribution"]]
   id <- adlib_id_from_row(result_row)
   reg_row %>%
-    map_df(as_tibble) %>%
-    mutate(adlib_id = id) %>%
-    mutate(percentage = as.numeric(.data$percentage))
+    purrr::map_df(as_tibble) %>%
+    dplyr::mutate(adlib_id = id) %>%
+    dplyr::mutate(percentage = as.numeric(rlang::.data$percentage))
 }
 
 #' Region Table
@@ -276,5 +278,5 @@ region_table <- function(results) {
 construct region table.")
   }
   results$data %>%
-    map_df(region_row)
+    purrr::map_df(region_row)
 }
