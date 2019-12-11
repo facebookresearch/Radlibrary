@@ -1,3 +1,5 @@
+<!-- Copyright (c) Facebook, Inc. and its affiliates.
+All rights reserved. -->
 ---
 title: "Getting started with `Radlibrary`"
 output:
