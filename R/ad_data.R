@@ -249,7 +249,7 @@ demographic_row <- function(result_row) {
 #'
 demographic_table <- function(results) {
   if (!("demographic_distribution" %in% results$fields)) {
-    stop("\"region_distribution\" must be one of the fields returned in order to
+    stop("\"demographic_distribution\" must be one of the fields returned in order to
 construct region table.")
   }
   results$data %>%
