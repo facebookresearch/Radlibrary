@@ -271,7 +271,7 @@ format_array <- function(items) {
   if (is.numeric(items)) {
     out <- paste0("[", paste0(items, collapse = ","), "]")
   } else if (is.character(items)) {
-    out <- paste0("[", paste0(shQuote(items), collapse = ","), "]")
+    out <- paste0("[", paste0(shQuote(items, type = 'sh'), collapse = ","), "]")
   }
   else {
     dtype <- class(items)
