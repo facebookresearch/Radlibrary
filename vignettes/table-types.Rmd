@@ -1,7 +1,5 @@
-<!-- Copyright (c) Facebook, Inc. and its affiliates.
-All rights reserved. -->
 ---
-title: "`Radlibrary` table types"
+title: "Radlibrary table types"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{table-types}

@@ -1,3 +1,7 @@
+# Radlibrary 0.2.2
+* bug fixes
+* table types vignette
+
 # Radlibrary 0.2.1
 * tests and bugfixes
 * improved documentation

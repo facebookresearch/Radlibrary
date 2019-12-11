@@ -3,4 +3,5 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   Radlibrary: Radlibrary.html
+  table-types: table-types.html
 
