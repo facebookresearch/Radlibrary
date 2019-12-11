@@ -9,7 +9,7 @@
 
 adlib_data_response <- function(response) {
   extract_error_message(response)
-  cont <- content(response, as = "parsed")
+  cont <- httr::content(response, as = "parsed")
   if ("data" %in% names(cont)) {
     return(structure(
       list(
@@ -149,13 +149,6 @@ as_tibble.paginated_adlib_data_response <- function(x,
 # Table conversion functions ----------------------------------------------
 
 
-
-#' Create a single row in the ad table
-#'
-#' @param row a single row in the response
-#'
-#' @return tibble with a single row
-#'
 ad_row <- function(row) {
   columns <- c(
     "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
@@ -201,6 +194,7 @@ adlib_id_from_row <- function(row) {
 #' @importFrom lubridate ymd_hms
 #' @importFrom dplyr mutate_at vars
 #' @importFrom purrr map
+#' @importFrom rlang .data
 ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res <- results$data %>%
     purrr::map(ad_row) %>%
@@ -236,22 +230,14 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
   res
 }
 
-#' Result Row
-#'
-#' @param result_row demographic data for a single ad
-#'
-#' @return a dateframe with one row
-#'
-#' @importFrom purrr map_df
-#' @importFrom dplyr mutate
 #' @importFrom rlang .data
 demographic_row <- function(result_row) {
   demo_row <- result_row[["demographic_distribution"]]
   id <- adlib_id_from_row(result_row)
   demo_row %>%
-    map_df(as_tibble) %>%
-    mutate(adlib_id = id) %>%
-    mutate(percentage = as.numeric(.data$percentage))
+    purrr::map_df(as_tibble) %>%
+    dplyr::mutate(adlib_id = id) %>%
+    dplyr::mutate(percentage = as.numeric(.data$percentage))
 }
 
 #' Turn data from the data field in response content into a demographics table
@@ -267,16 +253,16 @@ demographic_table <- function(results) {
 construct region table.")
   }
   results$data %>%
-    map_df(demographic_row)
+    purrr::map_df(demographic_row)
 }
 
 region_row <- function(result_row) {
   reg_row <- result_row[["region_distribution"]]
   id <- adlib_id_from_row(result_row)
   reg_row %>%
-    map_df(as_tibble) %>%
-    mutate(adlib_id = id) %>%
-    mutate(percentage = as.numeric(.data$percentage))
+    purrr::map_df(as_tibble) %>%
+    dplyr::mutate(adlib_id = id) %>%
+    dplyr::mutate(percentage = as.numeric(rlang::.data$percentage))
 }
 
 #' Region Table
@@ -292,5 +278,5 @@ region_table <- function(results) {
 construct region table.")
   }
   results$data %>%
-    map_df(region_row)
+    purrr::map_df(region_row)
 }
