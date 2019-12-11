@@ -195,11 +195,12 @@ adlib_fields <- function(fields = FIELDS) {
 #' @param params a list of parameters.
 #' @param token an access_token.
 #'
-#' @description The `params` argument should be a list that is built with
-#' adlib_build_query().
+#' @description This function sends a request to the Ad Librar API.
+#' The `params` argument should be a list that is built with adlib_build_query().
 #' The `token` argument can be a short-term token pasted from
 #' https://developers.facebook.com/tools/explorer/,
-#' or a long-term token stored in your password store.
+#' or a long-term token stored in your password store. By default it will look
+#' for a token in your password store.
 #'
 #' @return an http response
 #' @export
@@ -283,4 +284,3 @@ format_array <- function(items) {
 #' @export
 #' @importFrom tibble as_tibble
 tibble::as_tibble
-

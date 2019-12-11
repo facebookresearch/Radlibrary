@@ -15,6 +15,13 @@ test_that("Converting to ad table works", {
   expect_equal(ad_table, example_adtable)
 })
 
+test_that("Converting to demographic table works", {
+  data_resp <- readRDS("example_dem_response.rds")
+  table <- readRDS("example_dem_table.rds")
+  expect_equal(demographic_table(data_resp), table)
+  expect_equal(as_tibble(table, "demo"), table)
+})
+
 test_that("ad_row works when spend and impressions hit upper bound", {
   # upper exists for both
   dr <- data_response$data[[1]]
