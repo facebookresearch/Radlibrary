@@ -36,11 +36,12 @@
 
 
 <meta property="og:title" content="Query the Ad Library API — adlib_get" />
-<meta property="og:description" content="The `params` argument should be a list that is built with
-adlib_build_query().
+<meta property="og:description" content="This function sends a request to the Ad Librar API.
+The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from
 https://developers.facebook.com/tools/explorer/,
-or a long-term token stored in your password store." />
+or a long-term token stored in your password store. By default it will look
+for a token in your password store." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,11 +117,12 @@ or a long-term token stored in your password store." />
     </div>
 
     <div class="ref-description">
-    <p>The `params` argument should be a list that is built with
-adlib_build_query().
+    <p>This function sends a request to the Ad Librar API.
+The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from
 https://developers.facebook.com/tools/explorer/,
-or a long-term token stored in your password store.</p>
+or a long-term token stored in your password store. By default it will look
+for a token in your password store.</p>
     </div>
 
     <pre class="usage"><span class='fu'>adlib_get</span>(<span class='no'>params</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='token_get.html'>token_get</a></span>())</pre>

@@ -166,7 +166,8 @@
 <a href="#submit-a-query" class="anchor"></a>Submit a query</h3>
 <p>Let’s submit the query from the previous section for analysis.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get.html">adlib_get</a></span>(<span class="dt">query =</span> query, <span class="dt">token =</span> token)</a></code></pre></div>
-<p>The <code><a href="../reference/adlib_get.html">adlib_get()</a></code> requires a query and a token. It will return an object type of <code>adlib_data_response</code> which contains ad data for up to 1,000 rows matching the query parameters. This objective has numerous metadata attributes:</p>
+<p>The <code><a href="../reference/adlib_get.html">adlib_get()</a></code> requires a query and a token. It will return an object type of <code>adlib_data_response</code> which contains ad data for up to 1,000 rows matching the query parameters. Do you need to retrieve more than 1,000 rows? If so, check out the <a href="#pagination">Pagination</a> section.</p>
+<p>This data object has numerous metadata attributes:</p>
 <ul>
 <li>
 <code>date</code>: the time stamp of the query submission</li>
@@ -230,6 +231,32 @@ Press &lt;Enter&gt;</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get.html">adlib_get</a></span>(<span class="dt">query =</span> query)</a></code></pre></div>
 <p>You can also retrieve your stored token at any time with <code><a href="../reference/token_get.html">token_get()</a></code>.</p>
 </div>
+<div id="pagination" class="section level2">
+<h2 class="hasAnchor">
+<a href="#pagination" class="anchor"></a>Pagination</h2>
+<p>You may want to retrieve more data than is available in a single API call. The <code>Radlibary</code> package handles this with an easy pagination implementation.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">query &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span>(<span class="dt">ad_reached_countries =</span> <span class="st">'US'</span>, </a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">                           <span class="dt">ad_active_status =</span> <span class="st">'ALL'</span>, </a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">                           <span class="dt">impression_condition =</span> <span class="st">'HAS_IMPRESSIONS_LIFETIME'</span>, </a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">                           <span class="dt">search_terms =</span> <span class="st">"healthcare"</span>,</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">                           <span class="dt">fields =</span> <span class="st">"ad_data"</span>) </a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">  </a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get.html">adlib_get</a></span>(query, <span class="kw"><a href="../reference/token_get.html">token_get</a></span>())</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">df &lt;-<span class="st"> </span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(result)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(df)</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co"># [1] 1000   17</span></a></code></pre></div>
+<p>versus</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">query &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span>(<span class="dt">ad_reached_countries =</span> <span class="st">'US'</span>, </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">                           <span class="dt">ad_active_status =</span> <span class="st">'ALL'</span>, </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">                           <span class="dt">impression_condition =</span> <span class="st">'HAS_IMPRESSIONS_LIFETIME'</span>, </a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">                           <span class="dt">search_terms =</span> <span class="st">"healthcare"</span>,</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                           <span class="dt">fields =</span> <span class="st">"ad_data"</span>) </a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">result_paginated &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get_paginated.html">adlib_get_paginated</a></span>(query, <span class="dt">max_gets =</span> <span class="dv">10</span>, <span class="kw"><a href="../reference/token_get.html">token_get</a></span>())</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">df_paginated &lt;-<span class="st"> </span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(result_paginated, <span class="dt">type =</span> <span class="st">"ad"</span>)</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(df_paginated)</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co"># [1] 10000    17</span></a></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -242,6 +269,7 @@ Press &lt;Enter&gt;</code></pre>
       <li><a href="#getting-set-up">Getting Set Up</a></li>
       <li><a href="#getting-started-with-radlibrary">Getting Started with <code>Radlibrary</code></a></li>
       <li><a href="#generating-persistent-tokens">Generating Persistent Tokens</a></li>
+      <li><a href="#pagination">Pagination</a></li>
       </ul>
 </div>
       </div>
