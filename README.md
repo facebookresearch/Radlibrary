@@ -15,7 +15,7 @@ devtools::install_github("facebookresearch/Radlibrary")
 ```
 ## Getting started
 
-Please see `vignette("Radlibrary") or the [`pkgdown` site](https://facebookresearch.github.io/Radlibrary/)
+Please see `vignette("Radlibrary")` or the [`pkgdown` site](https://facebookresearch.github.io/Radlibrary/).
 
 
 ## License
