@@ -127,7 +127,7 @@ This data object has numerous metadata attributes:
 You can convert your results into a `tibble` using `as_tibble`:
 
 ```{r, eval = FALSE}
-results.tibble <- as_tibble(results, type = "ad")
+results.tibble <- as_tibble(response, type = "ad")
 ```
 
 This will transform the information stored in `data` and in `fields` from your `adlib_data_response` into a tidy data frame (i.e., a tibble) for analysis. The example content below from the above: 
