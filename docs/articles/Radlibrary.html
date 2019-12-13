@@ -141,7 +141,7 @@ All rights reserved. -->
 <div id="retrieve-and-store-your-access-token-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#retrieve-and-store-your-access-token-" class="anchor"></a>Retrieve and store your access token.</h3>
-<p>You can find your access token on <a href="https://developers.facebook.com/tools/explorer/%22">Facebook for Developers</a></p>
+<p>You can find your access token at the <a href="https://developers.facebook.com/tools/explorer/">Graph API Explorer tool</a>.</p>
 <p>Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you’d like to use <code>Radlibrary</code> functionality to generate a persistent token, see <a href="#generating-persistent-tokens">Generating persistent tokens</a>. If you do not need a long-term token, you can save your token to your environment. <strong>Note:</strong> the best way to store your access token interactively is to use <code>readline</code> and paste the token at the prompt.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## This will store your access token in your R history—not recommended!</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">token &lt;-<span class="st"> "PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"</span></a>
@@ -179,7 +179,7 @@ All rights reserved. -->
 <h3 class="hasAnchor">
 <a href="#submit-a-query" class="anchor"></a>Submit a query</h3>
 <p>Let’s submit the query from the previous section for analysis.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get.html">adlib_get</a></span>(<span class="dt">query =</span> query, <span class="dt">token =</span> token)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adlib_get.html">adlib_get</a></span>(<span class="dt">params =</span> query, <span class="dt">token =</span> token)</a></code></pre></div>
 <p>The <code><a href="../reference/adlib_get.html">adlib_get()</a></code> requires a query and a token. It will return an object type of <code>adlib_data_response</code> which contains ad data for up to 1,000 rows matching the query parameters. Do you need to retrieve more than 1,000 rows? If so, check out the <a href="#pagination">Pagination</a> section.</p>
 <p>This data object has numerous metadata attributes:</p>
 <ul>
