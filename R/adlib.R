@@ -192,7 +192,7 @@ adlib_fields <- function(fields = FIELDS) {
 
 #' Query the Ad Library API
 #'
-#' @param params a list of parameters.
+#' @param params a query built by adlib_build_query
 #' @param token an access_token.
 #'
 #' @description This function sends a request to the Ad Librar API.
