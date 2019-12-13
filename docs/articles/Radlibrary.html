@@ -199,7 +199,7 @@ All rights reserved. -->
 <h3 class="hasAnchor">
 <a href="#analyze-the-results" class="anchor"></a>Analyze the results</h3>
 <p>You can convert your results into a <code>tibble</code> using <code>as_tibble</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">results.tibble &lt;-<span class="st"> </span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(results, <span class="dt">type =</span> <span class="st">"ad"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">results.tibble &lt;-<span class="st"> </span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(response, <span class="dt">type =</span> <span class="st">"ad"</span>)</a></code></pre></div>
 <p>This will transform the information stored in <code>data</code> and in <code>fields</code> from your <code>adlib_data_response</code> into a tidy data frame (i.e., a tibble) for analysis. The example content below from the above:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(results.tibble)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#  A tibble: 6 x 15</span></a>
