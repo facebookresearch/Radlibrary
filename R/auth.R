@@ -105,7 +105,7 @@ adlib_set_longterm_token <- function() {
   app_secret <- secret_get(APP_SECRET)
   message("Visit https://developers.facebook.com/tools/explorer/ to obtain a short-term access token.\nIt will be exchanged for a long-term access token that will be securely stored in your computer's credential store.")
   readline("Press <Enter>")
-  short_term_token <- getPass::getPass("Enter token.")
+  short_term_token <- get_pass("Enter token.")
   if (length(short_term_token) == 0) {
     stop("No short term token supplied.")
   }

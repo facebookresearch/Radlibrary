@@ -10,6 +10,18 @@ TOKEN <- "fb_adlib_token"
 APP_ID <- "fb_adlib_app_id"
 APP_SECRET <- "fb_adlib_app_secret"
 
+is_rstudio_server <- function() {
+  rstudioapi::versionInfo()$mode == 'server'
+}
+
+get_pass <- function(msg) {
+  if (is_rstudio_server()) {
+    msg <- readline(paste0(msg, ": "))
+  } else {
+    msg <- get_pass(msg, noblank = T, forcemask = F)
+  }
+  return(msg)
+}
 
 is_set_up <- function() {
   return(secret_exists(TOKEN) & secret_exists(APP_ID) & secret_exists(APP_SECRET))
@@ -110,7 +122,7 @@ adlib_setup <- function() {
 to find your Application ID and App Secret.
 These will be securely stored in your computer's credential store.")
     readline("Press <Enter> ")
-    app_id <- getPass::getPass("Enter your Application ID", noblank = T, forcemask = F)
+    app_id <- get_pass("Enter your Application ID")
     secret_set(APP_ID, app_id)
   }
 
@@ -119,7 +131,7 @@ These will be securely stored in your computer's credential store.")
     get_secret <- menu(c("y", "n"), title = "App secret already set. Overwrite? (y/n)") == 1
   }
   if (get_secret) {
-    app_secret <- getPass::getPass("Enter your App secret", noblank = T, forcemask = F)
+    app_secret <- get_pass("Enter your App secret")
     secret_set(APP_SECRET, app_secret)
   }
   message("Application ID and App secret set. Run adlib_set_longterm_token() to save a long term access token.")
