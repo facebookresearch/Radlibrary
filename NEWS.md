@@ -1,4 +1,5 @@
-# Radlibrary (development version)
+# Radlibrary 0.2.4
+* fix typos in docs
 
 # Radlibrary 0.2.3
 * improve docs
