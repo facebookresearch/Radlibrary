@@ -271,11 +271,11 @@ format_array <- function(items) {
   if (is.numeric(items)) {
     out <- paste0("[", paste0(items, collapse = ","), "]")
   } else if (is.character(items)) {
-    out <- paste0("[", paste0(shQuote(items, type = 'sh'), collapse = ","), "]")
+    out <- paste0("[", paste0(shQuote(items, type = "sh"), collapse = ","), "]")
   }
   else {
     dtype <- class(items)
-    stop(glue("Don't know how to format array of class {dtype}", dtype = dtype))
+    stop(glue::glue("Don't know how to format array of class {dtype}", dtype = dtype))
   }
   return(out)
 }
