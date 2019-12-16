@@ -10,6 +10,7 @@ TOKEN <- "fb_adlib_token"
 APP_ID <- "fb_adlib_app_id"
 APP_SECRET <- "fb_adlib_app_secret"
 
+# @importFrom rstudioapi versionInfo
 is_rstudio_server <- function() {
   rstudioapi::versionInfo()$mode == "server"
 }

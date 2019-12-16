@@ -29,7 +29,8 @@ Imports:
     keyring,
     getPass,
     lubridate,
-    rlang
+    rlang,
+    rstudioapi
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
