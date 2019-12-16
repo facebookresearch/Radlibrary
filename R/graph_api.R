@@ -51,7 +51,7 @@ graph_get <- function(service, params, token = token_get()) {
     stop("Parameter token must be a string or object of type 'graph_api_token'")
   }
   agent <- httr::user_agent("Radlibrary R Package")
-  response <- RETRY("GET", graph_api_endpoint(service), agent,
+  response <- httr::RETRY("GET", graph_api_endpoint(service), agent,
     query = params,
     quiet = FALSE, terminate_on = c(400, 500)
   )

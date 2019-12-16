@@ -7,7 +7,7 @@
 adlib_get(params, token = token_get())
 }
 \arguments{
-\item{params}{a list of parameters.}
+\item{params}{a query built by adlib_build_query}
 
 \item{token}{an access_token.}
 }

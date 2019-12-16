@@ -192,7 +192,7 @@ adlib_fields <- function(fields = FIELDS) {
 
 #' Query the Ad Library API
 #'
-#' @param params a list of parameters.
+#' @param params a query built by adlib_build_query
 #' @param token an access_token.
 #'
 #' @description This function sends a request to the Ad Librar API.
@@ -271,11 +271,11 @@ format_array <- function(items) {
   if (is.numeric(items)) {
     out <- paste0("[", paste0(items, collapse = ","), "]")
   } else if (is.character(items)) {
-    out <- paste0("[", paste0(shQuote(items, type = 'sh'), collapse = ","), "]")
+    out <- paste0("[", paste0(shQuote(items, type = "sh"), collapse = ","), "]")
   }
   else {
     dtype <- class(items)
-    stop(glue("Don't know how to format array of class {dtype}", dtype = dtype))
+    stop(glue::glue("Don't know how to format array of class {dtype}", dtype = dtype))
   }
   return(out)
 }

@@ -66,7 +66,7 @@ To get started using the `Radlibrary` package, you'll want to take the following
 
 ### Retrieve and store your access token. 
 
-You can find your access token on [Facebook for Developers](https://developers.facebook.com/tools/explorer/")
+You can find your access token at the [Graph API Explorer tool](https://developers.facebook.com/tools/explorer/).
 
 Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you'd like to use `Radlibrary` functionality to generate a persistent token, see [Generating persistent tokens](#generating-persistent-tokens). If you do not need a long-term token, you can save your token to your environment. **Note:** the best way to store your access token interactively is to use `readline` and paste the token at the prompt.
 
@@ -109,7 +109,7 @@ There are numerous parameters to the `adlib_build_query` function (for more, see
 Let's submit the query from the previous section for analysis. 
 
 ```{r, eval = FALSE} 
-response <- adlib_get(query = query, token = token)
+response <- adlib_get(params = query, token = token)
 ```
 
 The `adlib_get()` requires a query and a token. It will return an object type of `adlib_data_response` which contains ad data for up to 1,000 rows matching the query parameters. Do you need to retrieve more than 1,000 rows? If so, check out the [Pagination](#pagination) section. 
