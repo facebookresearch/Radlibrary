@@ -37,3 +37,4 @@ Suggests:
     rmarkdown
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
+URL: https://facebookresearch.github.io/Radlibrary/, https://github.com/facebookresearch/Radlibrary
