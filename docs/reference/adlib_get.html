@@ -8,13 +8,11 @@
 
 <title>Query the Ad Library API — adlib_get • Radlibrary</title>
 
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,8 +32,8 @@
 
 
 
-
 <meta property="og:title" content="Query the Ad Library API — adlib_get" />
+
 <meta property="og:description" content="This function sends a request to the Ad Librar API.
 The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from
@@ -43,7 +41,6 @@ https://developers.facebook.com/tools/explorer/,
 or a long-term token stored in your password store. By default it will look
 for a token in your password store." />
 <meta name="twitter:card" content="summary" />
-
 
 
 
@@ -74,7 +71,7 @@ for a token in your password store." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Radlibrary</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -108,8 +105,14 @@ for a token in your password store." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/facebookresearch/Radlibrary">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -124,21 +127,23 @@ for a token in your password store." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Query the Ad Library API</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/facebookresearch/Radlibrary/blob/master/R/adlib.R'><code>R/adlib.R</code></a></small>
     <div class="hidden name"><code>adlib_get.Rd</code></div>
     </div>
 
     <div class="ref-description">
+    
     <p>This function sends a request to the Ad Librar API.
 The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from
 https://developers.facebook.com/tools/explorer/,
 or a long-term token stored in your password store. By default it will look
 for a token in your password store.</p>
+    
     </div>
 
     <pre class="usage"><span class='fu'>adlib_get</span>(<span class='no'>params</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='token_get.html'>token_get</a></span>())</pre>
-
+    
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -151,18 +156,20 @@ for a token in your password store.</p>
       <td><p>an access_token.</p></td>
     </tr>
     </table>
-
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>an http response</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      
       <li><a href="#value">Value</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

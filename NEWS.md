@@ -1,4 +1,6 @@
 # Radlibrary 0.2.4
+* Fixed getPass bug in Rstudio server
+* Only warn once about environment variables on Linux
 * fix typos in docs
 
 # Radlibrary 0.2.3
