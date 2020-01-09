@@ -65,7 +65,13 @@ FIELDS <- c(
 #' @param limit The maximum number of results to return
 #' @param fields the fields to include in the response. See details for values.
 #'
-#' @details Fields can be one of the following values.
+#' @details Preset groups of fields can be specified by "ad_data",
+#' "demographic_data", or "region_data". Otherwise, you can pick and choose
+#' fields from the following list. The only *required* field when picking and
+#' choosing is ad_snapshot_url, since that's the unique identifier for each
+#' ad.
+#'
+#'
 #'
 #' \itemize{
 #'   \item ad_data - Choose this to include all columns for an ad_table table
@@ -78,6 +84,7 @@ FIELDS <- c(
 #'   \item ad_creative_link_title
 #'   \item ad_delivery_start_time
 #'   \item ad_delivery_stop_time
+#'   \item ad_snapshot_url
 #'   \item currency
 #'   \item demographic_distribution
 #'   \item funding_entity
