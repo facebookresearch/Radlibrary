@@ -162,10 +162,10 @@ ad_row <- function(row) {
       row[[field]] <- NA
     }
   }
-  row[["spend_lower"]] <- as.numeric(row[["spend"]][["lower_bound"]])
+  row[["spend_lower"]] <- as.numeric(na_pad(row[["spend"]][["lower_bound"]]))
   row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
   row[["adlib_id"]] <- adlib_id_from_row(row)
-  row[["impressions_lower"]] <- as.numeric(row[["impressions"]][["lower_bound"]])
+  row[["impressions_lower"]] <- as.numeric(na_pad(row[["impressions"]][["lower_bound"]]))
   row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
   row[columns]
 }

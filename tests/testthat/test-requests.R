@@ -53,3 +53,14 @@ test_that("adlib_get_paginated works", {
   expect_false(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = TRUE)$ad_snapshot_url)))
   expect_true(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = FALSE)$ad_snapshot_url)))
 })
+
+test_that("adlib_get works with no spend or impressions", {
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  q <- adlib_build_query("US",
+    search_terms = "america", limit = 10,
+    fields = c("ad_snapshot_url")
+  )
+  resp <- adlib_get(q, token = token)
+  expect_s3_class(as_tibble(resp, censor_access_token = TRUE), "tbl_df")
+})
