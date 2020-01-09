@@ -22,9 +22,9 @@ FIELDS <- c(
   "ad_creative_link_caption",
   "ad_creative_link_description",
   "ad_creative_link_title",
+  "ad_snapshot_url",
   "ad_delivery_start_time",
   "ad_delivery_stop_time",
-  "ad_snapshot_url",
   "currency",
   "demographic_distribution",
   "funding_entity",
@@ -78,7 +78,6 @@ FIELDS <- c(
 #'   \item ad_creative_link_title
 #'   \item ad_delivery_start_time
 #'   \item ad_delivery_stop_time
-#'   \item ad_snapshot_url
 #'   \item currency
 #'   \item demographic_distribution
 #'   \item funding_entity
@@ -153,11 +152,10 @@ adlib_fields <- function(fields = FIELDS) {
   if (length(fields) == 1) {
     if (fields == "ad_data") {
       fields <- c(
-        "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-        "ad_creative_link_description", "ad_creative_link_title",
-        "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
-        "funding_entity", "page_id", "page_name", "spend", "impressions",
-        "ad_snapshot_url"
+        "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
+        "ad_creative_link_caption", "ad_creative_link_description",
+        "ad_creative_link_title", "ad_delivery_start_time", "ad_delivery_stop_time",
+        "currency", "funding_entity", "page_id", "page_name", "spend", "impressions"
       )
     } else if (fields == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
@@ -186,6 +184,9 @@ adlib_fields <- function(fields = FIELDS) {
 \"publisher_platforms\",
 \"region_distribution\",
 \"spend\"")
+  }
+  if (!("ad_snapshot_url" %in% fields)) {
+    stop("If fields is not ad_data, demographic_data, or region_data then it must include ad_snapshot_url")
   }
   paste0(fields, collapse = ",")
 }
