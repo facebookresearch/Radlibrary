@@ -59,7 +59,13 @@ Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 for full API documentation.
 }
 \details{
-Fields can be one of the following values.
+Preset groups of fields can be specified by "ad_data",
+"demographic_data", or "region_data". Otherwise, you can pick and choose
+fields from the following list. The only *required* field when picking and
+choosing is ad_snapshot_url, since that's the unique identifier for each
+ad.
+
+
 
 \itemize{
   \item ad_data - Choose this to include all columns for an ad_table table

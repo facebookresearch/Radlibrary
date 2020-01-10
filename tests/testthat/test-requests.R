@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
 #
+# ~~~~~~~~~~~~~~~~~  IMPORTANT: PLEASE READ  ~~~~~~~~~~~~~~~~~~~
 # These tests require that a valid access_token is stored in .travis.yml.
 # access tokens eventually expire, so the build will break when that happens.
 # To fix, obtain a long-term access token and add it as an encrypted
@@ -51,4 +52,15 @@ test_that("adlib_get_paginated works", {
   expect_warning(tibble::as_tibble(resp))
   expect_false(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = TRUE)$ad_snapshot_url)))
   expect_true(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = FALSE)$ad_snapshot_url)))
+})
+
+test_that("adlib_get works with no spend or impressions", {
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  q <- adlib_build_query("US",
+    search_terms = "america", limit = 10,
+    fields = c("ad_snapshot_url")
+  )
+  resp <- adlib_get(q, token = token)
+  expect_s3_class(as_tibble(resp, censor_access_token = TRUE), "tbl_df")
 })
