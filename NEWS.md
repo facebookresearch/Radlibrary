@@ -1,3 +1,8 @@
+# Radlibrary 0.2.5
+* Fixed an issue where ad tables couldn't be created when spend and impressions
+were not requested
+* Require ad_snapshot_url to be present in all queries
+
 # Radlibrary 0.2.4
 * Fixed getPass bug in Rstudio server
 * Only warn once about environment variables on Linux
