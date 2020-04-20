@@ -37,8 +37,10 @@ FIELDS <- c(
   "spend"
 )
 
-POTENTIAL_REACH_MAX_VALUES <- c(1000, 5000, 10000, 50000, 100000,
-                                500000, 1000000)
+POTENTIAL_REACH_MAX_VALUES <- c(
+  1000, 5000, 10000, 50000, 100000,
+  500000, 1000000
+)
 
 POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000)
 
@@ -168,8 +170,8 @@ adlib_build_query <- function(ad_reached_countries,
     }
   }
 
-  if (potential_reach_max <= potential_reach_min) {
-    stop("potential_reach_min must be less than potential_reach_max")  # the API won't let them be equal
+  if (!is.null(potential_reach_max) && !is.null(potential_reach_min) && potential_reach_max <= potential_reach_min) {
+    stop("potential_reach_min must be less than potential_reach_max") # the API won't let them be equal
   }
 
   ad_reached_countries <- format_array(ad_reached_countries)
