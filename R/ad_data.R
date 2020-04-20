@@ -168,8 +168,8 @@ ad_row <- function(row) {
   row[["adlib_id"]] <- adlib_id_from_row(row)
   row[["impressions_lower"]] <- as.numeric(na_pad(row[["impressions"]][["lower_bound"]]))
   row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
-  row[['potential_reach_lower']] <- as.numeric(na_pad(row[['potential_reach']][['lower_bound']]))
-  row[['potential_reach_upper']] <- as.numeric(na_pad(row[['potential_reach']][['upper_bound']]))
+  row[["potential_reach_lower"]] <- as.numeric(na_pad(row[["potential_reach"]][["lower_bound"]]))
+  row[["potential_reach_upper"]] <- as.numeric(na_pad(row[["potential_reach"]][["upper_bound"]]))
   row[columns]
 }
 
