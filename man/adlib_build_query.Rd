@@ -13,6 +13,8 @@ adlib_build_query(
   impression_condition = c("HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
     "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
     "HAS_IMPRESSIONS_LAST_90_DAYS"),
+  potential_reach_max = NULL,
+  potential_reach_min = NULL,
   publisher_platform = "FACEBOOK",
   search_page_ids = NULL,
   search_terms = NULL,
@@ -38,6 +40,14 @@ such as political ads that reference “immigration” paid for by “ACLU”.}
 "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
 "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
 "HAS_IMPRESSIONS_LAST_90_DAYS"}
+
+\item{potential_reach_max}{Search for ads with a maximum potential reach.
+Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
+500000, 1000000, or leave empty for no maximum boundary.}
+
+\item{potential_reach_min}{Search for ads with a minimum intended reach.
+Must be one of these range boundaries: 100, 1000, 5000, 10000, 50000, 100000,
+500000, 1000000.}
 
 \item{publisher_platform}{The platform on which the ads appeared. One or more
 of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
@@ -85,6 +95,7 @@ ad.
   \item impressions
   \item page_id
   \item page_name
+  \item potential_reach
   \item publisher_platforms
   \item region_distribution
   \item spend

@@ -12,15 +12,15 @@ test_that("build_query returns a list as expected", {
     list(
       ad_active_status = "ACTIVE", ad_reached_countries = "['US']",
       ad_type = "POLITICAL_AND_ISSUE_ADS", bylines = NULL, impression_condition = "HAS_IMPRESSIONS_LIFETIME",
-      publisher_platform = "['FACEBOOK']", search_page_ids = NULL,
-      search_terms = "Facebook", fields = "ad_snapshot_url,ad_creation_time,ad_creative_body,ad_creative_link_caption,ad_creative_link_description,ad_creative_link_title,ad_delivery_start_time,ad_delivery_stop_time,currency,funding_entity,page_id,page_name,spend,impressions",
+      potential_reach_max = integer(0), potential_reach_min = integer(0), publisher_platform = "['FACEBOOK']", search_page_ids = NULL,
+      search_terms = "Facebook", fields = "ad_snapshot_url,ad_creation_time,ad_creative_body,ad_creative_link_caption,ad_creative_link_description,ad_creative_link_title,ad_delivery_start_time,ad_delivery_stop_time,currency,funding_entity,page_id,page_name,spend,impressions,potential_reach",
       limit = 1000
     )
   )
 })
 
 test_that("fields works", {
-  expect_equal(adlib_fields("ad_data"), "ad_snapshot_url,ad_creation_time,ad_creative_body,ad_creative_link_caption,ad_creative_link_description,ad_creative_link_title,ad_delivery_start_time,ad_delivery_stop_time,currency,funding_entity,page_id,page_name,spend,impressions")
+  expect_equal(adlib_fields("ad_data"), "ad_snapshot_url,ad_creation_time,ad_creative_body,ad_creative_link_caption,ad_creative_link_description,ad_creative_link_title,ad_delivery_start_time,ad_delivery_stop_time,currency,funding_entity,page_id,page_name,spend,impressions,potential_reach")
   expect_equal(adlib_fields("demographic_data"), "ad_snapshot_url,demographic_distribution")
   expect_equal(adlib_fields(c("ad_snapshot_url", "ad_creative_link_title", "ad_delivery_start_time")), "ad_snapshot_url,ad_creative_link_title,ad_delivery_start_time")
   expect_error(adlib_fields("dsafdas"))
