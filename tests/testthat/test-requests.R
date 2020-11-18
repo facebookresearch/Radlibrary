@@ -15,7 +15,7 @@
 # travis_encode_command <- function() {
 #   # pastes the command for encoding the graph api token into travis.yml.
 #   # only use this to make travis ci work.
-#   "travis encrypt FB_GRAPH_API_TOKEN={token_get()$token} --add env.global" %>%
+#   "travis encrypt --pro FB_GRAPH_API_TOKEN={token_get()$token} --add env.global" %>%
 #     glue::glue() %>%
 #     clipr::write_clip()
 # }
