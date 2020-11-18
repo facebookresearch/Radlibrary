@@ -59,6 +59,9 @@ as_tibble.adlib_data_response <- function(x,
                                           type = c("ad", "demographic", "region"),
                                           censor_access_token = NULL,
                                           ...) {
+  if (length(x) == 0) {
+    stop('No entires in data.')
+  }
   type <- match.arg(type)
   out <- switch(type,
     "ad" = ad_table(x,
