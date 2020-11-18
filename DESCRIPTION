@@ -35,6 +35,6 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 URL: https://facebookresearch.github.io/Radlibrary/, https://github.com/facebookresearch/Radlibrary

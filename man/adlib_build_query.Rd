@@ -7,8 +7,8 @@
 adlib_build_query(
   ad_reached_countries,
   ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
-  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS",
-    "ALL"),
+  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
+    "UNCATEGORIZED_ADS", "ALL"),
   bylines = NULL,
   impression_condition = c("HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
     "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
