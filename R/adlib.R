@@ -52,19 +52,22 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #' Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 #' for full API documentation.
 #'
+#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or
+#' 'ALL'
+#' @param ad_delivery_date_max character. Search for ads delivered before the date
+#' (inclusive) you provide. The date format should be YYYY-mm-dd.
+#' @param ad_delivery_date_min character. Search for ads delivered after the date
+#' (inclusive) you provide. The date format should be YYYY-mm-dd.
 #' @param ad_reached_countries Vector of ISO country codes. Facebook delivered
 #' the ads in these countries.
-#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or
-#' 'ALL'.
 #' @param ad_type The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
 #' 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
 #' 'POLITICAL_AND_ISSUE_ADS' is supported.
 #' @param bylines Filter results for ads with a paid for by disclaimer byline,
 #' such as political ads that reference “immigration” paid for by “ACLU”.
-#' @param impression_condition When the ad most recently had impressions. One of
-#' "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
-#' "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
-#' "HAS_IMPRESSIONS_LAST_90_DAYS"
+#' @param delivery_by_region Character vector of region names. View ads by the
+#' region (such as state or province) where people live or were located when
+#' they saw them.
 #' @param potential_reach_max Search for ads with a maximum potential reach.
 #' Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
 #' 500000, 1000000, or leave empty for no maximum boundary.
@@ -116,18 +119,14 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #'
 adlib_build_query <- function(ad_reached_countries,
                               ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
+                              ad_delivery_date_max = NULL,
+                              ad_delivery_date_min = NULL,
                               ad_type = c(
                                 "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
                                 "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
                               ),
                               bylines = NULL,
-                              impression_condition = c(
-                                "HAS_IMPRESSIONS_LIFETIME",
-                                "HAS_IMPRESSIONS_YESTERDAY",
-                                "HAS_IMPRESSIONS_LAST_7_DAYS",
-                                "HAS_IMPRESSIONS_LAST_30_DAYS",
-                                "HAS_IMPRESSIONS_LAST_90_DAYS"
-                              ),
+                              delivery_by_region = NULL,
                               potential_reach_max = NULL,
                               potential_reach_min = NULL,
                               publisher_platform = "FACEBOOK",
@@ -137,7 +136,6 @@ adlib_build_query <- function(ad_reached_countries,
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
-  impression_condition <- match.arg(impression_condition)
 
   if (length(search_page_ids) > 10) {
     stop("Can only search 10 page IDs at a time.")
@@ -176,9 +174,9 @@ adlib_build_query <- function(ad_reached_countries,
 
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
-  if (!is.null(search_page_ids)) {
+  if (!is.null(search_page_ids))
     search_page_ids <- format_array(search_page_ids)
-  }
+  if (!is.null(delivery_by_region)) delivery_by_region <- format_array(delivery_by_region)
   publisher_platform <- format_array(publisher_platform)
   fields <- adlib_fields(fields)
 
@@ -186,9 +184,11 @@ adlib_build_query <- function(ad_reached_countries,
   return(list(
     ad_active_status = ad_active_status,
     ad_reached_countries = ad_reached_countries,
+    ad_delivery_date_max = ad_delivery_date_max,
+    ad_delivery_date_min = ad_delivery_date_min,
     ad_type = ad_type,
     bylines = bylines,
-    impression_condition = impression_condition,
+    delivery_by_region = delivery_by_region,
     potential_reach_max = as.integer(potential_reach_max),
     potential_reach_min = as.integer(potential_reach_min),
     publisher_platform = publisher_platform,
