@@ -211,7 +211,7 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
       dplyr::mutate_at(vars(
         .data$ad_creation_time, .data$ad_delivery_start_time,
         .data$ad_delivery_stop_time
-      ), list(lubridate::ymd_hms))
+      ), list(lubridate::as_date))
   }
 
   # censor access tokens
