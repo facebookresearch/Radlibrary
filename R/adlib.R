@@ -17,6 +17,7 @@ FIELDS <- c(
   "ad_data",
   "demographic_data",
   "region_data",
+  "id",
   "ad_creation_time",
   "ad_creative_body",
   "ad_creative_link_caption",

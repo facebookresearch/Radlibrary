@@ -10,7 +10,7 @@ test_that("build_query returns a list as expected", {
   expect_equal(
     adlib_build_query("US", search_terms = "Facebook"),
     list(
-      ad_active_status = "ACTIVE", ad_reached_countries = "['US']",
+      ad_active_status = "ALL", ad_reached_countries = "['US']",
       ad_delivery_date_max = NULL,
       ad_delivery_date_min = NULL,
       ad_type = "POLITICAL_AND_ISSUE_ADS", bylines = NULL,
