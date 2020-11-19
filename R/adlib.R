@@ -118,7 +118,7 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 adlib_build_query <- function(ad_reached_countries,
-                              ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
+                              ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               ad_delivery_date_max = NULL,
                               ad_delivery_date_min = NULL,
                               ad_type = c(
