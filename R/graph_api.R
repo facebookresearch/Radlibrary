@@ -55,7 +55,7 @@ graph_get <- function(service, params, token = token_get()) {
     query = params,
     quiet = FALSE, terminate_on = c(400, 500)
   )
-  httr::stop_for_status(response)
+  extract_error_message(response)
   response
 }
 
