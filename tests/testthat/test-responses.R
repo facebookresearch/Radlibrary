@@ -1,18 +1,34 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
+fields <- c(
+  "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
+  "ad_creative_link_caption", "ad_creative_link_description", "ad_creative_link_title",
+  "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
+  "funding_entity", "page_id", "page_name", "spend", "impressions",
+  "potential_reach"
+)
+
 test_that("Parsing responses works correctly", {
-  expect_equal(data_response$fields, c(
-    "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-    "ad_creative_link_description", "ad_creative_link_title", "ad_delivery_start_time",
-    "ad_delivery_stop_time", "currency", "funding_entity", "page_id",
-    "page_name", "spend", "impressions", "ad_snapshot_url"
-  ))
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  data_response <- adlib_get(adlib_build_query("US", search_terms = "Facebook"), token = token)
+  expect_equal(data_response$fields, fields)
 })
 
 test_that("Converting to ad table works", {
-  ad_table <- ad_table(data_response)
-  example_adtable <- readRDS("sample_adtable.rds")
-  expect_equal(ad_table, example_adtable)
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  data_response <- adlib_get(adlib_build_query("US", search_terms = "Facebook"), token = token)
+  ad_table <- ad_table(data_response, censor_access_token = T)
+  expect_s3_class(ad_table, "tbl_df")
+  expect_equal(colnames(ad_table), c(
+    "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
+    "ad_creative_link_description", "ad_creative_link_title",
+    "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
+    "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
+    "adlib_id", "impressions_lower", "impressions_upper",
+    "potential_reach_lower", "potential_reach_upper", "ad_snapshot_url"
+  ))
 })
 
 test_that("Converting to demographic table works", {
