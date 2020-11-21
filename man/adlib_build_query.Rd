@@ -6,7 +6,7 @@
 \usage{
 adlib_build_query(
   ad_reached_countries,
-  ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
+  ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
   ad_delivery_date_max = NULL,
   ad_delivery_date_min = NULL,
   ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
