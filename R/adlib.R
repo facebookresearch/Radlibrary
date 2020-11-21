@@ -17,7 +17,6 @@ FIELDS <- c(
   "ad_data",
   "demographic_data",
   "region_data",
-  "id",
   "ad_creation_time",
   "ad_creative_body",
   "ad_creative_link_caption",
@@ -32,18 +31,11 @@ FIELDS <- c(
   "impressions",
   "page_id",
   "page_name",
-  "potential_reach",
   "publisher_platforms",
   "region_distribution",
   "spend"
 )
 
-POTENTIAL_REACH_MAX_VALUES <- c(
-  1000, 5000, 10000, 50000, 100000,
-  500000, 1000000
-)
-
-POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000)
 
 # Functions ---------------------------------------------------------------
 
@@ -53,28 +45,19 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #' Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 #' for full API documentation.
 #'
-#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or
-#' 'ALL'
-#' @param ad_delivery_date_max character. Search for ads delivered before the date
-#' (inclusive) you provide. The date format should be YYYY-mm-dd.
-#' @param ad_delivery_date_min character. Search for ads delivered after the date
-#' (inclusive) you provide. The date format should be YYYY-mm-dd.
 #' @param ad_reached_countries Vector of ISO country codes. Facebook delivered
 #' the ads in these countries.
+#' @param ad_active_status Status of the ads. One of 'ACTIVE', 'INACTIVE', or
+#' 'ALL'.
 #' @param ad_type The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
 #' 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
 #' 'POLITICAL_AND_ISSUE_ADS' is supported.
 #' @param bylines Filter results for ads with a paid for by disclaimer byline,
 #' such as political ads that reference “immigration” paid for by “ACLU”.
-#' @param delivery_by_region Character vector of region names. View ads by the
-#' region (such as state or province) where people live or were located when
-#' they saw them.
-#' @param potential_reach_max Search for ads with a maximum potential reach.
-#' Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
-#' 500000, 1000000, or leave empty for no maximum boundary.
-#' @param potential_reach_min Search for ads with a minimum intended reach.
-#' Must be one of these range boundaries: 100, 1000, 5000, 10000, 50000, 100000,
-#' 500000, 1000000.
+#' @param impression_condition When the ad most recently had impressions. One of
+#' "HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+#' "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+#' "HAS_IMPRESSIONS_LAST_90_DAYS"
 #' @param publisher_platform The platform on which the ads appeared. One or more
 #'  of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".
 #' @param search_page_ids A vector of up to 10 page IDs to search.
@@ -108,7 +91,6 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #'   \item impressions
 #'   \item page_id
 #'   \item page_name
-#'   \item potential_reach
 #'   \item publisher_platforms
 #'   \item region_distribution
 #'   \item spend
@@ -119,17 +101,19 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 adlib_build_query <- function(ad_reached_countries,
-                              ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
-                              ad_delivery_date_max = NULL,
-                              ad_delivery_date_min = NULL,
+                              ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
                               ad_type = c(
                                 "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
                                 "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
                               ),
                               bylines = NULL,
-                              delivery_by_region = NULL,
-                              potential_reach_max = NULL,
-                              potential_reach_min = NULL,
+                              impression_condition = c(
+                                "HAS_IMPRESSIONS_LIFETIME",
+                                "HAS_IMPRESSIONS_YESTERDAY",
+                                "HAS_IMPRESSIONS_LAST_7_DAYS",
+                                "HAS_IMPRESSIONS_LAST_30_DAYS",
+                                "HAS_IMPRESSIONS_LAST_90_DAYS"
+                              ),
                               publisher_platform = "FACEBOOK",
                               search_page_ids = NULL,
                               search_terms = NULL,
@@ -137,6 +121,7 @@ adlib_build_query <- function(ad_reached_countries,
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
+  impression_condition <- match.arg(impression_condition)
 
   if (length(search_page_ids) > 10) {
     stop("Can only search 10 page IDs at a time.")
@@ -146,39 +131,11 @@ adlib_build_query <- function(ad_reached_countries,
     stop("At least one of search_page_ids or search_terms must be supplied.")
   }
 
-  if (!is.null(potential_reach_max) && !(potential_reach_max %in% POTENTIAL_REACH_MAX_VALUES)) {
-    if (potential_reach_max < 1000) {
-      stop("potential_reach_max must be at least 1000.")
-    } else if (potential_reach_max > 1000000) {
-      stop("potential_reach_max can be at most 1,000,000.
-           Leave potential_reach_max as NULL to accept any potential reach.")
-    } else {
-      potential_reach_max <- POTENTIAL_REACH_MAX_VALUES[which(sort(c(POTENTIAL_REACH_MAX_VALUES, potential_reach_max)) == potential_reach_max) - 1]
-      warning(glue::glue("potential_reach_max must be one of {paste(as.character(POTENTIAL_REACH_MAX_VALUES), collapse = ', ')}.\n Rounding down to {potential_reach_max}."))
-    }
-  }
-
-  if (!is.null(potential_reach_min) && !(potential_reach_min %in% POTENTIAL_REACH_MIN_VALUES)) {
-    if (potential_reach_min < 100) {
-      stop("potential_reach_min must be at least 100.")
-    } else if (potential_reach_min > 1000000) {
-      stop("potential_reach_min can be at most 1,000,000.")
-    } else {
-      potential_reach_min <- POTENTIAL_REACH_MIN_VALUES[which(sort(c(POTENTIAL_REACH_MIN_VALUES, potential_reach_min)) == potential_reach_min)]
-      warning(glue::glue("potential_reach_min must be one of {paste(as.character(POTENTIAL_REACH_MIN_VALUES), collapse = ', ')}.\n Rounding up to {potential_reach_min}."))
-    }
-  }
-
-  if (!is.null(potential_reach_max) && !is.null(potential_reach_min) && potential_reach_max <= potential_reach_min) {
-    stop("potential_reach_min must be less than potential_reach_max") # the API won't let them be equal
-  }
-
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
   if (!is.null(search_page_ids)) {
     search_page_ids <- format_array(search_page_ids)
   }
-  if (!is.null(delivery_by_region)) delivery_by_region <- format_array(delivery_by_region)
   publisher_platform <- format_array(publisher_platform)
   fields <- adlib_fields(fields)
 
@@ -186,13 +143,9 @@ adlib_build_query <- function(ad_reached_countries,
   return(list(
     ad_active_status = ad_active_status,
     ad_reached_countries = ad_reached_countries,
-    ad_delivery_date_max = ad_delivery_date_max,
-    ad_delivery_date_min = ad_delivery_date_min,
     ad_type = ad_type,
     bylines = bylines,
-    delivery_by_region = delivery_by_region,
-    potential_reach_max = as.integer(potential_reach_max),
-    potential_reach_min = as.integer(potential_reach_min),
+    impression_condition = impression_condition,
     publisher_platform = publisher_platform,
     search_page_ids = search_page_ids,
     search_terms = search_terms,
@@ -209,8 +162,7 @@ adlib_fields <- function(fields = FIELDS) {
         "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
         "ad_creative_link_caption", "ad_creative_link_description",
         "ad_creative_link_title", "ad_delivery_start_time", "ad_delivery_stop_time",
-        "currency", "funding_entity", "page_id", "page_name", "spend", "impressions",
-        "potential_reach"
+        "currency", "funding_entity", "page_id", "page_name", "spend", "impressions"
       )
     } else if (fields == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
@@ -236,7 +188,6 @@ adlib_fields <- function(fields = FIELDS) {
 \"impressions\",
 \"page_id\",
 \"page_name\",
-\"potential_reach\",
 \"publisher_platforms\",
 \"region_distribution\",
 \"spend\"")
