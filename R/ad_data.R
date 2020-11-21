@@ -59,9 +59,6 @@ as_tibble.adlib_data_response <- function(x,
                                           type = c("ad", "demographic", "region"),
                                           censor_access_token = NULL,
                                           ...) {
-  if (length(x) == 0) {
-    stop("No entires in data.")
-  }
   type <- match.arg(type)
   out <- switch(type,
     "ad" = ad_table(x,
@@ -158,8 +155,7 @@ ad_row <- function(row) {
     "ad_creative_link_description", "ad_creative_link_title",
     "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
     "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
-    "adlib_id", "impressions_lower", "impressions_upper",
-    "potential_reach_lower", "potential_reach_upper", "ad_snapshot_url"
+    "adlib_id", "impressions_lower", "impressions_upper", "ad_snapshot_url"
   )
   for (field in columns) {
     if (is.null(row[[field]])) {
@@ -171,8 +167,6 @@ ad_row <- function(row) {
   row[["adlib_id"]] <- adlib_id_from_row(row)
   row[["impressions_lower"]] <- as.numeric(na_pad(row[["impressions"]][["lower_bound"]]))
   row[["impressions_upper"]] <- as.numeric(na_pad(row[["impressions"]][["upper_bound"]]))
-  row[["potential_reach_lower"]] <- as.numeric(na_pad(row[["potential_reach"]][["lower_bound"]]))
-  row[["potential_reach_upper"]] <- as.numeric(na_pad(row[["potential_reach"]][["upper_bound"]]))
   row[columns]
 }
 
@@ -214,7 +208,7 @@ ad_table <- function(results, handle_dates = TRUE, censor_access_token = NULL) {
       dplyr::mutate_at(vars(
         .data$ad_creation_time, .data$ad_delivery_start_time,
         .data$ad_delivery_stop_time
-      ), list(lubridate::as_date))
+      ), list(lubridate::ymd_hms))
   }
 
   # censor access tokens

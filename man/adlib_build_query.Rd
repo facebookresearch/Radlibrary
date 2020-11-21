@@ -6,15 +6,13 @@
 \usage{
 adlib_build_query(
   ad_reached_countries,
-  ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
-  ad_delivery_date_max = NULL,
-  ad_delivery_date_min = NULL,
-  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
-    "UNCATEGORIZED_ADS", "ALL"),
+  ad_active_status = c("ACTIVE", "INACTIVE", "ALL"),
+  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS",
+    "ALL"),
   bylines = NULL,
-  delivery_by_region = NULL,
-  potential_reach_max = NULL,
-  potential_reach_min = NULL,
+  impression_condition = c("HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+    "HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+    "HAS_IMPRESSIONS_LAST_90_DAYS"),
   publisher_platform = "FACEBOOK",
   search_page_ids = NULL,
   search_terms = NULL,
@@ -27,13 +25,7 @@ adlib_build_query(
 the ads in these countries.}
 
 \item{ad_active_status}{Status of the ads. One of 'ACTIVE', 'INACTIVE', or
-'ALL'}
-
-\item{ad_delivery_date_max}{character. Search for ads delivered before the date
-(inclusive) you provide. The date format should be YYYY-mm-dd.}
-
-\item{ad_delivery_date_min}{character. Search for ads delivered after the date
-(inclusive) you provide. The date format should be YYYY-mm-dd.}
+'ALL'.}
 
 \item{ad_type}{The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
@@ -42,17 +34,10 @@ the ads in these countries.}
 \item{bylines}{Filter results for ads with a paid for by disclaimer byline,
 such as political ads that reference “immigration” paid for by “ACLU”.}
 
-\item{delivery_by_region}{Character vector of region names. View ads by the
-region (such as state or province) where people live or were located when
-they saw them.}
-
-\item{potential_reach_max}{Search for ads with a maximum potential reach.
-Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
-500000, 1000000, or leave empty for no maximum boundary.}
-
-\item{potential_reach_min}{Search for ads with a minimum intended reach.
-Must be one of these range boundaries: 100, 1000, 5000, 10000, 50000, 100000,
-500000, 1000000.}
+\item{impression_condition}{When the ad most recently had impressions. One of
+"HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
+"HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
+"HAS_IMPRESSIONS_LAST_90_DAYS"}
 
 \item{publisher_platform}{The platform on which the ads appeared. One or more
 of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
@@ -100,7 +85,6 @@ ad.
   \item impressions
   \item page_id
   \item page_name
-  \item potential_reach
   \item publisher_platforms
   \item region_distribution
   \item spend
