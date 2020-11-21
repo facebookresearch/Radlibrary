@@ -175,8 +175,9 @@ adlib_build_query <- function(ad_reached_countries,
 
   ad_reached_countries <- format_array(ad_reached_countries)
   if (!is.null(bylines)) bylines <- format_array(bylines)
-  if (!is.null(search_page_ids))
+  if (!is.null(search_page_ids)) {
     search_page_ids <- format_array(search_page_ids)
+  }
   if (!is.null(delivery_by_region)) delivery_by_region <- format_array(delivery_by_region)
   publisher_platform <- format_array(publisher_platform)
   fields <- adlib_fields(fields)
