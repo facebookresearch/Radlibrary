@@ -1,3 +1,9 @@
+# Radlibrary 0.3.0
+* Added ability to filter for potential reach
+* Added date filters
+* Removed some deprecated fields
+* Bug fixes
+
 # Radlibrary 0.2.5
 * Fixed an issue where ad tables couldn't be created when spend and impressions
 were not requested
