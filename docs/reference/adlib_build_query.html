@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,6 @@
 <meta property="og:description" content="This will build a list that can be passed to adlib_get.
 Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 for full API documentation." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -57,7 +60,7 @@ for full API documentation." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +74,7 @@ for full API documentation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Radlibrary</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -107,7 +110,7 @@ for full API documentation." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/facebookresearch/Radlibrary">
+  <a href="https://github.com/facebookresearch/Radlibrary/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -136,21 +139,23 @@ Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
 for full API documentation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>adlib_build_query</span>(
-  <span class='no'>ad_reached_countries</span>,
-  <span class='kw'>ad_active_status</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ACTIVE"</span>, <span class='st'>"INACTIVE"</span>, <span class='st'>"ALL"</span>),
-  <span class='kw'>ad_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POLITICAL_AND_ISSUE_ADS"</span>, <span class='st'>"HOUSING_ADS"</span>, <span class='st'>"NEWS_ADS"</span>, <span class='st'>"UNCATEGORIZED_ADS"</span>,
-    <span class='st'>"ALL"</span>),
-  <span class='kw'>bylines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>impression_condition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"HAS_IMPRESSIONS_LIFETIME"</span>, <span class='st'>"HAS_IMPRESSIONS_YESTERDAY"</span>,
-    <span class='st'>"HAS_IMPRESSIONS_LAST_7_DAYS"</span>, <span class='st'>"HAS_IMPRESSIONS_LAST_30_DAYS"</span>,
-    <span class='st'>"HAS_IMPRESSIONS_LAST_90_DAYS"</span>),
-  <span class='kw'>publisher_platform</span> <span class='kw'>=</span> <span class='st'>"FACEBOOK"</span>,
-  <span class='kw'>search_page_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>search_terms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"ad_data"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>adlib_build_query</span><span class='op'>(</span>
+  <span class='va'>ad_reached_countries</span>,
+  ad_active_status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ALL"</span>, <span class='st'>"ACTIVE"</span>, <span class='st'>"INACTIVE"</span><span class='op'>)</span>,
+  ad_delivery_date_max <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ad_delivery_date_min <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ad_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POLITICAL_AND_ISSUE_ADS"</span>, <span class='st'>"HOUSING_ADS"</span>, <span class='st'>"NEWS_ADS"</span>,
+    <span class='st'>"UNCATEGORIZED_ADS"</span>, <span class='st'>"ALL"</span><span class='op'>)</span>,
+  bylines <span class='op'>=</span> <span class='cn'>NULL</span>,
+  delivery_by_region <span class='op'>=</span> <span class='cn'>NULL</span>,
+  potential_reach_max <span class='op'>=</span> <span class='cn'>NULL</span>,
+  potential_reach_min <span class='op'>=</span> <span class='cn'>NULL</span>,
+  publisher_platform <span class='op'>=</span> <span class='st'>"FACEBOOK"</span>,
+  search_page_ids <span class='op'>=</span> <span class='cn'>NULL</span>,
+  search_terms <span class='op'>=</span> <span class='cn'>NULL</span>,
+  limit <span class='op'>=</span> <span class='fl'>1000</span>,
+  fields <span class='op'>=</span> <span class='st'>"ad_data"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +168,17 @@ the ads in these countries.</p></td>
     <tr>
       <th>ad_active_status</th>
       <td><p>Status of the ads. One of 'ACTIVE', 'INACTIVE', or
-'ALL'.</p></td>
+'ALL'</p></td>
+    </tr>
+    <tr>
+      <th>ad_delivery_date_max</th>
+      <td><p>character. Search for ads delivered before the date
+(inclusive) you provide. The date format should be YYYY-mm-dd.</p></td>
+    </tr>
+    <tr>
+      <th>ad_delivery_date_min</th>
+      <td><p>character. Search for ads delivered after the date
+(inclusive) you provide. The date format should be YYYY-mm-dd.</p></td>
     </tr>
     <tr>
       <th>ad_type</th>
@@ -177,11 +192,22 @@ the ads in these countries.</p></td>
 such as political ads that reference “immigration” paid for by “ACLU”.</p></td>
     </tr>
     <tr>
-      <th>impression_condition</th>
-      <td><p>When the ad most recently had impressions. One of
-"HAS_IMPRESSIONS_LIFETIME", "HAS_IMPRESSIONS_YESTERDAY",
-"HAS_IMPRESSIONS_LAST_7_DAYS", "HAS_IMPRESSIONS_LAST_30_DAYS",
-"HAS_IMPRESSIONS_LAST_90_DAYS"</p></td>
+      <th>delivery_by_region</th>
+      <td><p>Character vector of region names. View ads by the
+region (such as state or province) where people live or were located when
+they saw them.</p></td>
+    </tr>
+    <tr>
+      <th>potential_reach_max</th>
+      <td><p>Search for ads with a maximum potential reach.
+Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
+500000, 1000000, or leave empty for no maximum boundary.</p></td>
+    </tr>
+    <tr>
+      <th>potential_reach_min</th>
+      <td><p>Search for ads with a minimum intended reach.
+Must be one of these range boundaries: 100, 1000, 5000, 10000, 50000, 100000,
+500000, 1000000.</p></td>
     </tr>
     <tr>
       <th>publisher_platform</th>
@@ -236,6 +262,7 @@ ad.</p>
 <li><p>impressions</p></li>
 <li><p>page_id</p></li>
 <li><p>page_name</p></li>
+<li><p>potential_reach</p></li>
 <li><p>publisher_platforms</p></li>
 <li><p>region_distribution</p></li>
 <li><p>spend</p></li>
@@ -243,14 +270,10 @@ ad.</p>
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -261,7 +284,7 @@ ad.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
