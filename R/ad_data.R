@@ -243,7 +243,7 @@ demographic_row <- function(result_row) {
   demo_row %>%
     purrr::map_df(as_tibble) %>%
     dplyr::mutate(adlib_id = id) %>%
-    dplyr::mutate(percentage = as.numeric(.data$percentage))
+    dplyr::mutate(dplyr::across(dplyr::contains("percentage"), ~ as.numeric(.x)))
 }
 
 #' Turn data from the data field in response content into a demographics table
@@ -269,7 +269,7 @@ region_row <- function(result_row) {
   reg_row %>%
     purrr::map_df(as_tibble) %>%
     dplyr::mutate(adlib_id = id) %>%
-    dplyr::mutate(percentage = as.numeric(.data$percentage))
+    dplyr::mutate(dplyr::across(dplyr::contains("percentage"), ~ as.numeric(.x)))
 }
 
 #' Region Table
