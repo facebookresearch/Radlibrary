@@ -60,7 +60,7 @@ as_tibble.adlib_data_response <- function(x,
                                           censor_access_token = NULL,
                                           ...) {
   if (length(x) == 0) {
-    stop("No entires in data.")
+    stop("No entries in data.")
   }
   type <- match.arg(type)
   out <- switch(type,
