@@ -19,22 +19,22 @@ FIELDS <- c(
   "region_data",
   "id",
   "ad_creation_time",
-  "ad_creative_body",
-  "ad_creative_link_caption",
-  "ad_creative_link_description",
-  "ad_creative_link_title",
+  "ad_creative_bodies",
+  "ad_creative_link_captions",
+  "ad_creative_link_descriptions",
+  "ad_creative_link_titles",
   "ad_snapshot_url",
   "ad_delivery_start_time",
   "ad_delivery_stop_time",
   "currency",
   "demographic_distribution",
-  "funding_entity",
+  # "funding_entity",
   "impressions",
   "page_id",
   "page_name",
-  "potential_reach",
+  # "potential_reach",
   "publisher_platforms",
-  "region_distribution",
+  "delivery_by_region",
   "spend"
 )
 
@@ -95,22 +95,20 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #'   \item demographic_data - Choose this to include all columns for demographic_table
 #'   \item region_data - Choose this to include all columns for a region_table
 #'   \item ad_creation_time
-#'   \item ad_creative_body
-#'   \item ad_creative_link_caption
-#'   \item ad_creative_link_description
-#'   \item ad_creative_link_title
+#'   \item ad_creative_bodies
+#'   \item ad_creative_link_captions
+#'   \item ad_creative_link_descriptions
+#'   \item ad_creative_link_titles
 #'   \item ad_delivery_start_time
 #'   \item ad_delivery_stop_time
 #'   \item ad_snapshot_url
 #'   \item currency
 #'   \item demographic_distribution
-#'   \item funding_entity
+#'   \item delivery_by_region
 #'   \item impressions
 #'   \item page_id
 #'   \item page_name
-#'   \item potential_reach
 #'   \item publisher_platforms
-#'   \item region_distribution
 #'   \item spend
 #' }
 #'
@@ -206,16 +204,14 @@ adlib_fields <- function(fields = FIELDS) {
   if (length(fields) == 1) {
     if (fields == "ad_data") {
       fields <- c(
-        "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
-        "ad_creative_link_caption", "ad_creative_link_description",
-        "ad_creative_link_title", "ad_delivery_start_time", "ad_delivery_stop_time",
-        "currency", "funding_entity", "page_id", "page_name", "spend", "impressions",
-        "potential_reach"
+        "ad_snapshot_url", "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions", "ad_creative_link_descriptions",
+        "ad_creative_link_titles", "ad_delivery_start_time", "ad_delivery_stop_time",
+        "currency", "page_id", "page_name", "spend", "impressions"
       )
     } else if (fields == "demographic_data") {
       fields <- c("ad_snapshot_url", "demographic_distribution")
     } else if (fields == "region_data") {
-      fields <- c("ad_snapshot_url", "region_distribution")
+      fields <- c("ad_snapshot_url", "delivery_by_region")
     }
   } else if (("ad_data" %in% fields) |
     ("demographic_data" %in% fields) |
@@ -223,10 +219,10 @@ adlib_fields <- function(fields = FIELDS) {
     stop("Fields should be exactly one of \"ad_data\", \"demographic_data\",
 \"region_data\", OR some combination of
 \"ad_creation_time\",
-\"ad_creative_body\",
-\"ad_creative_link_caption\",
-\"ad_creative_link_description\",
-\"ad_creative_link_title\",
+\"ad_creative_bodies\",
+\"ad_creative_link_captions\",
+\"ad_creative_link_descriptions\",
+\"ad_creative_link_titles\",
 \"ad_delivery_start_time\",
 \"ad_delivery_stop_time\",
 \"ad_snapshot_url\",
@@ -236,9 +232,9 @@ adlib_fields <- function(fields = FIELDS) {
 \"impressions\",
 \"page_id\",
 \"page_name\",
+\"delivery_by_region\",
 \"potential_reach\",
 \"publisher_platforms\",
-\"region_distribution\",
 \"spend\"")
   }
   if (!("ad_snapshot_url" %in% fields)) {

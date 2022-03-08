@@ -87,22 +87,20 @@ ad.
   \item demographic_data - Choose this to include all columns for demographic_table
   \item region_data - Choose this to include all columns for a region_table
   \item ad_creation_time
-  \item ad_creative_body
-  \item ad_creative_link_caption
-  \item ad_creative_link_description
-  \item ad_creative_link_title
+  \item ad_creative_bodies
+  \item ad_creative_link_captions
+  \item ad_creative_link_descriptions
+  \item ad_creative_link_titles
   \item ad_delivery_start_time
   \item ad_delivery_stop_time
   \item ad_snapshot_url
   \item currency
   \item demographic_distribution
-  \item funding_entity
+  \item delivery_by_region
   \item impressions
   \item page_id
   \item page_name
-  \item potential_reach
   \item publisher_platforms
-  \item region_distribution
   \item spend
 }
 }

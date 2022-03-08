@@ -154,8 +154,8 @@ as_tibble.paginated_adlib_data_response <- function(x,
 
 ad_row <- function(row) {
   columns <- c(
-    "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-    "ad_creative_link_description", "ad_creative_link_title",
+    "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions",
+    "ad_creative_link_descriptions", "ad_creative_link_titles",
     "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
     "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
     "adlib_id", "impressions_lower", "impressions_upper",
@@ -166,6 +166,10 @@ ad_row <- function(row) {
       row[[field]] <- NA
     }
   }
+  row["ad_creative_bodies"] = as.character(na_pad(row[["ad_creative_bodies"]][[1]]))
+  row["ad_creative_link_descriptions"] = as.character(na_pad(row[["ad_creative_link_descriptions"]][[1]]))
+  row["ad_creative_link_captions"] = as.character(na_pad(row[["ad_creative_link_captions"]][[1]]))
+  row["ad_creative_link_titles"] = as.character(na_pad(row[["ad_creative_link_titles"]][[1]]))
   row[["spend_lower"]] <- as.numeric(na_pad(row[["spend"]][["lower_bound"]]))
   row[["spend_upper"]] <- as.numeric(na_pad(row[["spend"]][["upper_bound"]]))
   row[["adlib_id"]] <- adlib_id_from_row(row)
@@ -264,7 +268,7 @@ construct region table.")
 
 #' @importFrom rlang .data
 region_row <- function(result_row) {
-  reg_row <- result_row[["region_distribution"]]
+  reg_row <- result_row[["delivery_by_region"]]
   id <- adlib_id_from_row(result_row)
   reg_row %>%
     purrr::map_df(as_tibble) %>%
@@ -280,8 +284,8 @@ region_row <- function(result_row) {
 #' @export
 #'
 region_table <- function(results) {
-  if (!("region_distribution" %in% results$fields)) {
-    stop("\"region_distribution\" must be one of the fields returned in order to
+  if (!("delivery_by_region" %in% results$fields)) {
+    stop("\"delivery_by_region\" must be one of the fields returned in order to
 construct region table.")
   }
   results$data %>%
