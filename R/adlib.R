@@ -13,37 +13,54 @@
 
 # Constants ---------------------------------------------------------------
 
-FIELDS <- c(
-  "ad_data",
-  "demographic_data",
-  "region_data",
+fields <- c(
+  "ad_snapshot_url", "ad_creation_time", "ad_creative_bodies",
+  "ad_creative_link_caption", "ad_creative_link_description",
+  "ad_creative_link_title", "ad_delivery_start_time", "ad_delivery_stop_time",
+  "currency", "funding_entity", "page_id", "page_name", "spend", "impressions",
+  "potential_reach"
+)
+
+AD_DATA_FIELDS <- c(
   "id",
   "ad_creation_time",
-  "ad_creative_body",
-  "ad_creative_link_caption",
-  "ad_creative_link_description",
-  "ad_creative_link_title",
-  "ad_snapshot_url",
+  "ad_creative_bodies",
+  "ad_creative_link_captions",
+  "ad_creative_link_descriptions",
+  "ad_creative_link_titles",
   "ad_delivery_start_time",
   "ad_delivery_stop_time",
+  "ad_snapshot_url",
+  "bylines",
   "currency",
-  "demographic_distribution",
-  "funding_entity",
+  "estimated_audience_size",
   "impressions",
+  "languages",
   "page_id",
   "page_name",
-  "potential_reach",
   "publisher_platforms",
-  "region_distribution",
   "spend"
 )
 
-POTENTIAL_REACH_MAX_VALUES <- c(
-  1000, 5000, 10000, 50000, 100000,
-  500000, 1000000
+DEMOGRAPHIC_DATA_FIELDS <- c(
+  "id",
+  "demographic_distribution"
 )
 
-POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000)
+REGION_DATA_FIELDS <- c(
+  "id",
+  "delivery_by_region"
+)
+
+ALL_FIELDS <- c(AD_DATA_FIELDS, DEMOGRAPHIC_DATA_FIELDS[2],
+                REGION_DATA_FIELDS[2])
+
+
+POTENTIAL_REACH_MAX_VALUES <- c(1000, 5000, 10000, 50000, 100000,
+                                500000, 1000000)
+
+POTENTIAL_REACH_MIN_VALUES <-
+  c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000)
 
 # Functions ---------------------------------------------------------------
 
@@ -118,23 +135,27 @@ POTENTIAL_REACH_MIN_VALUES <- c(100, 1000, 5000, 10000, 50000, 100000, 500000, 1
 #' @export
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
-adlib_build_query <- function(ad_reached_countries,
-                              ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
-                              ad_delivery_date_max = NULL,
-                              ad_delivery_date_min = NULL,
-                              ad_type = c(
-                                "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
-                                "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
-                              ),
-                              bylines = NULL,
-                              delivery_by_region = NULL,
-                              potential_reach_max = NULL,
-                              potential_reach_min = NULL,
-                              publisher_platform = "FACEBOOK",
-                              search_page_ids = NULL,
-                              search_terms = NULL,
-                              limit = 1000,
-                              fields = "ad_data") {
+adlib_build_query <- function(
+    ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
+    ad_delivery_date_max = NULL,
+    ad_delivery_date_min = NULL,
+    ad_reached_countries,
+    ad_type = c(
+      "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
+      "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
+    ),
+    bylines = NULL,
+    delivery_by_region = NULL,
+    estimated_audience_size_max = NULL,
+    estimated_audience_size_min = NULL,
+    languages = NULL,
+    media_type = NULL,
+    publisher_platform = "FACEBOOK",
+    search_page_ids = NULL,
+    search_terms = NULL,
+    search_type = NULL,
+    limit = 1000,
+    fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
 
@@ -146,31 +167,31 @@ adlib_build_query <- function(ad_reached_countries,
     stop("At least one of search_page_ids or search_terms must be supplied.")
   }
 
-  if (!is.null(potential_reach_max) && !(potential_reach_max %in% POTENTIAL_REACH_MAX_VALUES)) {
-    if (potential_reach_max < 1000) {
-      stop("potential_reach_max must be at least 1000.")
-    } else if (potential_reach_max > 1000000) {
-      stop("potential_reach_max can be at most 1,000,000.
-           Leave potential_reach_max as NULL to accept any potential reach.")
+  if (!is.null(estimated_audience_size_max) && !(estimated_audience_size_max %in% POTENTIAL_REACH_MAX_VALUES)) {
+    if (estimated_audience_size_max < 1000) {
+      stop("estimated_audience_size_max must be at least 1000.")
+    } else if (estimated_audience_size_max > 1000000) {
+      stop("estimated_audience_size_max can be at most 1,000,000.
+           Leave estimated_audience_size_max as NULL to accept any potential reach.")
     } else {
-      potential_reach_max <- POTENTIAL_REACH_MAX_VALUES[which(sort(c(POTENTIAL_REACH_MAX_VALUES, potential_reach_max)) == potential_reach_max) - 1]
-      warning(glue::glue("potential_reach_max must be one of {paste(as.character(POTENTIAL_REACH_MAX_VALUES), collapse = ', ')}.\n Rounding down to {potential_reach_max}."))
+      estimated_audience_size_max <- POTENTIAL_REACH_MAX_VALUES[which(sort(c(POTENTIAL_REACH_MAX_VALUES, estimated_audience_size_max)) == estimated_audience_size_max) - 1]
+      warning(glue::glue("estimated_audience_size_max must be one of {paste(as.character(POTENTIAL_REACH_MAX_VALUES), collapse = ', ')}.\n Rounding down to {estimated_audience_size_max}."))
     }
   }
 
-  if (!is.null(potential_reach_min) && !(potential_reach_min %in% POTENTIAL_REACH_MIN_VALUES)) {
-    if (potential_reach_min < 100) {
-      stop("potential_reach_min must be at least 100.")
-    } else if (potential_reach_min > 1000000) {
-      stop("potential_reach_min can be at most 1,000,000.")
+  if (!is.null(estimated_audience_size_min) && !(estimated_audience_size_min %in% POTENTIAL_REACH_MIN_VALUES)) {
+    if (estimated_audience_size_min < 100) {
+      stop("estimated_audience_size_min must be at least 100.")
+    } else if (estimated_audience_size_min > 1000000) {
+      stop("estimated_audience_size_min can be at most 1,000,000.")
     } else {
-      potential_reach_min <- POTENTIAL_REACH_MIN_VALUES[which(sort(c(POTENTIAL_REACH_MIN_VALUES, potential_reach_min)) == potential_reach_min)]
-      warning(glue::glue("potential_reach_min must be one of {paste(as.character(POTENTIAL_REACH_MIN_VALUES), collapse = ', ')}.\n Rounding up to {potential_reach_min}."))
+      estimated_audience_size_min <- POTENTIAL_REACH_MIN_VALUES[which(sort(c(POTENTIAL_REACH_MIN_VALUES, estimated_audience_size_min)) == estimated_audience_size_min)]
+      warning(glue::glue("estimated_audience_size_min must be one of {paste(as.character(POTENTIAL_REACH_MIN_VALUES), collapse = ', ')}.\n Rounding up to {estimated_audience_size_min}."))
     }
   }
 
-  if (!is.null(potential_reach_max) && !is.null(potential_reach_min) && potential_reach_max <= potential_reach_min) {
-    stop("potential_reach_min must be less than potential_reach_max") # the API won't let them be equal
+  if (!is.null(estimated_audience_size_max) && !is.null(estimated_audience_size_min) && estimated_audience_size_max <= estimated_audience_size_min) {
+    stop("estimated_audience_size_min must be less than estimated_audience_size_max") # the API won't let them be equal
   }
 
   ad_reached_countries <- format_array(ad_reached_countries)
@@ -191,8 +212,8 @@ adlib_build_query <- function(ad_reached_countries,
     ad_type = ad_type,
     bylines = bylines,
     delivery_by_region = delivery_by_region,
-    potential_reach_max = as.integer(potential_reach_max),
-    potential_reach_min = as.integer(potential_reach_min),
+    estimated_audience_size_max = as.integer(estimated_audience_size_max),
+    estimated_audience_size_min = as.integer(estimated_audience_size_min),
     publisher_platform = publisher_platform,
     search_page_ids = search_page_ids,
     search_terms = search_terms,
@@ -201,45 +222,21 @@ adlib_build_query <- function(ad_reached_countries,
   ))
 }
 
-adlib_fields <- function(fields = FIELDS) {
+adlib_fields <- function(
+    fields = c("ad_data", "demographic_data", "region_data", ALL_FIELDS)) {
   fields <- match.arg(fields, several.ok = TRUE)
   if (length(fields) == 1) {
     if (fields == "ad_data") {
-      fields <- c(
-        "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
-        "ad_creative_link_caption", "ad_creative_link_description",
-        "ad_creative_link_title", "ad_delivery_start_time", "ad_delivery_stop_time",
-        "currency", "funding_entity", "page_id", "page_name", "spend", "impressions",
-        "potential_reach"
-      )
+      fields <- AD_DATA_FIELDS
     } else if (fields == "demographic_data") {
-      fields <- c("ad_snapshot_url", "demographic_distribution")
+      fields <- DEMOGRAPHIC_DATA_FIELDS
     } else if (fields == "region_data") {
-      fields <- c("ad_snapshot_url", "region_distribution")
+      fields <- REGION_DATA_FIELDS
     }
   } else if (("ad_data" %in% fields) |
     ("demographic_data" %in% fields) |
     ("region_data" %in% fields)) {
-    stop("Fields should be exactly one of \"ad_data\", \"demographic_data\",
-\"region_data\", OR some combination of
-\"ad_creation_time\",
-\"ad_creative_body\",
-\"ad_creative_link_caption\",
-\"ad_creative_link_description\",
-\"ad_creative_link_title\",
-\"ad_delivery_start_time\",
-\"ad_delivery_stop_time\",
-\"ad_snapshot_url\",
-\"currency\",
-\"demographic_distribution\",
-\"funding_entity\",
-\"impressions\",
-\"page_id\",
-\"page_name\",
-\"potential_reach\",
-\"publisher_platforms\",
-\"region_distribution\",
-\"spend\"")
+    stop("Fields should be exactly one of ad_data, demographic_data, or region_data")
   }
   if (!("ad_snapshot_url" %in% fields)) {
     stop("If fields is not ad_data, demographic_data, or region_data then it must include ad_snapshot_url")
