@@ -11,58 +11,65 @@ fields <- c(
 test_that("Parsing responses works correctly", {
   skip_on_cran()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
-  data_response <- adlib_get(adlib_build_query("US", search_terms = "Facebook"), token = token)
-  expect_equal(data_response$fields, fields)
+  data_response <- adlib_build_query(
+      ad_reached_countries = "US",
+      search_terms = "Facebook",
+      limit = 5) %>%
+    adlib_get(token)
+  expect_snapshot(data_response$fields)
 })
 
 test_that("Converting to ad table works", {
   skip_on_cran()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
-  data_response <- adlib_get(adlib_build_query("US", search_terms = "Facebook"), token = token)
-  ad_table <- ad_table(data_response, censor_access_token = T)
-  expect_s3_class(ad_table, "tbl_df")
-  expect_equal(colnames(ad_table), c(
-    "ad_creation_time", "ad_creative_body", "ad_creative_link_caption",
-    "ad_creative_link_description", "ad_creative_link_title",
-    "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
-    "funding_entity", "page_id", "page_name", "spend_lower", "spend_upper",
-    "adlib_id", "impressions_lower", "impressions_upper",
-    "potential_reach_lower", "potential_reach_upper", "ad_snapshot_url"
-  ))
+  data_response <- adlib_build_query(
+    ad_reached_countries = "US",
+    search_terms = "Facebook",
+    limit = 5) %>%
+    adlib_get(token)
+  tbl <- as_tibble(data_response, censor_access_token = T)
+  expect_s3_class(tbl, "tbl_df")
+  expect_snapshot(names(tbl))
 })
 
-test_that("Converting to demographic table works", {
-  data_resp <- readRDS("example_dem_response.rds")
-  table <- readRDS("example_dem_table.rds")
-  expect_equal(demographic_table(data_resp), table)
-  expect_equal(as_tibble(data_resp, "demo"), table)
+test_that("Getting demographic data works", {
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  data_response <- adlib_build_query(
+    ad_reached_countries = "US",
+    search_terms = "Facebook",
+    fields = c('id', 'demographic_distribution'),
+    limit = 5) %>%
+    adlib_get(token)
+  expect_s3_class(data_response, "adlib_data_response")
+  expect_equal(data_response$fields, c("id", "demographic_distribution"))
 })
 
-test_that("Converting to region table works", {
-  reg_resp <- readRDS("reg_response.rds")
-  reg_table <- readRDS("reg_table.rds")
-  expect_equal(region_table(reg_resp), reg_table)
-  expect_equal(as_tibble(reg_resp, "reg"), reg_table)
+test_that("searching by language works", {
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  data_response <- adlib_build_query(
+    ad_reached_countries = "BR",
+    search_terms = "Facebook",
+    fields = c('id', 'languages', "delivery_by_region"),
+    languages = c('en'),
+    limit = 5) %>%
+    adlib_get(token)
+  expect_snapshot(names(as_tibble(data_response)))
 })
 
-test_that("ad_row works when spend and impressions hit upper bound", {
-  # upper exists for both
-  dr <- data_response$data[[1]]
-  row <- ad_row(dr)
-  expect_equal(row$spend_lower, 0)
-  expect_equal(row$spend_upper, 99)
-  expect_equal(row$impressions_lower, 0)
-  expect_equal(row$impressions_upper, 999)
-
-  # upper gone for spend
-  dr$spend$upper_bound <- NULL
-  row <- ad_row(dr)
-  expect_equal(row$spend_upper, as.numeric(NA))
-
-  # upper gone for impressions
-  dr$impressions$upper_bound <- NULL
-  row <- ad_row(dr)
-  expect_equal(row$impressions_upper, as.numeric(NA))
+test_that("searching by region works", {
+  skip_on_cran()
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  data_response <- adlib_build_query(
+    ad_reached_countries = "US",
+    delivery_by_region = c('California', 'New York'),
+    search_terms = "Facebook",
+    fields = c('id', 'delivery_by_region'),
+    languages = c('en'),
+    limit = 5) %>%
+    adlib_get(token)
+  expect_snapshot(names(as_tibble(data_response)))
 })
 
 test_that("Access token censoring", {

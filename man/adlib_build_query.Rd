@@ -5,35 +5,38 @@
 \title{Build an Ad Library Query}
 \usage{
 adlib_build_query(
-  ad_reached_countries,
   ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
   ad_delivery_date_max = NULL,
   ad_delivery_date_min = NULL,
+  ad_reached_countries,
   ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS",
     "UNCATEGORIZED_ADS", "ALL"),
   bylines = NULL,
   delivery_by_region = NULL,
-  potential_reach_max = NULL,
-  potential_reach_min = NULL,
-  publisher_platform = "FACEBOOK",
+  estimated_audience_size_max = NULL,
+  estimated_audience_size_min = NULL,
+  languages = NULL,
+  media_type = NULL,
+  publisher_platforms = NULL,
   search_page_ids = NULL,
   search_terms = NULL,
+  search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
   limit = 1000,
   fields = "ad_data"
 )
 }
 \arguments{
-\item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered
-the ads in these countries.}
-
 \item{ad_active_status}{Status of the ads. One of 'ACTIVE', 'INACTIVE', or
 'ALL'}
 
-\item{ad_delivery_date_max}{character. Search for ads delivered before the date
-(inclusive) you provide. The date format should be YYYY-mm-dd.}
+\item{ad_delivery_date_max}{character. Search for ads delivered before the
+date (inclusive) you provide. The date format should be YYYY-mm-dd.}
 
-\item{ad_delivery_date_min}{character. Search for ads delivered after the date
-(inclusive) you provide. The date format should be YYYY-mm-dd.}
+\item{ad_delivery_date_min}{character. Search for ads delivered after the
+date (inclusive) you provide. The date format should be YYYY-mm-dd.}
+
+\item{ad_reached_countries}{Vector of ISO country codes. Facebook delivered
+the ads in these countries.}
 
 \item{ad_type}{The type of ad. One of 'ALL', 'POLITICAL_AND_ISSUE_ADS',
 'HOUSING_ADS', 'NEWS_ADS', or 'UNCATEGORIZED_ADS'. Currently only
@@ -46,20 +49,34 @@ such as political ads that reference “immigration” paid for by “ACLU”.}
 region (such as state or province) where people live or were located when
 they saw them.}
 
-\item{potential_reach_max}{Search for ads with a maximum potential reach.
-Must be one of these range boundaries: 1000, 5000, 10000, 50000, 100000,
-500000, 1000000, or leave empty for no maximum boundary.}
+\item{estimated_audience_size_max}{Search for ads with a maximum estimated
+audience size. Must be one of these range boundaries:
+1000, 5000, 10000, 50000, 100000, 500000, 1000000,
+or leave empty for no maximum boundary.}
 
-\item{potential_reach_min}{Search for ads with a minimum intended reach.
-Must be one of these range boundaries: 100, 1000, 5000, 10000, 50000, 100000,
-500000, 1000000.}
+\item{estimated_audience_size_min}{Search for ads with a minimum estimated
+audience size. Must be one of these range boundaries: 100, 1000, 5000,
+10000, 50000, 100000, 500000, 1000000.}
 
-\item{publisher_platform}{The platform on which the ads appeared. One or more
-of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
+\item{languages}{a character vector of languages that the ad appears in}
+
+\item{media_type}{Search for ads based on whether they contain a specific
+type of media such as an image or video.}
+
+\item{publisher_platforms}{The platforms on which the ads appeared. One or
+more of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER",
+"WHATSAPP".}
 
 \item{search_page_ids}{A vector of up to 10 page IDs to search.}
 
 \item{search_terms}{A search string.}
+
+\item{search_type}{The type of search to use for search_terms field.
+KEYWORD_EXACT_PHRASE will return results that contain an exact match for
+the search term. Multiple search terms separated by commas can be used to
+retrieve results that contain an exact match for each phrase.
+KEYWORD_UNORDERED will return results that contain the word in the search
+term in any order. By default this is set to KEYWORD_UNORDERED.}
 
 \item{limit}{The maximum number of results to return}
 
@@ -69,40 +86,24 @@ of "FACEBOOK", "INSTAGRAM", "AUDIENCE_NETWORK", "MESSENGER", "WHATSAPP".}
 A list of params
 }
 \description{
-This will build a list that can be passed to adlib_get.
-Visit https://developers.facebook.com/docs/marketing-api/reference/ads_archive/
-for full API documentation.
+This will build a list that can be passed to adlib_get. Visit
+https://developers.facebook.com/docs/marketing-api/reference/ads_archive/ for
+full API documentation.
 }
 \details{
 Preset groups of fields can be specified by "ad_data",
-"demographic_data", or "region_data". Otherwise, you can pick and choose
-fields from the following list. The only *required* field when picking and
-choosing is ad_snapshot_url, since that's the unique identifier for each
-ad.
+  "demographic_data", or "region_data". Otherwise, you can pick and choose
+  fields. The only *required* field when picking and choosing is id, since
+  that's the unique identifier for each ad.
 
 
 
-\itemize{
-  \item ad_data - Choose this to include all columns for an ad_table table
-  \item demographic_data - Choose this to include all columns for demographic_table
-  \item region_data - Choose this to include all columns for a region_table
-  \item ad_creation_time
-  \item ad_creative_body
-  \item ad_creative_link_caption
-  \item ad_creative_link_description
-  \item ad_creative_link_title
-  \item ad_delivery_start_time
-  \item ad_delivery_stop_time
-  \item ad_snapshot_url
-  \item currency
-  \item demographic_distribution
-  \item funding_entity
-  \item impressions
-  \item page_id
-  \item page_name
-  \item potential_reach
-  \item publisher_platforms
-  \item region_distribution
-  \item spend
-}
+  \itemize{ \item ad_data \item \item ad_creation_time \item
+  ad_creative_bodies \item ad_creative_link_captions \item
+  ad_creative_link_descriptions \item ad_creative_link_titles \item
+  ad_delivery_start_time \item ad_delivery_stop_time \item ad_snapshot_url
+  \item bylines \item currency \item estimated_audience_size \item
+  impressions \item languages \item page_id \item page_name \item
+  publisher_platforms \item spend \item demographic_distribution \item
+  delivery_by_region }
 }

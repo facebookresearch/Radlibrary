@@ -15,7 +15,7 @@ adlib_get(params, token = token_get())
 an http response
 }
 \description{
-This function sends a request to the Ad Librar API.
+This function sends a request to the Ad Library API.
 The `params` argument should be a list that is built with adlib_build_query().
 The `token` argument can be a short-term token pasted from
 https://developers.facebook.com/tools/explorer/,
