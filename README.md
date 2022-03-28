@@ -1,9 +1,7 @@
 # Radlibrary
 
 <!-- badges: start -->
-
-[![Travis build status](https://travis-ci.com/facebookresearch/Radlibrary.svg?branch=master)](https://travis-ci.com/facebookresearch/Radlibrary)
-
+[![R-CMD-check](https://github.com/facebookresearch/Radlibrary/workflows/R-CMD-check/badge.svg)](https://github.com/facebookresearch/Radlibrary/actions)
 <!-- badges: end -->
 
 The `Radlibrary` package is an R package to facilitate querying the [Facebook Ad Library](https://www.facebook.com/ads/library/) through the [Facebook Ad Library API](https://www.facebook.com/ads/library/api/). If you’re looking for more details about the ads that make up the Ad Library and you’ve got some experience using `R`, you’re in the right place.
