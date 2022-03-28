@@ -37,5 +37,6 @@ Suggests:
     rlang
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-URL: https://facebookresearch.github.io/Radlibrary/, https://github.com/facebookresearch/Radlibrary
+URL: https://facebookresearch.github.io/Radlibrary/,
+    https://github.com/facebookresearch/Radlibrary
 Config/testthat/edition: 3
