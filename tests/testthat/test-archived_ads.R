@@ -1,3 +1,6 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+
 test_that("convert_range", {
   l <- list(hello = "hi", spend = list(lower_bound = "0", upper_bound = "20"))
   expect_equal(aa_process_InsightsRangeValue(l, "spend"), list(

@@ -1,15 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
-fields <- c(
-  "ad_snapshot_url", "ad_creation_time", "ad_creative_body",
-  "ad_creative_link_caption", "ad_creative_link_description", "ad_creative_link_title",
-  "ad_delivery_start_time", "ad_delivery_stop_time", "currency",
-  "funding_entity", "page_id", "page_name", "spend", "impressions",
-  "potential_reach"
-)
 
 test_that("Parsing responses works correctly", {
   skip_on_cran()
+  skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
       ad_reached_countries = "US",
@@ -21,6 +15,7 @@ test_that("Parsing responses works correctly", {
 
 test_that("Converting to ad table works", {
   skip_on_cran()
+  skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
@@ -34,6 +29,7 @@ test_that("Converting to ad table works", {
 
 test_that("Getting demographic data works", {
   skip_on_cran()
+  skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
@@ -47,6 +43,7 @@ test_that("Getting demographic data works", {
 
 test_that("searching by language works", {
   skip_on_cran()
+  skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "BR",
@@ -60,6 +57,7 @@ test_that("searching by language works", {
 
 test_that("searching by region works", {
   skip_on_cran()
+  skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",

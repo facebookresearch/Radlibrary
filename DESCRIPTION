@@ -17,25 +17,24 @@ LazyData: true
 Imports: 
     httr,
     stringr,
-    readr,
     magrittr,
     jsonlite,
-    yaml,
     tibble,
     glue,
-    fs,
     purrr,
-    dplyr,
     keyring,
     getPass,
-    lubridate,
-    rlang,
     rstudioapi,
     tidyr
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    dplyr,
+    lubridate,
+    fs,
+    readr,
+    rlang
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 URL: https://facebookresearch.github.io/Radlibrary/, https://github.com/facebookresearch/Radlibrary
