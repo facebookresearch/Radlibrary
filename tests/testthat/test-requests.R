@@ -2,23 +2,8 @@
 # All rights reserved.
 #
 # ~~~~~~~~~~~~~~~~~  IMPORTANT: PLEASE READ  ~~~~~~~~~~~~~~~~~~~
-# These tests require that a valid access_token is stored in .travis.yml.
-# access tokens eventually expire, so the build will break when that happens.
-# To fix, obtain a long-term access token and add it as an encrypted
-# environment variable called FB_GRAPH_API_TOKEN, following the instructions
-# at https://docs.travis-ci.com/user/environment-variables/.
-# The easiest way is with the CLI:
-#    $ travis encrypt FB_GRAPH_API_TOKEN=<access token> --add env.global
 #
 # For local testing just run token_add_to_env() before running the tests
-
-# travis_encode_command <- function() {
-#   # pastes the command for encoding the graph api token into travis.yml.
-#   # only use this to make travis ci work.
-#   "travis encrypt --pro FB_GRAPH_API_TOKEN={token_get()$token} --add env.global" %>%
-#     glue::glue() %>%
-#     clipr::write_clip()
-# }
 
 q <- adlib_build_query(
   ad_reached_countries = "US",
