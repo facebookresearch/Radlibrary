@@ -89,8 +89,7 @@ We'll start with a simple example. Let's look for all active ads within the Unit
 
 ```{r, eval = FALSE} 
 query <- adlib_build_query(ad_reached_countries = 'US', 
-ad_active_status = 'ACTIVE', 
-impression_condition = 'HAS_IMPRESSIONS_LAST_90_DAYS', 
+ad_active_status = 'ACTIVE',  
 search_terms = "healthcare",
 fields = "ad_data")
 ```
@@ -127,13 +126,13 @@ This data object has numerous metadata attributes:
 You can convert your results into a `tibble` using `as_tibble`:
 
 ```{r, eval = FALSE}
-results.tibble <- as_tibble(response, type = "ad")
+results.tibble <- as_tibble(response, censor_access_token = TRUE)
 ```
 
 This will transform the information stored in `data` and in `fields` from your `adlib_data_response` into a tidy data frame (i.e., a tibble) for analysis. The example content below from the above: 
 
 ```{r, eval = FALSE}
-> head(results.tibble)
+head(results.tibble)
 #  A tibble: 6 x 15
 #  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… 
 #  <dttm>              <chr>            <chr>            <chr>           
@@ -222,11 +221,10 @@ versus
 ```{r, eval = FALSE}
 query <- adlib_build_query(ad_reached_countries = 'US', 
                            ad_active_status = 'ALL', 
-                           impression_condition = 'HAS_IMPRESSIONS_LIFETIME', 
                            search_terms = "healthcare",
                            fields = "ad_data") 
 result_paginated <- adlib_get_paginated(query, max_gets = 10, token_get())
-df_paginated <- as_tibble(result_paginated, type = "ad")
+df_paginated <- as_tibble(result_paginated)
 dim(df_paginated)
 # [1] 10000    17
 ``` 

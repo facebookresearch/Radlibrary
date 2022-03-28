@@ -1,0 +1,51 @@
+---
+title: "nested_columns"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{nested_columns}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+token <- Sys.getenv("FB_GRAPH_API_TOKEN")  # run token_add_to_env() to set this
+```
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE)
+library(Radlibrary)
+library(dplyr)
+library(tidyr)
+```
+
+Some of the fields returned by the ad library API are converted by Radlibrary into list columns or nested tibbles. Here's an example.
+
+```{r}
+query <- adlib_build_query(ad_reached_countries = "US", 
+                           search_terms = "election", 
+                           limit = 10, 
+                           fields = c('id', 'publisher_platforms', 'demographic_distribution'))
+response <- adlib_get(query, token = token)
+data <- as_tibble(response)
+head(data)
+```
+This query returns 3 columns. Column is a regular old character vector. Column 2, `publisher_platforms`, is a list column. Each entry is a list of platforms on which the ad appeared. The third column is itself a tibble. 
+
+Both of these nested columns can be unnested using `tidyr`'s `unnest`.
+
+```{r}
+data %>% 
+  select(-demographic_distribution) %>% 
+  unnest(publisher_platforms)
+```
+```{r}
+data %>% 
+  select(-publisher_platforms) %>% 
+  unnest(demographic_distribution)
+```
+The full set of available fields is documented [here](https://developers.facebook.com/docs/marketing-api/reference/archived-ad/). In general, fields of type `list<string>` are converted to nested lists, while responses of type `list<AudienceDistribution>` are converted to nested tibbles.
+

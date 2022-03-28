@@ -4,17 +4,10 @@
 \alias{as_tibble.paginated_adlib_data_response}
 \title{Convert a paginated response into a tibble}
 \usage{
-\method{as_tibble}{paginated_adlib_data_response}(
-  x,
-  type = c("ad", "demographic", "region"),
-  censor_access_token = NULL,
-  ...
-)
+\method{as_tibble}{paginated_adlib_data_response}(x, censor_access_token = NULL, ...)
 }
 \arguments{
 \item{x}{a paginated response returned by adlib_get_paginated}
-
-\item{type}{one of "ad", "demographic", "region".}
 
 \item{censor_access_token}{should access tokens be censored from output?}
 

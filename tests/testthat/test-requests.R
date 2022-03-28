@@ -20,7 +20,10 @@
 #     clipr::write_clip()
 # }
 
-q <- adlib_build_query("US", search_terms = "president", limit = 3)
+q <- adlib_build_query(
+  ad_reached_countries = "US",
+  search_terms = "president", limit = 3
+)
 
 test_that("graph_get works", {
   skip_on_cran()
@@ -57,7 +60,6 @@ test_that("adlib_get_paginated works", {
   resp <- adlib_get_paginated(q, token = token, max_gets = 2)
   resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
   expect_true(tibble::is_tibble(resp_table))
-  expect_warning(tibble::as_tibble(resp))
   expect_false(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = TRUE)$ad_snapshot_url)))
   expect_true(any(detect_access_token(tibble::as_tibble(resp, censor_access_token = FALSE)$ad_snapshot_url)))
 })
@@ -65,9 +67,10 @@ test_that("adlib_get_paginated works", {
 test_that("adlib_get works with no spend or impressions", {
   skip_on_cran()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
-  q <- adlib_build_query("US",
+  q <- adlib_build_query(
+    ad_reached_countries = "US",
     search_terms = "america", limit = 10,
-    fields = c("ad_snapshot_url")
+    fields = c("id", "ad_snapshot_url")
   )
   resp <- adlib_get(q, token = token)
   expect_s3_class(as_tibble(resp, censor_access_token = TRUE), "tbl_df")

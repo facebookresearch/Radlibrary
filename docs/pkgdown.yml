@@ -1,8 +1,8 @@
-pandoc: 2.7.3
-pkgdown: 1.6.1
+pandoc: 2.17.1.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   Radlibrary: Radlibrary.html
-  table-types: table-types.html
-last_built: 2020-11-22T00:22Z
+  nested_columns: nested_columns.html
+last_built: 2022-03-28T14:40Z
 
