@@ -4,7 +4,7 @@ Version: 0.4.1
 Authors@R: 
     c(person(given = "Colin",
            family = "Fraser",
-           role = c("cre"),
+           role = c("aut", "cre"),
            email = "colinfraser@fb.com"),
       person(given = "Kyle",
            family = "Shank",
@@ -37,6 +37,6 @@ Suggests:
     rlang
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-URL: https://facebookresearch.github.io/Radlibrary/,
-    https://github.com/facebookresearch/Radlibrary
+URL: https://facebookresearch.github.io/Radlibrary/
+BugReports: https://github.com/facebookresearch/Radlibrary/issues
 Config/testthat/edition: 3

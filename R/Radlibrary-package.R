@@ -1,3 +1,6 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates
+
+
 #' @keywords internal
 "_PACKAGE"
 
