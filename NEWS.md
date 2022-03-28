@@ -1,3 +1,15 @@
+# Radlibrary 0.4.0
+* New fields now supported including
+  - ad_creative_bodies
+  - ad_creative_link_captions
+  - ad_creative_link_descriptions
+  - delivery_by_region
+  - languages
+  - id
+* Demographic and region delivery tables now create nested tibbles rather than having to create a completely new table
+* Refactored the code that processes results to make it more extensible in case new columns are added
+* Added a vignette on nested columns
+
 # Radlibrary 0.3.0
 * Added ability to filter for potential reach
 * Added date filters
