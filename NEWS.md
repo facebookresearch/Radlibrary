@@ -3,16 +3,43 @@
 * Update the nested columns vignette
 
 # Radlibrary 0.4.0
-* New fields now supported including
-  - ad_creative_bodies
-  - ad_creative_link_captions
-  - ad_creative_link_descriptions
-  - delivery_by_region
-  - languages
-  - id
-* Demographic and region delivery tables now create nested tibbles rather than having to create a completely new table
-* Refactored the code that processes results to make it more extensible in case new columns are added
-* Added a vignette on nested columns
+
+## New Fields
+
+The [Ad Library API](https://www.facebook.com/ads/library/api/?source=nav-header) provides more data than it used to, and now `Radlibrary` can handle it. All of the current fields are supported, which at this time include:
+
+-  id
+-  ad_creation_time
+-  ad_creative_bodies
+-  ad_creative_link_captions
+-  ad_creative_link_descriptions
+-  ad_creative_link_titles
+-  ad_delivery_start_time
+-  ad_delivery_stop_time
+-  ad_snapshot_url
+-  bylines
+-  currency
+-  estimated_audience_size
+-  impressions
+-  languages
+-  page_id
+-  page_name
+-  publisher_platforms
+-  spend
+-  demographic_distribution
+-  delivery_by_region
+
+## Nested Columns
+
+The Ad Library API has evolved to return richer data for some fields which may be multi-valued. For instance, the `publisher_platform` field can contain multiple values: Facebook, Instagram, etc. Converting responses to a tibble now makes these into list columns.
+
+Similarly, some values like `demographic_distribution` and `delivery_by_region` return very rich data. Previously, it was necessary to request this data separately as a `geo_table` or `demographic_table`. Now these values are converted into nested tibble columns. See `vignette("nested_columns")` for more.
+
+## Other small-to-medium changes
+
+- Ads now have a unique identifier simply called `id`. This is now the favored unique identifier rather than `ad_snapshot_url`, which was previously a required field in all calls to the API.
+- Converting a data response to `tibble` will no longer create a whole bunch of unused columns for fields that weren't requested. Only the fields that were requested are included now.
+
 
 # Radlibrary 0.3.0
 * Added ability to filter for potential reach

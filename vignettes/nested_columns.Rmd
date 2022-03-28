@@ -2,7 +2,7 @@
 title: "Nesting and Flattening"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nested_columns}
+  %\VignetteIndexEntry{Nesting and Flattening}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,10 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
-
-```{r setup}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(Radlibrary)
 library(dplyr)
 library(tidyr)
