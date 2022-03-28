@@ -47,8 +47,14 @@
     <a class="dropdown-item" href="../articles/nested_columns.html">Nesting and Flattening</a>
   </div>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-news">
+    <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="dropdown-item" href="https://facebookresearch.github.io/Radlibrary/releases/radlibrary-0-4-0/">Radlibrary 0.4.0</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../news/index.html">Changelog</a>
+  </div>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -82,21 +88,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>warning <span class="op">=</span> <span class="cn">FALSE</span>, message <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://facebookresearch.github.io/Radlibrary/">Radlibrary</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></code></pre></div>
 <p>Some of the fields returned by the ad library API are converted by Radlibrary into list columns or nested tibbles. Other fields are flattened into multiple columns.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">"US"</span>, 
                            search_terms <span class="op">=</span> <span class="st">"election"</span>, 
                            limit <span class="op">=</span> <span class="fl">3</span>, 
@@ -115,10 +108,10 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fake789 <span style="color: #949494;">&lt;chr [1]&gt;</span>                          0              999 <span style="color: #949494;">&lt;NULL&gt;</span></span></code></pre></div>
 <p>This query returns 5 columns. Column 1 is a regular old character vector. Column 2, <code>publisher_platforms</code>, is a list column. Each entry is a list of platforms on which the ad appeared. Columns 3 and 4 are regular numeric vectors that are discussed in the next section. The last column is also nested, but it’s a nested <code>tibble</code> rather than simple lists.</p>
 <p>Both of these nested columns can be unnested using <code>tidyr</code>’s <code>unnest</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">publisher_platforms</span><span class="op">)</span>
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">publisher_platforms</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 4</span></span>
 <span class="co">#&gt;   id      publisher_platforms impressions_lower impressions_upper</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -129,10 +122,10 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">5</span> fake789 facebook                            0               999</span></code></pre></div>
 <p>Note that this creates multiple rows for ads which appeared in multiple platforms. Caution is warranted in interpreting this dataset: this does not mean that the granularity of the other columns has increased. For instance, it’s not necessarily the case that the ad with id <code>fake123</code> has over 1,000 impressions <em>on each</em> of Facebook and Messenger. We can only say that the sum of the impressions on this ad over each platform is between 1,000 and 4,999.</p>
 <p>The nested <code>tibble</code> column can be unnested the exact same way. To avoid confusion on granularity, we’ll unselect the non-nested columns.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">demographic_distribution</span><span class="op">)</span>
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu">contains</span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">demographic_distribution</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 4</span></span>
 <span class="co">#&gt;    id      percentage age   gender </span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
@@ -150,10 +143,10 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">12</span> fake456    0.176   65+   female </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">13</span> fake456    0.002<span style="text-decoration: underline;">20</span> 65+   unknown</span></code></pre></div>
 <p>Another word of caution is that by default, unnesting drops rows with NULL values. Since the <code>demographic_distribution</code> is not available for ads <code>fake123</code> or <code>fake789</code>, these rows are dropped from the resulting dataset. You can force this not to occur by setting <code>keep_empty=TRUE</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">demographic_distribution</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu">contains</span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">demographic_distribution</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 4</span></span>
 <span class="co">#&gt;    id      percentage age   gender </span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
@@ -176,11 +169,11 @@
 <h3 id="careful-about-combinatorial-explosion-with-unnesting">Careful about combinatorial explosion with unnesting<a class="anchor" aria-label="anchor" href="#careful-about-combinatorial-explosion-with-unnesting"></a>
 </h3>
 <p>Unnesting multiple nested columns at the same time can create an undesired combinatorial explosion. For example,</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">publisher_platforms</span>, <span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">publisher_platforms</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">demographic_distribution</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">publisher_platforms</span>, <span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">publisher_platforms</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">demographic_distribution</span>, keep_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 29 × 5</span></span>
 <span class="co">#&gt;    id      publisher_platforms percentage age   gender </span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
@@ -211,7 +204,7 @@
 <h2 id="dont-forget-you-still-have-the-raw-data">Don’t forget, you still have the raw data<a class="anchor" aria-label="anchor" href="#dont-forget-you-still-have-the-raw-data"></a>
 </h2>
 <p>All of the data returned by the Ads Library API is kept in the response object. If the automatic transformations that are applied by <code>as_tibble</code> aren’t ideal for you, you can always go into the raw data and process it however you like.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">response</span><span class="op">$</span><span class="va">data</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [[1]]$id</span>
