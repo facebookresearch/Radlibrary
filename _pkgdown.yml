@@ -1,1 +1,4 @@
-destination: docs
+url: https://facebookresearch.github.io/Radlibrary/
+template:
+  bootstrap: 5
+
