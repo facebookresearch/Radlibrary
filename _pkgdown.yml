@@ -6,3 +6,17 @@ news:
   releases:
     - text: "Radlibrary 0.4.0"
       href: https://facebookresearch.github.io/Radlibrary/news/index.html#radlibrary-040
+
+footer:
+  structure:
+    left: [developed_by, legal]
+    right: built_with
+  components:
+    legal: Copyright © Meta Platforms, Inc.
+
+home:
+  links:
+    - text: Terms of Use
+      href: https://opensource.facebook.com/legal/terms
+    - text: Privacy Policy
+      href: https://opensource.facebook.com/legal/privacy
