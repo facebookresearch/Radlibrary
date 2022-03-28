@@ -19,7 +19,6 @@
 #' "ads_archive", for querying the Ad Library, and "access_token", for requesting
 #' long-term access tokens.
 #' @param version the version of the API to use.
-#' @export
 #'
 #' @return the endpoint URL
 #'
@@ -39,7 +38,6 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 #' @param token an access token from Facebook
 #'
 #' @return the raw response from Facebook Ad library
-#' @export
 #' @importFrom httr RETRY http_error stop_for_status
 #'
 graph_get <- function(service, params, token = token_get()) {

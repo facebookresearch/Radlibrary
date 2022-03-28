@@ -315,7 +315,7 @@ adlib_get_paginated <- function(query, max_gets = 100, token = token_get()) {
 #'
 #' @return a string
 #' @importFrom glue glue
-#'
+#' @noRd
 format_array <- function(items) {
   if (is.numeric(items)) {
     out <- paste0("[", paste0(items, collapse = ","), "]")

@@ -1,5 +1,5 @@
 ---
-title: "nested_columns"
+title: "Nesting and Flattening"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{nested_columns}
@@ -12,28 +12,60 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-token <- Sys.getenv("FB_GRAPH_API_TOKEN")  # run token_add_to_env() to set this
 ```
 
 ```{r setup}
-knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(Radlibrary)
 library(dplyr)
 library(tidyr)
 ```
 
-Some of the fields returned by the ad library API are converted by Radlibrary into list columns or nested tibbles. Here's an example.
+```{r monkeypatch, include=FALSE}
+adlib_get <- function(...) {
+  structure(list(date = structure(1648488164, class = c("POSIXct", 
+"POSIXt"), tzone = "GMT"), data = list(list(id = "fake123", 
+    publisher_platforms = list("facebook", "messenger"), impressions = list(
+        lower_bound = "1000", upper_bound = "4999")), list(id = "fake456", 
+    publisher_platforms = list("facebook", "instagram"), demographic_distribution = list(
+        list(percentage = "0.002203", age = "35-44", gender = "unknown"), 
+        list(percentage = "0.002203", age = "55-64", gender = "unknown"), 
+        list(percentage = "0.026432", age = "35-44", gender = "female"), 
+        list(percentage = "0.103524", age = "55-64", gender = "female"), 
+        list(percentage = "0.004405", age = "25-34", gender = "female"), 
+        list(percentage = "0.070485", age = "45-54", gender = "female"), 
+        list(percentage = "0.162996", age = "55-64", gender = "male"), 
+        list(percentage = "0.037445", age = "25-34", gender = "male"), 
+        list(percentage = "0.072687", age = "35-44", gender = "male"), 
+        list(percentage = "0.220264", age = "65+", gender = "male"), 
+        list(percentage = "0.118943", age = "45-54", gender = "male"), 
+        list(percentage = "0.176211", age = "65+", gender = "female"), 
+        list(percentage = "0.002203", age = "65+", gender = "unknown")), 
+    impressions = list(lower_bound = "0", upper_bound = "999")), 
+    list(id = "fake789", publisher_platforms = list("facebook"), 
+        impressions = list(lower_bound = "0", upper_bound = "999"))), 
+    has_next = TRUE, next_page = "....", 
+    fields = c("id", "publisher_platforms", "demographic_distribution", 
+    "impressions")), class = "adlib_data_response")
+}
+```
+
+Some of the fields returned by the ad library API are converted by Radlibrary into list columns or nested tibbles. Other fields are flattened into multiple columns.
+
 
 ```{r}
 query <- adlib_build_query(ad_reached_countries = "US", 
                            search_terms = "election", 
-                           limit = 10, 
-                           fields = c('id', 'publisher_platforms', 'demographic_distribution'))
-response <- adlib_get(query, token = token)
+                           limit = 3, 
+                           fields = c('id', 
+                                      'publisher_platforms', 
+                                      'demographic_distribution',
+                                      'impressions'))
+response <- adlib_get(query)
 data <- as_tibble(response)
 head(data)
 ```
-This query returns 3 columns. Column is a regular old character vector. Column 2, `publisher_platforms`, is a list column. Each entry is a list of platforms on which the ad appeared. The third column is itself a tibble. 
+This query returns 5 columns. Column 1 is a regular old character vector. Column 2, `publisher_platforms`, is a list column. Each entry is a list of platforms on which the ad appeared. Columns 3 and 4 are regular numeric vectors that are discussed in the next section. The last column is also nested, but it's a nested `tibble` rather than simple lists.
 
 Both of these nested columns can be unnested using `tidyr`'s `unnest`.
 
@@ -42,10 +74,52 @@ data %>%
   select(-demographic_distribution) %>% 
   unnest(publisher_platforms)
 ```
+
+Note that this creates multiple rows for ads which appeared in multiple platforms. Caution is warranted in interpreting this dataset: this does not mean that the granularity of the other columns has increased. For instance, it's not necessarily the case that the ad with id `fake123` has over 1,000 impressions _on each_ of Facebook and Messenger. We can only say that the sum of the impressions on this ad over each platform is between 1,000 and 4,999.
+
+The nested `tibble` column can be unnested the exact same way. To avoid confusion on granularity, we'll unselect the non-nested columns.
+
 ```{r}
 data %>% 
-  select(-publisher_platforms) %>% 
+  select(-publisher_platforms, -contains("impressions")) %>% 
   unnest(demographic_distribution)
 ```
+
+Another word of caution is that by default, unnesting drops rows with NULL values. Since the `demographic_distribution` is not available for ads `fake123` or `fake789`, these rows are dropped from the resulting dataset. You can force this not to occur by setting `keep_empty=TRUE`.
+
+```{r}
+data %>% 
+  select(-publisher_platforms, -contains("impressions")) %>% 
+  unnest(demographic_distribution, keep_empty = TRUE)
+```
+
+
+### Careful about combinatorial explosion with unnesting
+
+Unnesting multiple nested columns at the same time can create an undesired combinatorial explosion. For example,
+
+```{r}
+data %>% 
+  select(id, publisher_platforms, demographic_distribution) %>% 
+  unnest(publisher_platforms, keep_empty = TRUE) %>% 
+  unnest(demographic_distribution, keep_empty = TRUE)
+```
+In this example, although we only have three unique ad IDs, we've got 29 rows. The ad `fake123` shows up twice, because it has two `publisher_platforms` and no `demographic_distribution`; the ad `fake456` shows up 26 times because it has two publisher platforms and 13 demographic categories; and the ad `fake789` shows up once.
+
+### Documentation of all field types
+
 The full set of available fields is documented [here](https://developers.facebook.com/docs/marketing-api/reference/archived-ad/). In general, fields of type `list<string>` are converted to nested lists, while responses of type `list<AudienceDistribution>` are converted to nested tibbles.
+
+## Flattened columns
+
+Some columns are returned as a list containing a min value and max value. In the [official API documentation](https://developers.facebook.com/docs/marketing-api/reference/archived-ad/) these are called fields of type `InsightsRangeValue`. `Radlibrary` will flatten these into a `lower` and `upper` column. In this example, this includes the `impressions` field, which is flattened to `impressions_lower` and `impressions_upper`. In general, `InsightsRangeValue` fields will be flattened to columns named `<field name>_lower` and `<field name>_upper`.
+
+## Don't forget, you still have the raw data
+
+All of the data returned by the Ads Library API is kept in the response object. If the automatic transformations that are applied by `as_tibble` aren't ideal for you, you can always go into the raw data and process it however you like.
+
+```{r}
+response$data
+```
+
 

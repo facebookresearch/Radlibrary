@@ -1,3 +1,7 @@
+# Radlibrary 0.4.1
+* Fix some documentation issues
+* Update the nested columns vignette
+
 # Radlibrary 0.4.0
 * New fields now supported including
   - ad_creative_bodies
