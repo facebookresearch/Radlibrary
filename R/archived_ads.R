@@ -155,4 +155,3 @@ aa_process_InsightsRangeValue <- function(l, field_name) {
   l[[paste(field_name, "upper", sep = "_")]] <- na_pad(as.numeric(r[["upper_bound"]]))
   l
 }
-

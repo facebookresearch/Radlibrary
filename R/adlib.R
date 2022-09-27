@@ -149,7 +149,13 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
-  search_type = match.arg(search_type)
+
+  # when search_terms is null, we can't include search_type in the request
+  if (is.null(search_terms)) {
+    search_type <- NULL
+  } else {
+    search_type <- match.arg(search_type)
+  }
 
   if (length(search_page_ids) > 10) {
     stop("Can only search 10 page IDs at a time.")
@@ -192,7 +198,6 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
   delivery_by_region <- format_array(delivery_by_region)
   publisher_platforms <- format_array(publisher_platforms)
   languages <- format_array(languages)
-
 
   fields <- adlib_fields(fields)
 
