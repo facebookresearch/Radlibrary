@@ -6,9 +6,10 @@ test_that("Parsing responses works correctly", {
   skip_on_ci()
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
-      ad_reached_countries = "US",
-      search_terms = "Facebook",
-      limit = 5) %>%
+    ad_reached_countries = "US",
+    search_terms = "Facebook",
+    limit = 5
+  ) %>%
     adlib_get(token)
   expect_snapshot(data_response$fields)
 })
@@ -20,7 +21,8 @@ test_that("Converting to ad table works", {
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
     search_terms = "Facebook",
-    limit = 5) %>%
+    limit = 5
+  ) %>%
     adlib_get(token)
   tbl <- as_tibble(data_response, censor_access_token = T)
   expect_s3_class(tbl, "tbl_df")
@@ -34,8 +36,9 @@ test_that("Getting demographic data works", {
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
     search_terms = "Facebook",
-    fields = c('id', 'demographic_distribution'),
-    limit = 5) %>%
+    fields = c("id", "demographic_distribution"),
+    limit = 5
+  ) %>%
     adlib_get(token)
   expect_s3_class(data_response, "adlib_data_response")
   expect_equal(data_response$fields, c("id", "demographic_distribution"))
@@ -48,9 +51,10 @@ test_that("searching by language works", {
   data_response <- adlib_build_query(
     ad_reached_countries = "BR",
     search_terms = "Facebook",
-    fields = c('id', 'languages', "delivery_by_region"),
-    languages = c('en'),
-    limit = 5) %>%
+    fields = c("id", "languages", "delivery_by_region"),
+    languages = c("en"),
+    limit = 5
+  ) %>%
     adlib_get(token)
   expect_snapshot(names(as_tibble(data_response)))
 })
@@ -61,11 +65,12 @@ test_that("searching by region works", {
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
-    delivery_by_region = c('California', 'New York'),
+    delivery_by_region = c("California", "New York"),
     search_terms = "Facebook",
-    fields = c('id', 'delivery_by_region'),
-    languages = c('en'),
-    limit = 5) %>%
+    fields = c("id", "delivery_by_region"),
+    languages = c("en"),
+    limit = 5
+  ) %>%
     adlib_get(token)
   expect_snapshot(names(as_tibble(data_response)))
 })

@@ -68,7 +68,6 @@ as_tibble.adlib_data_response <- function(x, censor_access_token = NULL, ...) {
         tbl[[field]] <- censor_access_token(tbl[[field]])
       }
     }
-
   }
   tbl
 }
@@ -146,4 +145,3 @@ na_pad <- function(x) {
   }
   x
 }
-

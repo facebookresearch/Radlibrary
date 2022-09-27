@@ -15,6 +15,13 @@ test_that("build_query returns a list as expected", {
       fields = c("id", "page_name", "estimated_audience_size")
     )
   )
+  expect_snapshot(
+    adlib_build_query(
+      ad_reached_countries = "US",
+      search_page_ids = "123",
+      fields = c("id", "page_name", "estimated_audience_size")
+    )
+  )
 })
 
 test_that("fields works", {
