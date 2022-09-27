@@ -12,7 +12,7 @@ Query the Facebook Ads Library.
 Useful links:
 \itemize{
   \item \url{https://facebookresearch.github.io/Radlibrary/}
-  \item \url{https://github.com/facebookresearch/Radlibrary}
+  \item Report bugs at \url{https://github.com/facebookresearch/Radlibrary/issues}
 }
 
 }

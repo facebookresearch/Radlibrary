@@ -144,13 +144,17 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               publisher_platforms = NULL,
                               search_page_ids = NULL,
                               search_terms = NULL,
-                              search_type = NULL,
+                              search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
                               limit = 1000,
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
-  if (!is.null(search_type)) {
-    search_type <- match.arg(search_type, c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"))
+
+  # when search_terms is null, we can't include search_type in the request
+  if (is.null(search_terms)) {
+    search_type <- NULL
+  } else {
+    search_type <- match.arg(search_type)
   }
 
   if (length(search_page_ids) > 10) {

@@ -47,7 +47,7 @@
       [1] "Facebook"
       
       $search_type
-      NULL
+      [1] "KEYWORD_UNORDERED"
       
       $limit
       [1] 1000
