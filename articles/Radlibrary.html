@@ -8,8 +8,8 @@
 <meta name="description" content="Radlibrary">
 <title> • Radlibrary</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="">
 <meta property="og:description" content="Radlibrary">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">Radlibrary</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
 
 
 <script src="Radlibrary_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1></h1>
             
       
@@ -142,12 +142,12 @@ All rights reserved. -->
 <p>You can find your access token at the <a href="https://developers.facebook.com/tools/explorer/" class="external-link">Graph API Explorer tool</a>.</p>
 <p>Note that this token can only be used for a limited period of time and will have to be periodically refreshed. If you’d like to use <code>Radlibrary</code> functionality to generate a persistent token, see <a href="#generating-persistent-tokens">Generating persistent tokens</a>. If you do not need a long-term token, you can save your token to your environment. <strong>Note:</strong> the best way to store your access token interactively is to use <code>readline</code> and paste the token at the prompt.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## This will store your access token in your R history—not recommended!</span>
-<span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"</span>
-
-<span class="co">## better:</span>
-<span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readline.html" class="external-link">readline</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co"># now paste at the prompt</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## This will store your access token in your R history—not recommended!</span></span>
+<span><span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"PASTED VALUE FROM https://developers.facebook.com/tools/explorer/"</span></span>
+<span></span>
+<span><span class="co">## better:</span></span>
+<span><span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readline.html" class="external-link">readline</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># now paste at the prompt</span></span></code></pre></div>
 <p>This way, your access token won’t be stored in your R history.</p>
 </div>
 <div class="section level3">
@@ -156,10 +156,10 @@ All rights reserved. -->
 <p>Let’s build our first query!</p>
 <p>We’ll start with a simple example. Let’s look for all active ads within the United States that served impressions in the past 90 days and are related to health care.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, 
-ad_active_status <span class="op">=</span> <span class="st">'ACTIVE'</span>,  
-search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,
-fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
+<span>ad_active_status <span class="op">=</span> <span class="st">'ACTIVE'</span>,  </span>
+<span>search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span></span></code></pre></div>
 <p>There are numerous parameters to the <code>adlib_build_query</code> function (for more, see <code><a href="../reference/adlib_build_query.html">?adlib_build_query</a></code>). In the above, we’re passing five parameters:</p>
 <ul>
 <li>
@@ -179,7 +179,7 @@ fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="o
 </h3>
 <p>Let’s submit the query from the previous section for analysis.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span>params <span class="op">=</span> <span class="va">query</span>, token <span class="op">=</span> <span class="va">token</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span>params <span class="op">=</span> <span class="va">query</span>, token <span class="op">=</span> <span class="va">token</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/adlib_get.html">adlib_get()</a></code> requires a query and a token. It will return an object type of <code>adlib_data_response</code> which contains ad data for up to 1,000 rows matching the query parameters. Do you need to retrieve more than 1,000 rows? If so, check out the <a href="#pagination">Pagination</a> section.</p>
 <p>This data object has numerous metadata attributes:</p>
 <ul>
@@ -200,34 +200,34 @@ fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="o
 </h3>
 <p>You can convert your results into a <code>tibble</code> using <code>as_tibble</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">response</span>, censor_access_token <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">response</span>, censor_access_token <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>This will transform the information stored in <code>data</code> and in <code>fields</code> from your <code>adlib_data_response</code> into a tidy data frame (i.e., a tibble) for analysis. The example content below from the above:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results.tibble</span><span class="op">)</span>
-<span class="co">#  A tibble: 6 x 15</span>
-<span class="co">#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… </span>
-<span class="co">#  &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span>
-<span class="co"># 1 2019-12-09 02:24:23 I believe in He… NA               NA              </span>
-<span class="co"># 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… </span>
-<span class="co"># 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… </span>
-<span class="co"># 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… </span>
-<span class="co"># 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … </span>
-<span class="co"># 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               </span>
-<span class="co"># … with 11 more variables: ad_delivery_stop_time &lt;dttm&gt;, currency &lt;chr&gt; ... </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results.tibble</span><span class="op">)</span></span>
+<span><span class="co">#  A tibble: 6 x 15</span></span>
+<span><span class="co">#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… </span></span>
+<span><span class="co">#  &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span></span>
+<span><span class="co"># 1 2019-12-09 02:24:23 I believe in He… NA               NA              </span></span>
+<span><span class="co"># 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… </span></span>
+<span><span class="co"># 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… </span></span>
+<span><span class="co"># 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… </span></span>
+<span><span class="co"># 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … </span></span>
+<span><span class="co"># 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               </span></span>
+<span><span class="co"># … with 11 more variables: ad_delivery_stop_time &lt;dttm&gt;, currency &lt;chr&gt; ... </span></span></code></pre></div>
 <p>As an example - we can display this data visually. Let’s use <code>ggplot2</code> and visualize the top 20 page names by number of ads created.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results.tibble</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">page_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">select</span><span class="op">(</span><span class="va">page_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">summarize</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">top_n</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">page_name</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_bar</span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Page Name"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Count of Ads"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results.tibble</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">page_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">page_name</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">summarize</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">top_n</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">page_name</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_bar</span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Page Name"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Count of Ads"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="example.png" style="display: block; margin: auto auto auto 0;"></p>
 </div>
 </div>
@@ -237,7 +237,7 @@ fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="o
 <p>You may want to generate a persistent token that allows you to avoid having to refresh your token every hour. You can use the <code>App ID</code> and <code>App Secret</code> to generate a persistent token that works for 60 days. It is important to store this secret securely. To facilitate this, we’ve included functionality from <a href="https://cran.r-project.org/web/packages/keyring/index.html" class="external-link"><code>keyring</code> library</a>.</p>
 <p>To begin, run this command:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/adlib_setup.html">adlib_setup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/adlib_setup.html">adlib_setup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This will generate the following prompt:</p>
 <pre><code>Visit https://developers.facebook.com/ and navigate to your App's basic settings
 to find your Application ID and App Secret.
@@ -247,7 +247,7 @@ Press &lt;Enter&gt;</code></pre>
 <p>You’ll then be asked via prompt to access and input your Application ID and your App Secret. You can then run the <code><a href="../reference/adlib_set_longterm_token.html">adlib_set_longterm_token()</a></code> command, follow the prompts, and store your persistent access token within your system’s credential store.</p>
 <p>If you have a long-term token stored, <code>Radlibrary</code> will find it automatically when you run <code>adlib_get</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span>query <span class="op">=</span> <span class="va">query</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span>query <span class="op">=</span> <span class="va">query</span><span class="op">)</span></span></code></pre></div>
 <p>You can also retrieve your stored token at any time with <code><a href="../reference/token_get.html">token_get()</a></code>.</p>
 </div>
 <div class="section level2">
@@ -256,26 +256,26 @@ Press &lt;Enter&gt;</code></pre>
 <p>You may want to retrieve more data than is available in a single API call. The <code>Radlibary</code> package handles this with an easy pagination implementation.</p>
 <p>For example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, 
-                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, 
-                           impression_condition <span class="op">=</span> <span class="st">'HAS_IMPRESSIONS_LIFETIME'</span>, 
-                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,
-                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> 
-  
-<span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span><span class="va">query</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
-<span class="co"># [1] 1000   17</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
+<span>                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, </span>
+<span>                           impression_condition <span class="op">=</span> <span class="st">'HAS_IMPRESSIONS_LIFETIME'</span>, </span>
+<span>                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> </span>
+<span>  </span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span><span class="va">query</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co"># [1] 1000   17</span></span></code></pre></div>
 <p>versus</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, 
-                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, 
-                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,
-                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> 
-<span class="va">result_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get_paginated.html">adlib_get_paginated</a></span><span class="op">(</span><span class="va">query</span>, max_gets <span class="op">=</span> <span class="fl">10</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">df_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result_paginated</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df_paginated</span><span class="op">)</span>
-<span class="co"># [1] 10000    17</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
+<span>                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, </span>
+<span>                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> </span>
+<span><span class="va">result_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get_paginated.html">adlib_get_paginated</a></span><span class="op">(</span><span class="va">query</span>, max_gets <span class="op">=</span> <span class="fl">10</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result_paginated</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df_paginated</span><span class="op">)</span></span>
+<span><span class="co"># [1] 10000    17</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -290,7 +290,7 @@ Press &lt;Enter&gt;</code></pre>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
