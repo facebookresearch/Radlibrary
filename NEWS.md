@@ -1,3 +1,6 @@
+# Radlibrary 0.4.2
+* Fixed an issue where searches by `page_id` were returning fewer than expected results.
+
 # Radlibrary 0.4.1
 * Fix some documentation issues
 * Update the nested columns vignette
