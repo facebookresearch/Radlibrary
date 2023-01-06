@@ -35,6 +35,7 @@
       $ ad_creative_link_descriptions <list> "“We’re showing the world what Michigan~
       $ ad_creative_link_titles       <list> "Whitmer Celebrates $300M Semiconductor~
       $ ad_delivery_start_time        <chr> "2022-09-26", "2022-09-26", "2022-09-26"~
+      $ ad_delivery_stop_time         <chr> "2022-10-22", "2022-10-16", "2022-10-16"~
       $ ad_snapshot_url               <chr> "https://www.facebook.com/ads/archive/re~
       $ bylines                       <chr> "Gretchen Whitmer for Governor", "Gretch~
       $ currency                      <chr> "USD", "USD", "USD", "USD", "USD", "USD"~
@@ -42,5 +43,4 @@
       $ page_id                       <chr> "673117639774135", "673117639774135", "6~
       $ page_name                     <chr> "Gretchen Whitmer", "Gretchen Whitmer", ~
       $ publisher_platforms           <list> <"facebook", "instagram">, <"facebook",~
-      $ ad_delivery_stop_time         <chr> NA, NA, NA, NA, NA, NA, NA, NA, "2022-09~
 
