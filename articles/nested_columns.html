@@ -8,10 +8,10 @@
 <meta name="description" content="Radlibrary">
 <title>Nesting and Flattening • Radlibrary</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nesting and Flattening">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nesting and Flattening">
 <meta property="og:description" content="Radlibrary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -77,7 +77,8 @@
 
 
 
-<script src="nested_columns_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Nesting and Flattening</h1>
             
@@ -88,7 +89,9 @@
 
     
     
-<p>Some of the fields returned by the ad library API are converted by Radlibrary into list columns or nested tibbles. Other fields are flattened into multiple columns.</p>
+<p>Some of the fields returned by the ad library API are converted by
+Radlibrary into list columns or nested tibbles. Other fields are
+flattened into multiple columns.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">"US"</span>, </span>
 <span>                           search_terms <span class="op">=</span> <span class="st">"election"</span>, </span>
@@ -107,8 +110,14 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fake456 <span style="color: #949494;">&lt;chr [2]&gt;</span>                           0               999 &lt;tibble&gt;      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fake789 <span style="color: #949494;">&lt;chr [1]&gt;</span>                           0               999 <span style="color: #949494;">&lt;NULL&gt;</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​demographic_distribution</span></span></span></code></pre></div>
-<p>This query returns 5 columns. Column 1 is a regular old character vector. Column 2, <code>publisher_platforms</code>, is a list column. Each entry is a list of platforms on which the ad appeared. Columns 3 and 4 are regular numeric vectors that are discussed in the next section. The last column is also nested, but it’s a nested <code>tibble</code> rather than simple lists.</p>
-<p>Both of these nested columns can be unnested using <code>tidyr</code>’s <code>unnest</code>.</p>
+<p>This query returns 5 columns. Column 1 is a regular old character
+vector. Column 2, <code>publisher_platforms</code>, is a list column.
+Each entry is a list of platforms on which the ad appeared. Columns 3
+and 4 are regular numeric vectors that are discussed in the next
+section. The last column is also nested, but it’s a nested
+<code>tibble</code> rather than simple lists.</p>
+<p>Both of these nested columns can be unnested using
+<code>tidyr</code>’s <code>unnest</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -121,8 +130,16 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fake456 facebook                            0               999</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> fake456 instagram                           0               999</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> fake789 facebook                            0               999</span></span></code></pre></div>
-<p>Note that this creates multiple rows for ads which appeared in multiple platforms. Caution is warranted in interpreting this dataset: this does not mean that the granularity of the other columns has increased. For instance, it’s not necessarily the case that the ad with id <code>fake123</code> has over 1,000 impressions <em>on each</em> of Facebook and Messenger. We can only say that the sum of the impressions on this ad over each platform is between 1,000 and 4,999.</p>
-<p>The nested <code>tibble</code> column can be unnested the exact same way. To avoid confusion on granularity, we’ll unselect the non-nested columns.</p>
+<p>Note that this creates multiple rows for ads which appeared in
+multiple platforms. Caution is warranted in interpreting this dataset:
+this does not mean that the granularity of the other columns has
+increased. For instance, it’s not necessarily the case that the ad with
+id <code>fake123</code> has over 1,000 impressions <em>on each</em> of
+Facebook and Messenger. We can only say that the sum of the impressions
+on this ad over each platform is between 1,000 and 4,999.</p>
+<p>The nested <code>tibble</code> column can be unnested the exact same
+way. To avoid confusion on granularity, we’ll unselect the non-nested
+columns.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu">contains</span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -143,7 +160,11 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> fake456    0.119   45-54 male   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> fake456    0.176   65+   female </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> fake456    0.002<span style="text-decoration: underline;">20</span> 65+   unknown</span></span></code></pre></div>
-<p>Another word of caution is that by default, unnesting drops rows with NULL values. Since the <code>demographic_distribution</code> is not available for ads <code>fake123</code> or <code>fake789</code>, these rows are dropped from the resulting dataset. You can force this not to occur by setting <code>keep_empty=TRUE</code>.</p>
+<p>Another word of caution is that by default, unnesting drops rows with
+NULL values. Since the <code>demographic_distribution</code> is not
+available for ads <code>fake123</code> or <code>fake789</code>, these
+rows are dropped from the resulting dataset. You can force this not to
+occur by setting <code>keep_empty=TRUE</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">publisher_platforms</span>, <span class="op">-</span><span class="fu">contains</span><span class="op">(</span><span class="st">"impressions"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -169,7 +190,8 @@
 <div class="section level3">
 <h3 id="careful-about-combinatorial-explosion-with-unnesting">Careful about combinatorial explosion with unnesting<a class="anchor" aria-label="anchor" href="#careful-about-combinatorial-explosion-with-unnesting"></a>
 </h3>
-<p>Unnesting multiple nested columns at the same time can create an undesired combinatorial explosion. For example,</p>
+<p>Unnesting multiple nested columns at the same time can create an
+undesired combinatorial explosion. For example,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">publisher_platforms</span>, <span class="va">demographic_distribution</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -189,22 +211,44 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> fake456 facebook               0.163   55-64 male   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> fake456 facebook               0.037<span style="text-decoration: underline;">4</span>  25-34 male   </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 19 more rows</span></span></span></code></pre></div>
-<p>In this example, although we only have three unique ad IDs, we’ve got 29 rows. The ad <code>fake123</code> shows up twice, because it has two <code>publisher_platforms</code> and no <code>demographic_distribution</code>; the ad <code>fake456</code> shows up 26 times because it has two publisher platforms and 13 demographic categories; and the ad <code>fake789</code> shows up once.</p>
+<p>In this example, although we only have three unique ad IDs, we’ve got
+29 rows. The ad <code>fake123</code> shows up twice, because it has two
+<code>publisher_platforms</code> and no
+<code>demographic_distribution</code>; the ad <code>fake456</code> shows
+up 26 times because it has two publisher platforms and 13 demographic
+categories; and the ad <code>fake789</code> shows up once.</p>
 </div>
 <div class="section level3">
 <h3 id="documentation-of-all-field-types">Documentation of all field types<a class="anchor" aria-label="anchor" href="#documentation-of-all-field-types"></a>
 </h3>
-<p>The full set of available fields is documented <a href="https://developers.facebook.com/docs/marketing-api/reference/archived-ad/" class="external-link">here</a>. In general, fields of type <code>list&lt;string&gt;</code> are converted to nested lists, while responses of type <code>list&lt;AudienceDistribution&gt;</code> are converted to nested tibbles.</p>
+<p>The full set of available fields is documented <a href="https://developers.facebook.com/docs/marketing-api/reference/archived-ad/" class="external-link">here</a>.
+In general, fields of type <code>list&lt;string&gt;</code> are converted
+to nested lists, while responses of type
+<code>list&lt;AudienceDistribution&gt;</code> are converted to nested
+tibbles.</p>
 </div>
 <div class="section level2">
 <h2 id="flattened-columns">Flattened columns<a class="anchor" aria-label="anchor" href="#flattened-columns"></a>
 </h2>
-<p>Some columns are returned as a list containing a min value and max value. In the <a href="https://developers.facebook.com/docs/marketing-api/reference/archived-ad/" class="external-link">official API documentation</a> these are called fields of type <code>InsightsRangeValue</code>. <code>Radlibrary</code> will flatten these into a <code>lower</code> and <code>upper</code> column. In this example, this includes the <code>impressions</code> field, which is flattened to <code>impressions_lower</code> and <code>impressions_upper</code>. In general, <code>InsightsRangeValue</code> fields will be flattened to columns named <code>&lt;field name&gt;_lower</code> and <code>&lt;field name&gt;_upper</code>.</p>
+<p>Some columns are returned as a list containing a min value and max
+value. In the <a href="https://developers.facebook.com/docs/marketing-api/reference/archived-ad/" class="external-link">official
+API documentation</a> these are called fields of type
+<code>InsightsRangeValue</code>. <code>Radlibrary</code> will flatten
+these into a <code>lower</code> and <code>upper</code> column. In this
+example, this includes the <code>impressions</code> field, which is
+flattened to <code>impressions_lower</code> and
+<code>impressions_upper</code>. In general,
+<code>InsightsRangeValue</code> fields will be flattened to columns
+named <code>&lt;field name&gt;_lower</code> and
+<code>&lt;field name&gt;_upper</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="dont-forget-you-still-have-the-raw-data">Don’t forget, you still have the raw data<a class="anchor" aria-label="anchor" href="#dont-forget-you-still-have-the-raw-data"></a>
 </h2>
-<p>All of the data returned by the Ads Library API is kept in the response object. If the automatic transformations that are applied by <code>as_tibble</code> aren’t ideal for you, you can always go into the raw data and process it however you like.</p>
+<p>All of the data returned by the Ads Library API is kept in the
+response object. If the automatic transformations that are applied by
+<code>as_tibble</code> aren’t ideal for you, you can always go into the
+raw data and process it however you like.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">data</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
@@ -423,7 +467,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
