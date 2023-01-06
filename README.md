@@ -1,7 +1,6 @@
 # Radlibrary
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/facebookresearch/Radlibrary/workflows/R-CMD-check/badge.svg)](https://github.com/facebookresearch/Radlibrary/actions)
 [![R-CMD-check](https://github.com/facebookresearch/Radlibrary/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/facebookresearch/Radlibrary/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
