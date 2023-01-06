@@ -70,3 +70,7 @@ token_add_to_env <- function() {
   # only used for testing at the moment.
   Sys.setenv("FB_GRAPH_API_TOKEN" = token_get()$token)
 }
+
+token_exists_in_env <- function(env_variable = "FB_GRAPH_API_TOKEN") {
+  nchar(Sys.getenv(env_variable)) > 0
+}
