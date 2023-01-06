@@ -1,3 +1,7 @@
+# Radlibrary 0.4.3
+* Very minor bug fix to make R CMD Check pass
+  * there has been a line that was checking whether something was an instance of a class in the wrong way
+
 # Radlibrary 0.4.2
 * Fixed an issue where searches by `page_id` were returning fewer than expected results.
 
