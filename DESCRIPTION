@@ -1,6 +1,6 @@
 Package: Radlibrary
 Title: Facebook Ad Library API Tool
-Version: 0.4.2
+Version: 0.4.3
 Authors@R: 
     c(person(given = "Colin",
            family = "Fraser",
@@ -36,7 +36,7 @@ Suggests:
     readr,
     rlang,
     vctrs
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 URL: https://facebookresearch.github.io/Radlibrary/
 BugReports: https://github.com/facebookresearch/Radlibrary/issues
