@@ -10,8 +10,10 @@ q <- adlib_build_query(
   search_terms = "president", limit = 3
 )
 
+
 test_that("graph_get works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   resp <- graph_get("ads_archive", q, token)
   expect_equal(httr::status_code(resp), 200)
@@ -21,6 +23,7 @@ test_that("graph_get works", {
 
 test_that("adlib_get works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   resp <- adlib_get(q, token = token)
   expect_s3_class(resp, "adlib_data_response")
@@ -30,6 +33,7 @@ test_that("adlib_get works", {
 
 test_that("access token censoring in tibbles works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   resp <- adlib_get(q, token = token)
   resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
@@ -41,6 +45,7 @@ test_that("access token censoring in tibbles works", {
 
 test_that("adlib_get_paginated works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   resp <- adlib_get_paginated(q, token = token, max_gets = 2)
   resp_table <- tibble::as_tibble(resp, censor_access_token = FALSE)
@@ -51,6 +56,7 @@ test_that("adlib_get_paginated works", {
 
 test_that("adlib_get works with no spend or impressions", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   q <- adlib_build_query(
     ad_reached_countries = "US",

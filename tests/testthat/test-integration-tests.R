@@ -14,6 +14,7 @@ integration_test <- function(token, ...) {
 
 test_that("searching by keyword works as expected", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   search_by_keyword <- integration_test(token,
     ad_reached_countries = "US",
@@ -27,6 +28,7 @@ test_that("searching by keyword works as expected", {
 
 test_that("searching by page_id as expected", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   search_by_page <- integration_test(token,
     ad_reached_countries = "US",
@@ -40,6 +42,7 @@ test_that("searching by page_id as expected", {
 
 test_that("Parsing responses works correctly", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
@@ -59,6 +62,7 @@ test_that("Parsing responses works correctly", {
 
 test_that("Converting to ad table works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
@@ -89,6 +93,7 @@ test_that("Converting to ad table works", {
 
 test_that("Getting demographic data works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
@@ -103,6 +108,7 @@ test_that("Getting demographic data works", {
 
 test_that("searching by language works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   result <- adlib_build_query(
     ad_reached_countries = "BR",
@@ -121,6 +127,7 @@ test_that("searching by language works", {
 
 test_that("searching by region works", {
   skip_on_cran()
+  skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   result <- adlib_build_query(
     ad_reached_countries = "US",
