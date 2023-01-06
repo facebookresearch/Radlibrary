@@ -35,7 +35,7 @@ Suggests:
     fs,
     readr,
     rlang
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 URL: https://facebookresearch.github.io/Radlibrary/
 BugReports: https://github.com/facebookresearch/Radlibrary/issues

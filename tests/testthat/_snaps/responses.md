@@ -20,15 +20,15 @@
     Output
        [1] "id"                            "ad_creation_time"             
        [3] "ad_creative_bodies"            "ad_creative_link_captions"    
-       [5] "ad_creative_link_descriptions" "ad_creative_link_titles"      
-       [7] "ad_delivery_start_time"        "ad_delivery_stop_time"        
-       [9] "ad_snapshot_url"               "currency"                     
+       [5] "ad_creative_link_titles"       "ad_delivery_start_time"       
+       [7] "ad_delivery_stop_time"         "ad_snapshot_url"              
+       [9] "bylines"                       "currency"                     
       [11] "languages"                     "page_id"                      
       [13] "page_name"                     "publisher_platforms"          
       [15] "estimated_audience_size_lower" "estimated_audience_size_upper"
       [17] "impressions_lower"             "impressions_upper"            
       [19] "spend_lower"                   "spend_upper"                  
-      [21] "bylines"                      
+      [21] "ad_creative_link_descriptions"
 
 # searching by language works
 

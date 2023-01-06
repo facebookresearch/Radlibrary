@@ -43,7 +43,7 @@ graph_api_endpoint <- function(api = c("ads_archive", "access_token"), version =
 graph_get <- function(service, params, token = token_get()) {
   if (is_graph_api_token(token)) {
     params[["access_token"]] <- token_string(token)
-  } else if ((class(token) == "character") & length(token) == 1) {
+  } else if (is.character(token) && length(token) == 1) {
     params[["access_token"]] <- token
   } else {
     stop("Parameter token must be a string or object of type 'graph_api_token'")
