@@ -70,7 +70,7 @@ test_that("Converting to ad table works", {
     limit = 5
   ) %>%
     adlib_get(token)
-  tbl <- as_tibble(data_response, censor_access_token = T)
+  tbl <- as_tibble(data_response, censor_access_token = TRUE)
   expect_s3_class(tbl, "tbl_df")
   expect_equal(
     vctrs::vec_ptype(tbl),
