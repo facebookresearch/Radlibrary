@@ -1,3 +1,6 @@
+# Copyright (c) Meta Platforms, Inc. and its affiliates.
+# All rights reserved.
+
 integration_test <- function(token, ...) {
   fields <- c(
     "id", "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions",

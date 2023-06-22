@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and its affiliates.
 # All rights reserved.
 test_that("Formatting tokens works", {
   expect_equal(format(token), "Facebook Graph API token with no stored expiry time.")
