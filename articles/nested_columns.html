@@ -104,12 +104,12 @@ flattened into multiple columns.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
-<span><span class="co">#&gt;   id      publisher_platforms impressions_lower impressions_upper demographic_…¹</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fake123 <span style="color: #949494;">&lt;chr [2]&gt;</span>                        <span style="text-decoration: underline;">1</span>000              <span style="text-decoration: underline;">4</span>999 <span style="color: #949494;">&lt;NULL&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fake456 <span style="color: #949494;">&lt;chr [2]&gt;</span>                           0               999 &lt;tibble&gt;      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fake789 <span style="color: #949494;">&lt;chr [1]&gt;</span>                           0               999 <span style="color: #949494;">&lt;NULL&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​demographic_distribution</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   id      publisher_platforms impressions_lower impressions_upper</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fake123 <span style="color: #949494;">&lt;chr [2]&gt;</span>                        <span style="text-decoration: underline;">1</span>000              <span style="text-decoration: underline;">4</span>999</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fake456 <span style="color: #949494;">&lt;chr [2]&gt;</span>                           0               999</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fake789 <span style="color: #949494;">&lt;chr [1]&gt;</span>                           0               999</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: demographic_distribution &lt;list&gt;</span></span></span></code></pre></div>
 <p>This query returns 5 columns. Column 1 is a regular old character
 vector. Column 2, <code>publisher_platforms</code>, is a list column.
 Each entry is a list of platforms on which the ad appeared. Columns 3
@@ -210,7 +210,7 @@ undesired combinatorial explosion. For example,</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> fake456 facebook               0.070<span style="text-decoration: underline;">5</span>  45-54 female </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> fake456 facebook               0.163   55-64 male   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> fake456 facebook               0.037<span style="text-decoration: underline;">4</span>  25-34 male   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 19 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 19 more rows</span></span></span></code></pre></div>
 <p>In this example, although we only have three unique ad IDs, we’ve got
 29 rows. The ad <code>fake123</code> shows up twice, because it has two
 <code>publisher_platforms</code> and no
