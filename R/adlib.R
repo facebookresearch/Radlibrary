@@ -104,6 +104,8 @@ POTENTIAL_REACH_MIN_VALUES <-
 #'   retrieve results that contain an exact match for each phrase.
 #'   KEYWORD_UNORDERED will return results that contain the word in the search
 #'   term in any order. By default this is set to KEYWORD_UNORDERED.
+#' @param unmask_removed_content Specify whether you would like your results to reveal content
+#'   that was removed for violating our standards.
 #' @param limit The maximum number of results to return
 #' @param fields the fields to include in the response. See details for values.
 #'
@@ -145,6 +147,7 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               search_page_ids = NULL,
                               search_terms = NULL,
                               search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
+                              unmask_removed_content = FALSE,
                               limit = 1000,
                               fields = "ad_data") {
   ad_active_status <- match.arg(ad_active_status)

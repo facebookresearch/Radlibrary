@@ -74,6 +74,7 @@ test_that("Converting to ad table works", {
     ad_reached_countries = "US",
     search_terms = "Facebook",
     estimated_audience_size_max = 1e5L,
+    unmask_removed_content = TRUE,
     limit = 5
   ) %>%
     adlib_get(token)
