@@ -73,23 +73,24 @@ test_that("Converting to ad table works", {
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
     search_terms = "Facebook",
+    estimated_audience_size_max = 1e5L,
     limit = 5
   ) %>%
     adlib_get(token)
-  tbl <- as_tibble(data_response, censor_access_token = TRUE)
+  tbl <- as_tibble(data_response, censor_access_token = TRUE) |>
+    dplyr::select(sort(tidyselect::peek_vars()))
   expect_s3_class(tbl, "tbl_df")
   expect_equal(
     vctrs::vec_ptype(tbl),
-    structure(list(
-      id = character(0), ad_creation_time = character(0),
-      ad_creative_bodies = list(), ad_creative_link_captions = list(),
-      ad_creative_link_titles = list(), ad_delivery_start_time = character(0),
-      ad_delivery_stop_time = character(0), ad_snapshot_url = character(0),
-      bylines = character(0), currency = character(0), languages = list(),
-      page_id = character(0), page_name = character(0), publisher_platforms = list(),
-      estimated_audience_size_lower = numeric(0), estimated_audience_size_upper = numeric(0),
-      impressions_lower = numeric(0), impressions_upper = numeric(0),
-      spend_lower = numeric(0), spend_upper = numeric(0), ad_creative_link_descriptions = list()
+    structure(list(ad_creation_time = character(0), ad_creative_bodies = list(),
+                   ad_creative_link_captions = list(), ad_creative_link_descriptions = list(),
+                   ad_creative_link_titles = list(), ad_delivery_start_time = character(0),
+                   ad_delivery_stop_time = character(0), ad_snapshot_url = character(0),
+                   bylines = character(0), currency = character(0), estimated_audience_size_lower = numeric(0),
+                   estimated_audience_size_upper = numeric(0), id = character(0),
+                   impressions_lower = numeric(0), impressions_upper = numeric(0),
+                   languages = list(), page_id = character(0), page_name = character(0),
+                   publisher_platforms = list(), spend_lower = numeric(0), spend_upper = numeric(0)
     ), class = c(
       "tbl_df",
       "tbl", "data.frame"
