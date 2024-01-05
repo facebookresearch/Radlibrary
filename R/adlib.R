@@ -226,7 +226,12 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
 }
 
 adlib_fields <- function(fields = c("ad_data", "demographic_data", "region_data", ALL_FIELDS)) {
-  fields <- match.arg(fields, several.ok = TRUE)
+  if (!all(fields %in% c("ad_data", "demographic_data", "region_data", ALL_FIELDS))) {
+    unsupported <- setdiff(fields, c("ad_data", "demographic_data", "region_data", ALL_FIELDS))
+    names(unsupported) <- rep("*", length(unsupported))
+
+    rlang::warn(c("Unsupported fields supplied:", unsupported))
+  }
   if (length(fields) == 1) {
     if (fields == "ad_data") {
       fields <- AD_DATA_FIELDS

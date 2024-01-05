@@ -9,9 +9,8 @@ integration_test <- function(token, ...) {
     "id", "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions",
     "ad_creative_link_descriptions", "ad_creative_link_titles", "ad_delivery_start_time",
     "ad_delivery_stop_time", "ad_snapshot_url", "bylines", "currency",
-    "languages", "page_id", "page_name", "publisher_platforms", "estimated_audience_size_lower",
-    "estimated_audience_size_upper", "impressions_lower", "impressions_upper",
-    "spend_lower", "spend_upper"
+    "languages", "page_id", "page_name", "publisher_platforms", "estimated_audience_size",
+    "impressions", "spend"
   )
   adlib_build_query(..., fields = fields) %>%
     adlib_get(token = token) %>%

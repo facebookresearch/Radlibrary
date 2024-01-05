@@ -36,7 +36,7 @@ test_that("fields works", {
     }),
     "id,ad_snapshot_url,ad_creative_link_titles,ad_delivery_start_time"
   )
-  expect_error(adlib_fields("dsafdas"))
+  expect_warning(adlib_fields(c("id", "dsafdas", "dfdsf")))
   expect_error(adlib_fields(c("demographic_data", "ad_data")))
   expect_error(adlib_fields(c("ad_creative_link_title"), "fields"))
 })
