@@ -228,7 +228,7 @@ adlib_fields <- function(fields, quiet = FALSE) {
     } else if (fields == "demographic_data") {
       fields <- c("id", "demographic_distribution")
     } else if (fields == "region_data") {
-      fields <- c("id", )
+      fields <- c("id", "delivery_by_region")
     }
   } else if (("ad_data" %in% fields) |
     ("demographic_data" %in% fields) |

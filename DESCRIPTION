@@ -35,7 +35,8 @@ Suggests:
     lubridate,
     fs,
     readr,
-    vctrs
+    vctrs,
+    tidyselect
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 URL: https://facebookresearch.github.io/Radlibrary/
