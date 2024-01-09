@@ -38,7 +38,8 @@ DEFAULT_FIELDS <- c(
 OTHER_FIELDS <- c(
   "demographic_distribution",
   "delivery_by_region",
-  "age_country_gender_reach_breakdown"
+  "age_country_gender_reach_breakdown",
+  "beneficiary_payers"
 )
 
 ALL_FIELDS <- c(DEFAULT_FIELDS, OTHER_FIELDS)
@@ -100,25 +101,16 @@ POTENTIAL_REACH_MIN_VALUES <-
 #' @param unmask_removed_content Specify whether you would like your results to reveal content
 #'   that was removed for violating our standards.
 #' @param limit The maximum number of results to return
-#' @param fields the fields to include in the response. See details for values.
+#' @param fields the fields to include in the response.
 #'
-#' @details Preset groups of fields can be specified by "ad_data",
-#'   "demographic_data", or "region_data". Otherwise, you can pick and choose
-#'   fields. The only *required* field when picking and choosing is id, since
-#'   that's the unique identifier for each ad.
+#' @details
+#' Visit \href{https://developers.facebook.com/docs/graph-api/reference/ads_archive/}{the online API documentation}
+#'   for the most up to date list of available fields. Call adlib_supported_fields() to see a list of
+#'   the fields supported by this package. This should usually be in sync with the official API fields
+#'   list but you can pass fields not in this list to the request if they fall out of sync, which will
+#'   throw a warning and may not parse nicely into a table.
 #'
-#'
-#'
-#'   \itemize{ \item ad_data \item \item ad_creation_time \item
-#'   ad_creative_bodies \item ad_creative_link_captions \item
-#'   ad_creative_link_descriptions \item ad_creative_link_titles \item
-#'   ad_delivery_start_time \item ad_delivery_stop_time \item ad_snapshot_url
-#'   \item bylines \item currency \item estimated_audience_size \item
-#'   impressions \item languages \item page_id \item page_name \item
-#'   publisher_platforms \item spend \item demographic_distribution \item
-#'   delivery_by_region }
-#'
-#' @return A list of params
+#' @return A list of params to pass to adlib_get.
 #' @export
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
@@ -352,6 +344,18 @@ format_array <- function(items) {
 #' adlib_link(ids)
 adlib_link <- function(ad_id) {
   stringr::str_glue("https://www.facebook.com/ads/library/?id={ad_id}")
+}
+
+
+#' Supported fields
+#'
+#' These are the fields that are fully supported by this package.
+#'
+#' @return a character vector of fields
+#' @export
+#'
+adlib_supported_fields <- function() {
+  ALL_FIELDS
 }
 
 

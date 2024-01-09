@@ -94,3 +94,19 @@ test_that("age_country_gender_reach_breakdown", {
     )
   )
 })
+
+test_that("beneficiary_payers", {
+  aa <- list(id = "313132487749670", beneficiary_payers = list(list(payer = "European Committee of the Regions",
+                                                                    beneficiary = "European Committee of the Regions", current = TRUE)))
+  expect_equal(aa_process_BeneficiaryPayerList(aa, 'beneficiary_payers'),
+               list(id = "313132487749670",
+                    beneficiary_payers = list(
+                      tibble::tibble(payer = "European Committee of the Regions",
+                             beneficiary = "European Committee of the Regions",
+                             current = TRUE)
+                    )
+               )
+  )
+
+}
+)

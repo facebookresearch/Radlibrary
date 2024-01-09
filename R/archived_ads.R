@@ -20,6 +20,7 @@ archived_ads_field_types <- list(
   "ad_delivery_stop_time" = "string",
   "ad_snapshot_url" = "string",
   "age_country_gender_reach_breakdown" = "AgeCountryGenderReachBreakdownList",
+  "beneficiary_payers" = "BeneficiaryPayerList",
   "bylines" = "string",
   "currency" = "string",
   "delivery_by_region" = "AudienceDistributionList",
@@ -170,6 +171,15 @@ aa_process_AgeCountryGenderReachBreakdownList <- function(l, field_name) {
   l[[field_name]] <- list(df[, c('country', 'age_range', 'male', 'female', 'unknown')])
 
 
+  l
+}
+
+aa_process_BeneficiaryPayerList <- function(l, field_name) {
+  bp <- l[[field_name]]
+  l[[field_name]] <- bp |>
+    purrr::map(as_tibble) |>
+    purrr::list_rbind() |>
+    list()
   l
 }
 

@@ -155,8 +155,6 @@ test_that("searching by region works", {
 test_that("searching for the age gender country breakdown works", {
   library(tibble, quietly = TRUE)
   library(tidyr, quietly = TRUE)
-  library(dplyr, quietly = TRUE)
-  library(vctrs, quietly = TRUE)
   skip_on_cran()
   skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
@@ -165,13 +163,31 @@ test_that("searching for the age gender country breakdown works", {
                     search_terms = "election", limit = 5, unmask_removed_content = FALSE) |>
     adlib_get(token = token) |>
     as_tibble()
-  expect_equal(vec_ptype(acgb),
-               tibble(id = character(0), age_country_gender_reach_breakdown = list()))
-  expect_equal(vec_ptype(unnest(acgb, age_country_gender_reach_breakdown)),
-               tibble(id = character(0),
+  expect_equal(vctrs::vec_ptype(acgb),
+               tibble::tibble(id = character(0), age_country_gender_reach_breakdown = list()))
+  expect_equal(vctrs::vec_ptype(unnest(acgb, age_country_gender_reach_breakdown)),
+               tibble::tibble(id = character(0),
                       country = character(0),
                       age_range = character(0),
                       male = integer(0),
                       female = integer(0),
                       unknown = integer(0)))
 })
+
+test_that("beneficiary_payers", {
+  skip_on_cran()
+  skip_if_not(token_exists_in_env())
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  df <- adlib_build_query(ad_reached_countries = "DE",
+                          search_terms = "election",
+                          limit = 20,
+                          fields = c("id", "beneficiary_payers")) |>
+    adlib_get(token = token) |>
+    tibble::as_tibble()
+  expect_equal(vctrs::vec_ptype(df), tibble::tibble(id = character(), beneficiary_payers = list()))
+  expect_equal(vctrs::vec_ptype(tidyr::unnest(df, beneficiary_payers)),
+               tibble::tibble(id = character(), payer = character(), beneficiary = character(),
+                              current = logical())
+  )
+}
+)
