@@ -1,6 +1,6 @@
 Package: Radlibrary
 Title: Facebook Ad Library API Tool
-Version: 0.4.3
+Version: 0.5.0
 Authors@R: 
     c(person(given = "Colin",
            family = "Fraser",

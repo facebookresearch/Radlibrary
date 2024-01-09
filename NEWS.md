@@ -1,3 +1,13 @@
+# Radlibrary 0.5.0
+* Added support for new fields available for ads delivered to the EU
+  * `age_country_gender_reach_breakdown`: Demographic distribution of ads delivered to the EU by country, gender, and age
+  * `beneficiary_payers`: Reported beneficiaries and payers for the ad
+  * `eu_total_reach`: The estimated combined ad reach for all locations inside the European Union
+  * `target_ages`: The age ranges selected for ad targeting in the EU.
+  * `target_gender`: The genders selected for ad targeting in the EU.
+  * `target_locations`: The locations included or excluded for ad targeting in the EU.
+* Various small bug fixes and updates
+
 # Radlibrary 0.4.3
 * Very minor bug fix to make R CMD Check pass
   * there has been a line that was checking whether something was an instance of a class in the wrong way
