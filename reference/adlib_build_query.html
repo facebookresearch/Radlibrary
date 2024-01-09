@@ -14,7 +14,7 @@ full API documentation."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     
     <a class="navbar-brand me-2" href="../index.html">Radlibrary</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,7 @@ full API documentation.</p>
 <span>  ad_delivery_date_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ad_delivery_date_min <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">ad_reached_countries</span>,</span>
-<span>  ad_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POLITICAL_AND_ISSUE_ADS"</span>, <span class="st">"HOUSING_ADS"</span>, <span class="st">"NEWS_ADS"</span>, <span class="st">"UNCATEGORIZED_ADS"</span>,</span>
+<span>  ad_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POLITICAL_AND_ISSUE_ADS"</span>, <span class="st">"CREDIT_ADS"</span>, <span class="st">"EMPLOYMENT_ADS"</span>, <span class="st">"HOUSING_ADS"</span>,</span>
 <span>    <span class="st">"ALL"</span><span class="op">)</span>,</span>
 <span>  bylines <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  delivery_by_region <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -89,8 +89,9 @@ full API documentation.</p>
 <span>  search_page_ids <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search_terms <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"KEYWORD_UNORDERED"</span>, <span class="st">"KEYWORD_EXACT_PHRASE"</span><span class="op">)</span>,</span>
+<span>  unmask_removed_content <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  limit <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  fields <span class="op">=</span> <span class="st">"ad_data"</span></span>
+<span>  fields <span class="op">=</span> <span class="va">DEFAULT_FIELDS</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -178,50 +179,33 @@ KEYWORD_UNORDERED will return results that contain the word in the search
 term in any order. By default this is set to KEYWORD_UNORDERED.</p></dd>
 
 
+<dt>unmask_removed_content</dt>
+<dd><p>Specify whether you would like your results to reveal content
+that was removed for violating our standards.</p></dd>
+
+
 <dt>limit</dt>
 <dd><p>The maximum number of results to return</p></dd>
 
 
 <dt>fields</dt>
-<dd><p>the fields to include in the response. See details for values.</p></dd>
+<dd><p>the fields to include in the response.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list of params</p>
+<p>A list of params to pass to adlib_get.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Preset groups of fields can be specified by "ad_data",
-  "demographic_data", or "region_data". Otherwise, you can pick and choose
-  fields. The only *required* field when picking and choosing is id, since
-  that's the unique identifier for each ad.</p>
-
-
-<p></p><ul><li><p>ad_data</p></li>
-<li><p></p></li>
-<li><p>ad_creation_time</p></li>
-<li><p>ad_creative_bodies</p></li>
-<li><p>ad_creative_link_captions</p></li>
-<li><p>ad_creative_link_descriptions</p></li>
-<li><p>ad_creative_link_titles</p></li>
-<li><p>ad_delivery_start_time</p></li>
-<li><p>ad_delivery_stop_time</p></li>
-<li><p>ad_snapshot_url</p></li>
-<li><p>bylines</p></li>
-<li><p>currency</p></li>
-<li><p>estimated_audience_size</p></li>
-<li><p>impressions</p></li>
-<li><p>languages</p></li>
-<li><p>page_id</p></li>
-<li><p>page_name</p></li>
-<li><p>publisher_platforms</p></li>
-<li><p>spend</p></li>
-<li><p>demographic_distribution</p></li>
-<li><p>delivery_by_region</p></li>
-</ul></div>
+    <p>Visit <a href="https://developers.facebook.com/docs/graph-api/reference/ads_archive/" class="external-link">the online API documentation</a>
+  for the most up to date list of available fields. Call adlib_supported_fields() to see a list of
+  the fields supported by this package. This should usually be in sync with the official API fields
+  list but you can pass fields not in this list to the request if they fall out of sync, which will
+  throw a warning and may not parse nicely into a table.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

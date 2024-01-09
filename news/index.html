@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">Radlibrary</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,25 @@
       <small>Source: <a href="https://github.com/facebookresearch/Radlibrary/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="radlibrary-050">Radlibrary 0.5.0<a class="anchor" aria-label="anchor" href="#radlibrary-050"></a></h2>
+<ul><li>Added support for new fields available for ads delivered to the EU
+<ul><li>
+<code>age_country_gender_reach_breakdown</code>: Demographic distribution of ads delivered to the EU by country, gender, and age</li>
+<li>
+<code>beneficiary_payers</code>: Reported beneficiaries and payers for the ad</li>
+<li>
+<code>eu_total_reach</code>: The estimated combined ad reach for all locations inside the European Union</li>
+<li>
+<code>target_ages</code>: The age ranges selected for ad targeting in the EU.</li>
+<li>
+<code>target_gender</code>: The genders selected for ad targeting in the EU.</li>
+<li>
+<code>target_locations</code>: The locations included or excluded for ad targeting in the EU.</li>
+</ul></li>
+<li>Added support for controlling whether to include ads that are removed for community standards violations (<code>unmask_removed_content</code>)</li>
+<li>Various small bug fixes and updates and more tests</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.3" id="radlibrary-043">Radlibrary 0.4.3<a class="anchor" aria-label="anchor" href="#radlibrary-043"></a></h2>
 <ul><li>Very minor bug fix to make R CMD Check pass

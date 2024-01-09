@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">Radlibrary</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -188,10 +188,12 @@ paste the token at the prompt.</p>
 within the United States that served impressions in the past 90 days and
 are related to health care.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
-<span>ad_active_status <span class="op">=</span> <span class="st">'ACTIVE'</span>,  </span>
-<span>search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
-<span>fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span></span>
+<span>  ad_reached_countries <span class="op">=</span> <span class="st">"US"</span>,</span>
+<span>  ad_active_status <span class="op">=</span> <span class="st">"ACTIVE"</span>,</span>
+<span>  search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>  fields <span class="op">=</span> <span class="st">"ad_data"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>There are numerous parameters to the <code>adlib_build_query</code>
 function (for more, see <code><a href="../reference/adlib_build_query.html">?adlib_build_query</a></code>). In the above,
 we’re passing five parameters:</p>
@@ -261,15 +263,15 @@ from the above:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results.tibble</span><span class="op">)</span></span>
 <span><span class="co">#  A tibble: 6 x 15</span></span>
-<span><span class="co">#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… </span></span>
-<span><span class="co">#  &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span></span>
-<span><span class="co"># 1 2019-12-09 02:24:23 I believe in He… NA               NA              </span></span>
-<span><span class="co"># 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… </span></span>
-<span><span class="co"># 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… </span></span>
-<span><span class="co"># 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… </span></span>
-<span><span class="co"># 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … </span></span>
-<span><span class="co"># 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               </span></span>
-<span><span class="co"># … with 11 more variables: ad_delivery_stop_time &lt;dttm&gt;, currency &lt;chr&gt; ... </span></span></code></pre></div>
+<span><span class="co">#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin…</span></span>
+<span><span class="co">#  &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;</span></span>
+<span><span class="co"># 1 2019-12-09 02:24:23 I believe in He… NA               NA</span></span>
+<span><span class="co"># 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho…</span></span>
+<span><span class="co"># 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev…</span></span>
+<span><span class="co"># 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho…</span></span>
+<span><span class="co"># 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is …</span></span>
+<span><span class="co"># 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA</span></span>
+<span><span class="co"># … with 11 more variables: ad_delivery_stop_time &lt;dttm&gt;, currency &lt;chr&gt; ...</span></span></code></pre></div>
 <p>As an example - we can display this data visually. Let’s use
 <code>ggplot2</code> and visualize the top 20 page names by number of
 ads created.</p>
@@ -280,11 +282,11 @@ ads created.</p>
 <span>  <span class="fu">summarize</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">top_n</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">page_name</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_bar</span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Page Name"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Count of Ads"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">page_name</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_bar</span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Page Name"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Count of Ads"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="example.png" style="display: block; margin: auto auto auto 0;"></p>
 </div>
@@ -329,22 +331,26 @@ call. The <code>Radlibary</code> package handles this with an easy
 pagination implementation.</p>
 <p>For example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
-<span>                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, </span>
-<span>                           impression_condition <span class="op">=</span> <span class="st">'HAS_IMPRESSIONS_LIFETIME'</span>, </span>
-<span>                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
-<span>                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> </span>
-<span>  </span>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span></span>
+<span>  ad_reached_countries <span class="op">=</span> <span class="st">"US"</span>,</span>
+<span>  ad_active_status <span class="op">=</span> <span class="st">"ALL"</span>,</span>
+<span>  impression_condition <span class="op">=</span> <span class="st">"HAS_IMPRESSIONS_LIFETIME"</span>,</span>
+<span>  search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>  fields <span class="op">=</span> <span class="st">"ad_data"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get.html">adlib_get</a></span><span class="op">(</span><span class="va">query</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co"># [1] 1000   17</span></span></code></pre></div>
 <p>versus</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span>ad_reached_countries <span class="op">=</span> <span class="st">'US'</span>, </span>
-<span>                           ad_active_status <span class="op">=</span> <span class="st">'ALL'</span>, </span>
-<span>                           search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
-<span>                           fields <span class="op">=</span> <span class="st">"ad_data"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_build_query.html">adlib_build_query</a></span><span class="op">(</span></span>
+<span>  ad_reached_countries <span class="op">=</span> <span class="st">"US"</span>,</span>
+<span>  ad_active_status <span class="op">=</span> <span class="st">"ALL"</span>,</span>
+<span>  search_terms <span class="op">=</span> <span class="st">"healthcare"</span>,</span>
+<span>  fields <span class="op">=</span> <span class="st">"ad_data"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">result_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/adlib_get_paginated.html">adlib_get_paginated</a></span><span class="op">(</span><span class="va">query</span>, max_gets <span class="op">=</span> <span class="fl">10</span>, <span class="fu"><a href="../reference/token_get.html">token_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">df_paginated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">result_paginated</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df_paginated</span><span class="op">)</span></span>

@@ -46,10 +46,16 @@
     <loc>https://facebookresearch.github.io/Radlibrary/reference/adlib_get_paginated.html</loc>
   </url>
   <url>
+    <loc>https://facebookresearch.github.io/Radlibrary/reference/adlib_link.html</loc>
+  </url>
+  <url>
     <loc>https://facebookresearch.github.io/Radlibrary/reference/adlib_set_longterm_token.html</loc>
   </url>
   <url>
     <loc>https://facebookresearch.github.io/Radlibrary/reference/adlib_setup.html</loc>
+  </url>
+  <url>
+    <loc>https://facebookresearch.github.io/Radlibrary/reference/adlib_supported_fields.html</loc>
   </url>
   <url>
     <loc>https://facebookresearch.github.io/Radlibrary/reference/as_tibble.adlib_data_response.html</loc>
