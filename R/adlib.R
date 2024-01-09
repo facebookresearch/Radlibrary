@@ -343,6 +343,24 @@ format_array <- function(items) {
 }
 
 
+#' Generate a URL to view an ad in the ad library
+#'
+#' This is a different and more comprehensive view of the ad from what is
+#' provided in the snapshot link that is returned by the API.
+#'
+#' @param ad_id a vector of ad IDs
+#'
+#' @return a vector of URLs
+#' @export
+#'
+#' @examples
+#' ids <- c("399107662471074", "313132487749670")
+#' adlib_link(ids)
+adlib_link <- function(ad_id) {
+  stringr::str_glue("https://www.facebook.com/ads/library/?id={ad_id}")
+}
+
+
 #' @export
 #' @importFrom tibble as_tibble
 tibble::as_tibble
