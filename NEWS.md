@@ -6,7 +6,9 @@
   * `target_ages`: The age ranges selected for ad targeting in the EU.
   * `target_gender`: The genders selected for ad targeting in the EU.
   * `target_locations`: The locations included or excluded for ad targeting in the EU.
-* Various small bug fixes and updates
+* Added support for controlling whether to include ads that are removed for community
+  standards violations (`unmask_removed_content`)
+* Various small bug fixes and updates and more tests
 
 # Radlibrary 0.4.3
 * Very minor bug fix to make R CMD Check pass
