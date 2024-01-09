@@ -39,7 +39,11 @@ OTHER_FIELDS <- c(
   "demographic_distribution",
   "delivery_by_region",
   "age_country_gender_reach_breakdown",
-  "beneficiary_payers"
+  "beneficiary_payers",
+  "eu_total_reach",
+  "target_ages",
+  "target_gender",
+  "target_locations"
 )
 
 ALL_FIELDS <- c(DEFAULT_FIELDS, OTHER_FIELDS)
@@ -119,8 +123,8 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               ad_delivery_date_min = NULL,
                               ad_reached_countries,
                               ad_type = c(
-                                "POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS",
-                                "NEWS_ADS", "UNCATEGORIZED_ADS", "ALL"
+                                "POLITICAL_AND_ISSUE_ADS", "CREDIT_ADS",
+                                "EMPLOYMENT_ADS", "HOUSING_ADS", "ALL"
                               ),
                               bylines = NULL,
                               delivery_by_region = NULL,

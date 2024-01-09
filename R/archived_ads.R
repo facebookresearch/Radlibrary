@@ -26,12 +26,16 @@ archived_ads_field_types <- list(
   "delivery_by_region" = "AudienceDistributionList",
   "demographic_distribution" = "AudienceDistributionList",
   "estimated_audience_size" = "InsightsRangeValue",
+  "eu_total_reach" = "numeric",
   "impressions" = "InsightsRangeValue",
   "languages" = "list",
   "page_id" = "string",
   "page_name" = "string",
   "publisher_platforms" = "list",
-  "spend" = "InsightsRangeValue"
+  "spend" = "InsightsRangeValue",
+  "target_ages" = "numericList",
+  "target_gender" = "string",
+  "target_locations" = "TargetLocationList"
 )
 
 
@@ -120,9 +124,27 @@ aa_process_string <- function(l, field_name) {
   l
 }
 
+aa_process_numeric <- function(l, field_name) {
+  l[[field_name]] <- as.numeric(l[[field_name]])
+  l
+}
+
+aa_process_numericList <- function(l, field_name) {
+  l[[field_name]] <- list(as.numeric(unlist(l[[field_name]])))
+  l
+}
+
 # Process fields of type list<string>
 aa_process_list <- function(l, field_name) {
   l[[field_name]] <- list(unlist(l[[field_name]]))
+  l
+}
+
+aa_process_TargetLocationList <- function(l, field_name) {
+  l[[field_name]] <- l[[field_name]] |>
+    purrr::map(tibble::as_tibble) |>
+    purrr::list_rbind() |>
+    list()
   l
 }
 
@@ -168,7 +190,7 @@ aa_process_AgeCountryGenderReachBreakdownList <- function(l, field_name) {
     df
   }) |>
     purrr::list_rbind()
-  l[[field_name]] <- list(df[, c('country', 'age_range', 'male', 'female', 'unknown')])
+  l[[field_name]] <- list(df[, c("country", "age_range", "male", "female", "unknown")])
 
 
   l

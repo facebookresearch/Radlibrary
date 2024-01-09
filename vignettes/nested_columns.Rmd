@@ -19,30 +19,46 @@ library(tidyr)
 
 ```{r monkeypatch, include=FALSE}
 adlib_get <- function(...) {
-  structure(list(date = structure(1648488164, class = c("POSIXct", 
-"POSIXt"), tzone = "GMT"), data = list(list(id = "fake123", 
-    publisher_platforms = list("facebook", "messenger"), impressions = list(
-        lower_bound = "1000", upper_bound = "4999")), list(id = "fake456", 
-    publisher_platforms = list("facebook", "instagram"), demographic_distribution = list(
-        list(percentage = "0.002203", age = "35-44", gender = "unknown"), 
-        list(percentage = "0.002203", age = "55-64", gender = "unknown"), 
-        list(percentage = "0.026432", age = "35-44", gender = "female"), 
-        list(percentage = "0.103524", age = "55-64", gender = "female"), 
-        list(percentage = "0.004405", age = "25-34", gender = "female"), 
-        list(percentage = "0.070485", age = "45-54", gender = "female"), 
-        list(percentage = "0.162996", age = "55-64", gender = "male"), 
-        list(percentage = "0.037445", age = "25-34", gender = "male"), 
-        list(percentage = "0.072687", age = "35-44", gender = "male"), 
-        list(percentage = "0.220264", age = "65+", gender = "male"), 
-        list(percentage = "0.118943", age = "45-54", gender = "male"), 
-        list(percentage = "0.176211", age = "65+", gender = "female"), 
-        list(percentage = "0.002203", age = "65+", gender = "unknown")), 
-    impressions = list(lower_bound = "0", upper_bound = "999")), 
-    list(id = "fake789", publisher_platforms = list("facebook"), 
-        impressions = list(lower_bound = "0", upper_bound = "999"))), 
-    has_next = TRUE, next_page = "....", 
-    fields = c("id", "publisher_platforms", "demographic_distribution", 
-    "impressions")), class = "adlib_data_response")
+  structure(list(
+    date = structure(1648488164, class = c(
+      "POSIXct",
+      "POSIXt"
+    ), tzone = "GMT"), data = list(
+      list(
+        id = "fake123",
+        publisher_platforms = list("facebook", "messenger"), impressions = list(
+          lower_bound = "1000", upper_bound = "4999"
+        )
+      ), list(
+        id = "fake456",
+        publisher_platforms = list("facebook", "instagram"), demographic_distribution = list(
+          list(percentage = "0.002203", age = "35-44", gender = "unknown"),
+          list(percentage = "0.002203", age = "55-64", gender = "unknown"),
+          list(percentage = "0.026432", age = "35-44", gender = "female"),
+          list(percentage = "0.103524", age = "55-64", gender = "female"),
+          list(percentage = "0.004405", age = "25-34", gender = "female"),
+          list(percentage = "0.070485", age = "45-54", gender = "female"),
+          list(percentage = "0.162996", age = "55-64", gender = "male"),
+          list(percentage = "0.037445", age = "25-34", gender = "male"),
+          list(percentage = "0.072687", age = "35-44", gender = "male"),
+          list(percentage = "0.220264", age = "65+", gender = "male"),
+          list(percentage = "0.118943", age = "45-54", gender = "male"),
+          list(percentage = "0.176211", age = "65+", gender = "female"),
+          list(percentage = "0.002203", age = "65+", gender = "unknown")
+        ),
+        impressions = list(lower_bound = "0", upper_bound = "999")
+      ),
+      list(
+        id = "fake789", publisher_platforms = list("facebook"),
+        impressions = list(lower_bound = "0", upper_bound = "999")
+      )
+    ),
+    has_next = TRUE, next_page = "....",
+    fields = c(
+      "id", "publisher_platforms", "demographic_distribution",
+      "impressions"
+    )
+  ), class = "adlib_data_response")
 }
 ```
 
@@ -50,13 +66,17 @@ Some of the fields returned by the ad library API are converted by Radlibrary in
 
 
 ```{r}
-query <- adlib_build_query(ad_reached_countries = "US", 
-                           search_terms = "election", 
-                           limit = 3, 
-                           fields = c('id', 
-                                      'publisher_platforms', 
-                                      'demographic_distribution',
-                                      'impressions'))
+query <- adlib_build_query(
+  ad_reached_countries = "US",
+  search_terms = "election",
+  limit = 3,
+  fields = c(
+    "id",
+    "publisher_platforms",
+    "demographic_distribution",
+    "impressions"
+  )
+)
 response <- adlib_get(query)
 data <- as_tibble(response)
 head(data)
@@ -66,8 +86,8 @@ This query returns 5 columns. Column 1 is a regular old character vector. Column
 Both of these nested columns can be unnested using `tidyr`'s `unnest`.
 
 ```{r}
-data %>% 
-  select(-demographic_distribution) %>% 
+data %>%
+  select(-demographic_distribution) %>%
   unnest(publisher_platforms)
 ```
 
@@ -76,16 +96,16 @@ Note that this creates multiple rows for ads which appeared in multiple platform
 The nested `tibble` column can be unnested the exact same way. To avoid confusion on granularity, we'll unselect the non-nested columns.
 
 ```{r}
-data %>% 
-  select(-publisher_platforms, -contains("impressions")) %>% 
+data %>%
+  select(-publisher_platforms, -contains("impressions")) %>%
   unnest(demographic_distribution)
 ```
 
 Another word of caution is that by default, unnesting drops rows with NULL values. Since the `demographic_distribution` is not available for ads `fake123` or `fake789`, these rows are dropped from the resulting dataset. You can force this not to occur by setting `keep_empty=TRUE`.
 
 ```{r}
-data %>% 
-  select(-publisher_platforms, -contains("impressions")) %>% 
+data %>%
+  select(-publisher_platforms, -contains("impressions")) %>%
   unnest(demographic_distribution, keep_empty = TRUE)
 ```
 
@@ -95,9 +115,9 @@ data %>%
 Unnesting multiple nested columns at the same time can create an undesired combinatorial explosion. For example,
 
 ```{r}
-data %>% 
-  select(id, publisher_platforms, demographic_distribution) %>% 
-  unnest(publisher_platforms, keep_empty = TRUE) %>% 
+data %>%
+  select(id, publisher_platforms, demographic_distribution) %>%
+  unnest(publisher_platforms, keep_empty = TRUE) %>%
   unnest(demographic_distribution, keep_empty = TRUE)
 ```
 In this example, although we only have three unique ad IDs, we've got 29 rows. The ad `fake123` shows up twice, because it has two `publisher_platforms` and no `demographic_distribution`; the ad `fake456` shows up 26 times because it has two publisher platforms and 13 demographic categories; and the ad `fake789` shows up once.

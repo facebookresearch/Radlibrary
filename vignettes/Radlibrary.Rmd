@@ -13,8 +13,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-    message = FALSE,
-    warning = FALSE
+  message = FALSE,
+  warning = FALSE
 )
 ```
 
@@ -88,10 +88,12 @@ Let's build our first query!
 We'll start with a simple example. Let's look for all active ads within the United States that served impressions in the past 90 days and are related to health care. 
 
 ```{r, eval = FALSE} 
-query <- adlib_build_query(ad_reached_countries = 'US', 
-ad_active_status = 'ACTIVE',  
-search_terms = "healthcare",
-fields = "ad_data")
+query <- adlib_build_query(
+  ad_reached_countries = "US",
+  ad_active_status = "ACTIVE",
+  search_terms = "healthcare",
+  fields = "ad_data"
+)
 ```
 
 There are numerous parameters to the `adlib_build_query` function (for more, see `?adlib_build_query`). In the above, we're passing five parameters: 
@@ -134,15 +136,15 @@ This will transform the information stored in `data` and in `fields` from your `
 ```{r, eval = FALSE}
 head(results.tibble)
 #  A tibble: 6 x 15
-#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin… 
-#  <dttm>              <chr>            <chr>            <chr>           
-# 1 2019-12-09 02:24:23 I believe in He… NA               NA              
-# 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho… 
-# 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev… 
-# 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho… 
-# 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is … 
-# 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA               
-# … with 11 more variables: ad_delivery_stop_time <dttm>, currency <chr> ... 
+#  ad_creation_time    ad_creative_body ad_creative_lin… ad_creative_lin…
+#  <dttm>              <chr>            <chr>            <chr>
+# 1 2019-12-09 02:24:23 I believe in He… NA               NA
+# 2 2019-12-09 00:24:56 Will you stand … act.actwireless… Legislators sho…
+# 3 2019-12-08 22:23:09 "https://youtu.… youtube.com      My name is Stev…
+# 4 2019-12-08 22:22:36 Will you stand … act.actwireless… Legislators sho…
+# 5 2019-12-08 21:53:34 "Sen. Warren fl… ma.publiceditor… Sen. Warren is …
+# 6 2019-12-08 21:45:55 "Marvin Lim for… www.marvinlimfo… NA
+# … with 11 more variables: ad_delivery_stop_time <dttm>, currency <chr> ...
 ``` 
 
 As an example - we can display this  data visually.  Let's use `ggplot2` and visualize the top 20 page names by number of ads created. 
@@ -154,11 +156,11 @@ results.tibble %>%
   summarize(n = n()) %>%
   ungroup() %>%
   top_n(n = 20) %>%
-  ggplot(aes(reorder(x = page_name, n), y = n)) + 
-  geom_bar(stat="identity") + 
-  xlab("Page Name") + 
-  ylab("Count of Ads") + 
-  theme_bw() + 
+  ggplot(aes(reorder(x = page_name, n), y = n)) +
+  geom_bar(stat = "identity") +
+  xlab("Page Name") +
+  ylab("Count of Ads") +
+  theme_bw() +
   coord_flip()
 ```
 
@@ -204,12 +206,14 @@ You may want to retrieve more data than is available in a single API call. The `
 For example: 
 
 ```{r, eval = FALSE}
-query <- adlib_build_query(ad_reached_countries = 'US', 
-                           ad_active_status = 'ALL', 
-                           impression_condition = 'HAS_IMPRESSIONS_LIFETIME', 
-                           search_terms = "healthcare",
-                           fields = "ad_data") 
-  
+query <- adlib_build_query(
+  ad_reached_countries = "US",
+  ad_active_status = "ALL",
+  impression_condition = "HAS_IMPRESSIONS_LIFETIME",
+  search_terms = "healthcare",
+  fields = "ad_data"
+)
+
 result <- adlib_get(query, token_get())
 df <- as_tibble(result)
 dim(df)
@@ -219,10 +223,12 @@ dim(df)
 versus
 
 ```{r, eval = FALSE}
-query <- adlib_build_query(ad_reached_countries = 'US', 
-                           ad_active_status = 'ALL', 
-                           search_terms = "healthcare",
-                           fields = "ad_data") 
+query <- adlib_build_query(
+  ad_reached_countries = "US",
+  ad_active_status = "ALL",
+  search_terms = "healthcare",
+  fields = "ad_data"
+)
 result_paginated <- adlib_get_paginated(query, max_gets = 10, token_get())
 df_paginated <- as_tibble(result_paginated)
 dim(df_paginated)

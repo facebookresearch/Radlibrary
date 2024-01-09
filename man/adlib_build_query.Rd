@@ -9,7 +9,7 @@ adlib_build_query(
   ad_delivery_date_max = NULL,
   ad_delivery_date_min = NULL,
   ad_reached_countries,
-  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS",
+  ad_type = c("POLITICAL_AND_ISSUE_ADS", "CREDIT_ADS", "EMPLOYMENT_ADS", "HOUSING_ADS",
     "ALL"),
   bylines = NULL,
   delivery_by_region = NULL,
