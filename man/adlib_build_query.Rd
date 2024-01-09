@@ -9,7 +9,7 @@ adlib_build_query(
   ad_delivery_date_max = NULL,
   ad_delivery_date_min = NULL,
   ad_reached_countries,
-  ad_type = c("POLITICAL_AND_ISSUE_ADS", "HOUSING_ADS", "NEWS_ADS", "UNCATEGORIZED_ADS",
+  ad_type = c("POLITICAL_AND_ISSUE_ADS", "CREDIT_ADS", "EMPLOYMENT_ADS", "HOUSING_ADS",
     "ALL"),
   bylines = NULL,
   delivery_by_region = NULL,
@@ -21,8 +21,9 @@ adlib_build_query(
   search_page_ids = NULL,
   search_terms = NULL,
   search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
+  unmask_removed_content = FALSE,
   limit = 1000,
-  fields = "ad_data"
+  fields = DEFAULT_FIELDS
 )
 }
 \arguments{
@@ -78,12 +79,15 @@ retrieve results that contain an exact match for each phrase.
 KEYWORD_UNORDERED will return results that contain the word in the search
 term in any order. By default this is set to KEYWORD_UNORDERED.}
 
+\item{unmask_removed_content}{Specify whether you would like your results to reveal content
+that was removed for violating our standards.}
+
 \item{limit}{The maximum number of results to return}
 
-\item{fields}{the fields to include in the response. See details for values.}
+\item{fields}{the fields to include in the response.}
 }
 \value{
-A list of params
+A list of params to pass to adlib_get.
 }
 \description{
 This will build a list that can be passed to adlib_get. Visit
@@ -91,19 +95,9 @@ https://developers.facebook.com/docs/marketing-api/reference/ads_archive/ for
 full API documentation.
 }
 \details{
-Preset groups of fields can be specified by "ad_data",
-  "demographic_data", or "region_data". Otherwise, you can pick and choose
-  fields. The only *required* field when picking and choosing is id, since
-  that's the unique identifier for each ad.
-
-
-
-  \itemize{ \item ad_data \item \item ad_creation_time \item
-  ad_creative_bodies \item ad_creative_link_captions \item
-  ad_creative_link_descriptions \item ad_creative_link_titles \item
-  ad_delivery_start_time \item ad_delivery_stop_time \item ad_snapshot_url
-  \item bylines \item currency \item estimated_audience_size \item
-  impressions \item languages \item page_id \item page_name \item
-  publisher_platforms \item spend \item demographic_distribution \item
-  delivery_by_region }
+Visit \href{https://developers.facebook.com/docs/graph-api/reference/ads_archive/}{the online API documentation}
+  for the most up to date list of available fields. Call adlib_supported_fields() to see a list of
+  the fields supported by this package. This should usually be in sync with the official API fields
+  list but you can pass fields not in this list to the request if they fall out of sync, which will
+  throw a warning and may not parse nicely into a table.
 }

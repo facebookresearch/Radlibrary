@@ -36,7 +36,14 @@ test_that("fields works", {
     }),
     "id,ad_snapshot_url,ad_creative_link_titles,ad_delivery_start_time"
   )
-  expect_error(adlib_fields("dsafdas"))
+  expect_warning(adlib_fields(c("id", "dsafdas", "dfdsf")))
   expect_error(adlib_fields(c("demographic_data", "ad_data")))
-  expect_error(adlib_fields(c("ad_creative_link_title"), "fields"))
+  expect_setequal(ALL_FIELDS, c(
+    "id", "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions",
+    "ad_creative_link_descriptions", "ad_creative_link_titles", "ad_delivery_start_time", "ad_delivery_stop_time",
+    "ad_snapshot_url", "age_country_gender_reach_breakdown", "beneficiary_payers", "bylines", "currency",
+    "delivery_by_region", "demographic_distribution", "estimated_audience_size", "eu_total_reach", "impressions",
+    "languages", "page_id", "page_name", "publisher_platforms", "spend", "target_ages", "target_gender",
+    "target_locations"
+  ))
 })

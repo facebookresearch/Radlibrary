@@ -19,17 +19,23 @@ archived_ads_field_types <- list(
   "ad_delivery_start_time" = "string",
   "ad_delivery_stop_time" = "string",
   "ad_snapshot_url" = "string",
+  "age_country_gender_reach_breakdown" = "AgeCountryGenderReachBreakdownList",
+  "beneficiary_payers" = "BeneficiaryPayerList",
   "bylines" = "string",
   "currency" = "string",
   "delivery_by_region" = "AudienceDistributionList",
   "demographic_distribution" = "AudienceDistributionList",
   "estimated_audience_size" = "InsightsRangeValue",
+  "eu_total_reach" = "numeric",
   "impressions" = "InsightsRangeValue",
   "languages" = "list",
   "page_id" = "string",
   "page_name" = "string",
   "publisher_platforms" = "list",
-  "spend" = "InsightsRangeValue"
+  "spend" = "InsightsRangeValue",
+  "target_ages" = "numericList",
+  "target_gender" = "string",
+  "target_locations" = "TargetLocationList"
 )
 
 
@@ -118,9 +124,27 @@ aa_process_string <- function(l, field_name) {
   l
 }
 
+aa_process_numeric <- function(l, field_name) {
+  l[[field_name]] <- as.numeric(l[[field_name]])
+  l
+}
+
+aa_process_numericList <- function(l, field_name) {
+  l[[field_name]] <- list(as.numeric(unlist(l[[field_name]])))
+  l
+}
+
 # Process fields of type list<string>
 aa_process_list <- function(l, field_name) {
   l[[field_name]] <- list(unlist(l[[field_name]]))
+  l
+}
+
+aa_process_TargetLocationList <- function(l, field_name) {
+  l[[field_name]] <- l[[field_name]] |>
+    purrr::map(tibble::as_tibble) |>
+    purrr::list_rbind() |>
+    list()
   l
 }
 
@@ -154,4 +178,43 @@ aa_process_InsightsRangeValue <- function(l, field_name) {
   l[[paste(field_name, "lower", sep = "_")]] <- na_pad(as.numeric(r[["lower_bound"]]))
   l[[paste(field_name, "upper", sep = "_")]] <- na_pad(as.numeric(r[["upper_bound"]]))
   l
+}
+
+# process fields of type AgeCountryGenderReachBreakdownList
+aa_process_AgeCountryGenderReachBreakdownList <- function(l, field_name) {
+  agbr <- l[[field_name]]
+
+  df <- purrr::map(agbr, \(x) {
+    df <- process_agbr(x$age_gender_breakdowns)
+    df$country <- x$country
+    df
+  }) |>
+    purrr::list_rbind()
+  l[[field_name]] <- list(df[, c("country", "age_range", "male", "female", "unknown")])
+
+
+  l
+}
+
+aa_process_BeneficiaryPayerList <- function(l, field_name) {
+  bp <- l[[field_name]]
+  l[[field_name]] <- bp |>
+    purrr::map(as_tibble) |>
+    purrr::list_rbind() |>
+    list()
+  l
+}
+
+# process a single AgeCountryGenderReachBreakdown object
+# used by aa_process_AgeCountryGenderReachBreakdownList
+process_agbr <- function(x) {
+  purrr::map(x, \(y) {
+    tibble::tibble(
+      age_range = y$age_range %||% character(),
+      male = y$male %||% integer(),
+      female = y$female %||% integer(),
+      unknown = y$unknown %||% integer()
+    )
+  }) |>
+    purrr::list_rbind()
 }

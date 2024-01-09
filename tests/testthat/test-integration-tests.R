@@ -9,13 +9,13 @@ integration_test <- function(token, ...) {
     "id", "ad_creation_time", "ad_creative_bodies", "ad_creative_link_captions",
     "ad_creative_link_descriptions", "ad_creative_link_titles", "ad_delivery_start_time",
     "ad_delivery_stop_time", "ad_snapshot_url", "bylines", "currency",
-    "languages", "page_id", "page_name", "publisher_platforms", "estimated_audience_size_lower",
-    "estimated_audience_size_upper", "impressions_lower", "impressions_upper",
-    "spend_lower", "spend_upper"
+    "languages", "page_id", "page_name", "publisher_platforms", "estimated_audience_size",
+    "impressions", "spend"
   )
-  adlib_build_query(..., fields = fields) %>%
-    adlib_get(token = token) %>%
-    as_tibble(censor_access_token = TRUE)
+  adlib_build_query(..., fields = fields) |>
+    adlib_get(token = token) |>
+    as_tibble(censor_access_token = TRUE) |>
+    dplyr::select(sort(tidyselect::peek_vars()))
 }
 
 test_that("searching by keyword works as expected", {
@@ -38,10 +38,10 @@ test_that("searching by page_id as expected", {
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
   search_by_page <- integration_test(token,
     ad_reached_countries = "US",
-    ad_delivery_date_min = "2022-09-01",
-    ad_delivery_date_max = "2022-09-26",
-    search_page_ids = "673117639774135",
-    limit = 10
+    ad_delivery_date_min = "2023-10-20",
+    ad_delivery_date_max = "2023-10-26",
+    search_page_ids = "7860876103",
+    limit = 20
   )
   expect_snapshot(dplyr::glimpse(search_by_page))
 })
@@ -73,23 +73,26 @@ test_that("Converting to ad table works", {
   data_response <- adlib_build_query(
     ad_reached_countries = "US",
     search_terms = "Facebook",
-    limit = 5
+    estimated_audience_size_max = 1e5L,
+    unmask_removed_content = TRUE,
+    limit = 100
   ) %>%
     adlib_get(token)
-  tbl <- as_tibble(data_response, censor_access_token = TRUE)
+  tbl <- as_tibble(data_response, censor_access_token = TRUE) |>
+    dplyr::select(sort(tidyselect::peek_vars()))
   expect_s3_class(tbl, "tbl_df")
   expect_equal(
     vctrs::vec_ptype(tbl),
     structure(list(
-      id = character(0), ad_creation_time = character(0),
-      ad_creative_bodies = list(), ad_creative_link_captions = list(),
+      ad_creation_time = character(0), ad_creative_bodies = list(),
+      ad_creative_link_captions = list(), ad_creative_link_descriptions = list(),
       ad_creative_link_titles = list(), ad_delivery_start_time = character(0),
       ad_delivery_stop_time = character(0), ad_snapshot_url = character(0),
-      bylines = character(0), currency = character(0), languages = list(),
-      page_id = character(0), page_name = character(0), publisher_platforms = list(),
-      estimated_audience_size_lower = numeric(0), estimated_audience_size_upper = numeric(0),
+      bylines = character(0), currency = character(0), estimated_audience_size_lower = numeric(0),
+      estimated_audience_size_upper = numeric(0), id = character(0),
       impressions_lower = numeric(0), impressions_upper = numeric(0),
-      spend_lower = numeric(0), spend_upper = numeric(0), ad_creative_link_descriptions = list()
+      languages = list(), page_id = character(0), page_name = character(0),
+      publisher_platforms = list(), spend_lower = numeric(0), spend_upper = numeric(0)
     ), class = c(
       "tbl_df",
       "tbl", "data.frame"
@@ -148,4 +151,93 @@ test_that("searching by region works", {
     "tbl_df",
     "tbl", "data.frame"
   ), row.names = integer(0)))
+})
+
+test_that("searching for the age gender country breakdown works", {
+  library(tibble, quietly = TRUE)
+  library(tidyr, quietly = TRUE)
+  skip_on_cran()
+  skip_if_not(token_exists_in_env())
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  acgb <- adlib_build_query(
+    ad_reached_countries = "DE",
+    fields = c("id", "age_country_gender_reach_breakdown"),
+    search_terms = "election", limit = 5, unmask_removed_content = FALSE
+  ) |>
+    adlib_get(token = token) |>
+    as_tibble()
+  expect_equal(
+    vctrs::vec_ptype(acgb),
+    tibble::tibble(id = character(0), age_country_gender_reach_breakdown = list())
+  )
+  expect_equal(
+    vctrs::vec_ptype(unnest(acgb, age_country_gender_reach_breakdown)),
+    tibble::tibble(
+      id = character(0),
+      country = character(0),
+      age_range = character(0),
+      male = integer(0),
+      female = integer(0),
+      unknown = integer(0)
+    )
+  )
+})
+
+test_that("beneficiary_payers", {
+  skip_on_cran()
+  skip_if_not(token_exists_in_env())
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+  df <- adlib_build_query(
+    ad_reached_countries = "DE",
+    search_terms = "election",
+    limit = 20,
+    fields = c("id", "beneficiary_payers")
+  ) |>
+    adlib_get(token = token) |>
+    tibble::as_tibble()
+  expect_equal(vctrs::vec_ptype(df), tibble::tibble(id = character(), beneficiary_payers = list()))
+  expect_equal(
+    vctrs::vec_ptype(tidyr::unnest(df, beneficiary_payers)),
+    tibble::tibble(
+      id = character(), payer = character(), beneficiary = character(),
+      current = logical()
+    )
+  )
+})
+
+test_that("All EU fields", {
+  skip_on_cran()
+  skip_if_not(token_exists_in_env())
+  token <- Sys.getenv("FB_GRAPH_API_TOKEN")
+
+  data <- adlib_build_query(
+    ad_reached_countries = c("DE", "FR"), search_terms = "vote",
+    limit = 20, fields = c(
+      "id",
+      "age_country_gender_reach_breakdown",
+      "beneficiary_payers",
+      "eu_total_reach",
+      "target_ages",
+      "target_gender",
+      "target_locations"
+    )
+  ) |>
+    adlib_get(token = token)
+  expect_equal(data$fields, c(
+    "id",
+    "age_country_gender_reach_breakdown",
+    "beneficiary_payers",
+    "eu_total_reach",
+    "target_ages",
+    "target_gender",
+    "target_locations"
+  ))
+  expect_equal(
+    vctrs::vec_ptype(as_tibble(data)),
+    tibble::tibble(
+      id = character(0), age_country_gender_reach_breakdown = list(),
+      beneficiary_payers = list(), eu_total_reach = numeric(0),
+      target_ages = list(), target_gender = character(0), target_locations = list()
+    )
+  )
 })
