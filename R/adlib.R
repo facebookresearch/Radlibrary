@@ -14,7 +14,7 @@
 # Constants ---------------------------------------------------------------
 
 
-AD_DATA_FIELDS <- c(
+DEFAULT_FIELDS <- c(
   "id",
   "ad_creation_time",
   "ad_creative_bodies",
@@ -35,20 +35,13 @@ AD_DATA_FIELDS <- c(
   "spend"
 )
 
-DEMOGRAPHIC_DATA_FIELDS <- c(
-  "id",
-  "demographic_distribution"
+OTHER_FIELDS <- c(
+  "demographic_distribution",
+  "delivery_by_region",
+  "age_country_gender_reach_breakdown"
 )
 
-REGION_DATA_FIELDS <- c(
-  "id",
-  "delivery_by_region"
-)
-
-ALL_FIELDS <- c(
-  AD_DATA_FIELDS, DEMOGRAPHIC_DATA_FIELDS[2],
-  REGION_DATA_FIELDS[2]
-)
+ALL_FIELDS <- c(DEFAULT_FIELDS, OTHER_FIELDS)
 
 
 POTENTIAL_REACH_MAX_VALUES <- c(
@@ -149,7 +142,7 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
                               search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
                               unmask_removed_content = FALSE,
                               limit = 1000,
-                              fields = "ad_data") {
+                              fields = DEFAULT_FIELDS) {
   ad_active_status <- match.arg(ad_active_status)
   ad_type <- match.arg(ad_type)
 
@@ -225,7 +218,7 @@ adlib_build_query <- function(ad_active_status = c("ALL", "ACTIVE", "INACTIVE"),
   )
 }
 
-adlib_fields <- function(fields = c("ad_data", "demographic_data", "region_data", ALL_FIELDS)) {
+adlib_fields <- function(fields, quiet = FALSE) {
   if (!all(fields %in% c("ad_data", "demographic_data", "region_data", ALL_FIELDS))) {
     unsupported <- setdiff(fields, c("ad_data", "demographic_data", "region_data", ALL_FIELDS))
     names(unsupported) <- rep("*", length(unsupported))
@@ -233,12 +226,13 @@ adlib_fields <- function(fields = c("ad_data", "demographic_data", "region_data"
     rlang::warn(c("Unsupported fields supplied:", unsupported))
   }
   if (length(fields) == 1) {
+    # for backwards compatibility.
     if (fields == "ad_data") {
-      fields <- AD_DATA_FIELDS
+      fields <- DEFAULT_FIELDS
     } else if (fields == "demographic_data") {
-      fields <- DEMOGRAPHIC_DATA_FIELDS
+      fields <- c("id", "demographic_distribution")
     } else if (fields == "region_data") {
-      fields <- REGION_DATA_FIELDS
+      fields <- c("id", )
     }
   } else if (("ad_data" %in% fields) |
     ("demographic_data" %in% fields) |

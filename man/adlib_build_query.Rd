@@ -21,6 +21,7 @@ adlib_build_query(
   search_page_ids = NULL,
   search_terms = NULL,
   search_type = c("KEYWORD_UNORDERED", "KEYWORD_EXACT_PHRASE"),
+  unmask_removed_content = FALSE,
   limit = 1000,
   fields = "ad_data"
 )
@@ -77,6 +78,9 @@ the search term. Multiple search terms separated by commas can be used to
 retrieve results that contain an exact match for each phrase.
 KEYWORD_UNORDERED will return results that contain the word in the search
 term in any order. By default this is set to KEYWORD_UNORDERED.}
+
+\item{unmask_removed_content}{Specify whether you would like your results to reveal content
+that was removed for violating our standards.}
 
 \item{limit}{The maximum number of results to return}
 

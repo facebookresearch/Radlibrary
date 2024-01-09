@@ -45,3 +45,52 @@ test_that("convert demographic_distribution", {
   )
   expect_snapshot(aa_process_AudienceDistributionList(list(dd = dd), "dd"))
 })
+
+
+test_that("age_country_gender_reach_breakdown", {
+  example_archived_ad <- list(
+    id = "872228774116748",
+    age_country_gender_reach_breakdown = list(list(
+      country = "DE",
+      age_gender_breakdowns = list(
+        list(
+          age_range = "18-24",
+          male = 270L,
+          female = 57L,
+          unknown = 4L
+        ),
+        list(
+          age_range = "25-34",
+          male = 1020L,
+          female = 283L,
+          unknown = 3L
+        )
+      )
+    ))
+  )
+
+  expect_equal(
+    process_agbr(
+      example_archived_ad$age_country_gender_reach_breakdown[[1]]$age_gender_breakdowns
+    ),
+    tibble::tibble(
+      age_range = c("18-24", "25-34"),
+      male = c(270L, 1020L),
+      female = c(57L, 283L),
+      unknown = c(4L, 3L)
+    )
+  )
+  expect_equal(
+    aa_process_AgeCountryGenderReachBreakdownList(example_archived_ad, "age_country_gender_reach_breakdown"),
+    list(
+      id = "872228774116748",
+      age_country_gender_reach_breakdown = list(tibble::tibble(
+        country = c("DE", "DE"),
+        age_range = c("18-24", "25-34"),
+        male = c(270L, 1020L),
+        female = c(57L, 283L),
+        unknown = c(4L, 3L)
+      ))
+    )
+  )
+})

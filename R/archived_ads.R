@@ -19,6 +19,7 @@ archived_ads_field_types <- list(
   "ad_delivery_start_time" = "string",
   "ad_delivery_stop_time" = "string",
   "ad_snapshot_url" = "string",
+  "age_country_gender_reach_breakdown" = "AgeCountryGenderReachBreakdownList",
   "bylines" = "string",
   "currency" = "string",
   "delivery_by_region" = "AudienceDistributionList",
@@ -154,4 +155,34 @@ aa_process_InsightsRangeValue <- function(l, field_name) {
   l[[paste(field_name, "lower", sep = "_")]] <- na_pad(as.numeric(r[["lower_bound"]]))
   l[[paste(field_name, "upper", sep = "_")]] <- na_pad(as.numeric(r[["upper_bound"]]))
   l
+}
+
+# process fields of type AgeCountryGenderReachBreakdownList
+aa_process_AgeCountryGenderReachBreakdownList <- function(l, field_name) {
+  agbr <- l[[field_name]]
+
+  df <- purrr::map(agbr, \(x) {
+    df <- process_agbr(x$age_gender_breakdowns)
+    df$country <- x$country
+    df
+  }) |>
+    purrr::list_rbind()
+  l[[field_name]] <- list(df[, c('country', 'age_range', 'male', 'female', 'unknown')])
+
+
+  l
+}
+
+# process a single AgeCountryGenderReachBreakdown object
+# used by aa_process_AgeCountryGenderReachBreakdownList
+process_agbr <- function(x) {
+  purrr::map(x, \(y) {
+    tibble::tibble(
+      age_range = y$age_range %||% character(),
+      male = y$male %||% integer(),
+      female = y$female %||% integer(),
+      unknown = y$unknown %||% integer()
+    )
+  }) |>
+    purrr::list_rbind()
 }
