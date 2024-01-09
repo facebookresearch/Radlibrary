@@ -2,11 +2,6 @@ url: https://facebookresearch.github.io/Radlibrary/
 template:
   bootstrap: 5
 
-news:
-  releases:
-    - text: "Radlibrary 0.4.0"
-      href: https://facebookresearch.github.io/Radlibrary/news/index.html#radlibrary-040
-
 footer:
   structure:
     left: [developed_by, legal]
