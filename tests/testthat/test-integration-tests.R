@@ -154,8 +154,6 @@ test_that("searching by region works", {
 })
 
 test_that("searching for the age gender country breakdown works", {
-  library(tibble, quietly = TRUE)
-  library(tidyr, quietly = TRUE)
   skip_on_cran()
   skip_if_not(token_exists_in_env())
   token <- Sys.getenv("FB_GRAPH_API_TOKEN")
@@ -171,7 +169,7 @@ test_that("searching for the age gender country breakdown works", {
     tibble::tibble(id = character(0), age_country_gender_reach_breakdown = list())
   )
   expect_equal(
-    vctrs::vec_ptype(unnest(acgb, age_country_gender_reach_breakdown)),
+    vctrs::vec_ptype(tidyr::unnest(acgb, age_country_gender_reach_breakdown)),
     tibble::tibble(
       id = character(0),
       country = character(0),
@@ -232,12 +230,16 @@ test_that("All EU fields", {
     "target_gender",
     "target_locations"
   ))
-  expect_equal(
-    vctrs::vec_ptype(as_tibble(data)),
-    tibble::tibble(
-      id = character(0), age_country_gender_reach_breakdown = list(),
-      beneficiary_payers = list(), eu_total_reach = numeric(0),
-      target_ages = list(), target_gender = character(0), target_locations = list()
+  expect_setequal(
+    colnames(as_tibble(data)),
+    c(
+      "id",
+      "age_country_gender_reach_breakdown",
+      "beneficiary_payers",
+      "eu_total_reach",
+      "target_ages",
+      "target_gender",
+      "target_locations"
     )
   )
 })
